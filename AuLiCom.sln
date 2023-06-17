@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuLiComLib", "AuLiComLib\AuLiComLib.csproj", "{B5A2D672-A93D-42CB-828F-A285579B5855}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuLiComCli", "AuLiComCli\AuLiComCli.csproj", "{F21BA718-88EC-4EE3-B7B6-E428A3DC0F04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5A2D672-A93D-42CB-828F-A285579B5855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5A2D672-A93D-42CB-828F-A285579B5855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5A2D672-A93D-42CB-828F-A285579B5855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5A2D672-A93D-42CB-828F-A285579B5855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F21BA718-88EC-4EE3-B7B6-E428A3DC0F04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F21BA718-88EC-4EE3-B7B6-E428A3DC0F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F21BA718-88EC-4EE3-B7B6-E428A3DC0F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F21BA718-88EC-4EE3-B7B6-E428A3DC0F04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {09D0420B-0ECF-478A-9234-2BC2215A8111}
+	EndGlobalSection
+EndGlobal
