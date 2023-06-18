@@ -9,7 +9,7 @@ namespace AuLiComLib
 {
     public class SystemConsole : ICommandConsole
     {
-        public string ReadLineTrim() => Console.ReadLine().Trim();
+        public string? ReadLineTrim() => Console.ReadLine()?.Trim();
 
         public void WriteLine(string line) => Console.WriteLine(line);
 

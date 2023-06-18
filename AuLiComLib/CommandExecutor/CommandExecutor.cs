@@ -39,7 +39,7 @@ namespace AuLiComLib.CommandExecutor
             }
             _console.WriteLine();
 
-            string commandString = _console.ReadLineTrim();
+            string? commandString = _console.ReadLineTrim();
             while (!string.IsNullOrEmpty(commandString))
             {
                 if (!_commands.Any(x => x.TryExecute(commandString)))

@@ -15,7 +15,7 @@ console.WriteLine("AuLiCom -- AULA LIGHT COMMANDER");
 console.WriteLine($"Console {consoleVersion}, Library {libraryVersion}");
 console.WriteLine();
 
-Dictionary<string, ISerialPort> portsByName = SerialPorts.GetDmxPortsByName();
+Dictionary<string, ISerialPort> portsByName = DmxPorts.GetPortsByName();
 
 if (portsByName.Count == 0)
 {

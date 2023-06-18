@@ -2,7 +2,7 @@
 {
     public interface ICommandConsole
     {
-        string ReadLineTrim();
+        string? ReadLineTrim();
         void WriteLine(string line);
         void WriteLine();
     }
