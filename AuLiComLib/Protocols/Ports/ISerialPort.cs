@@ -14,6 +14,6 @@ namespace AuLiComLib.Protocols
 
         void Close();
         void Open();
-        void Write(byte[] values, int v, int valuesLength);
+        void Write(byte[] values, int start, int count);
     }
 }

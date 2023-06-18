@@ -8,7 +8,7 @@ using AuLiComLib.Common;
 
 namespace AuLiComLib.Protocols.Dmx
 {
-    public class DmxConnection : IDmxConnection
+    public class DmxConnection : IConnection
     {
         public DmxConnection(ISerialPort port,
                              IAsyncExecutor executor,
@@ -53,18 +53,18 @@ namespace AuLiComLib.Protocols.Dmx
 
         // IDmxConnection
 
-        public void SetValue(DmxChannelValue channelValue)
+        public void SetValue(ChannelValue channelValue)
         {
-            var channelValues = new Span<DmxChannelValue>(ref channelValue);
+            var channelValues = new Span<ChannelValue>(ref channelValue);
             SetValues(channelValues);
         }
 
-        public void SetValues(ReadOnlySpan<DmxChannelValue> channelValues)
+        public void SetValues(ReadOnlySpan<ChannelValue> channelValues)
         {
             var newValues = new byte[ValuesLength];
 
             Array.Copy(_values, newValues, ValuesLength);
-            foreach (DmxChannelValue channelValue in channelValues)
+            foreach (ChannelValue channelValue in channelValues)
             {
                 newValues[channelValue.Channel] = channelValue.Value;
             }
@@ -85,11 +85,11 @@ namespace AuLiComLib.Protocols.Dmx
             _valuesChanged.Set();
         }
 
-        public IEnumerable<DmxChannelValue> GetValues()
+        public IEnumerable<ChannelValue> GetValues()
         {
             for (int channel = FirstChannel; channel < ValuesLength; channel++)
             {
-                yield return DmxChannelValue.FromByte(channel, _values[channel]);
+                yield return ChannelValue.FromByte(channel, _values[channel]);
             }
         }
     }

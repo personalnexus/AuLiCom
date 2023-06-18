@@ -1,4 +1,4 @@
-﻿using AuLiComLib.Protocols.Dmx;
+﻿using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,26 +7,26 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.CommandExecutor.Commands
 {
-    internal class ShowValuesCommand : ICommand
+    internal class ListChannelValuesCommand : ICommand
     {
-        public ShowValuesCommand(IDmxConnection connection, ICommandConsole console)
+        public ListChannelValuesCommand(IConnection connection, ICommandConsole console)
         {
             _connection = connection;
             _console = console;
         }
 
-        private readonly IDmxConnection _connection;
+        private readonly IConnection _connection;
         private readonly ICommandConsole _console;
 
-        public string Description => "SHOW lists all values that aren't zero";
+        public string Description => "LIST all channel values that aren't zero";
 
         public bool TryExecute(string command)
         {
             bool result;
             bool nonZeroChannelWasShown = false;
-            if (command.Equals("Show", StringComparison.OrdinalIgnoreCase))
+            if (command.Equals("List", StringComparison.OrdinalIgnoreCase))
             {
-                foreach (DmxChannelValue channelValue in _connection
+                foreach (ChannelValue channelValue in _connection
                                                          .GetValues()
                                                          .Where(x => x.Value > 0))
                 {

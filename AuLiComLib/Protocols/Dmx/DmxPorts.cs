@@ -1,26 +1,22 @@
-﻿using AuLiComLib.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuLiComLib.Protocols
+namespace AuLiComLib.Protocols.Dmx
 {
-    public static class SerialPorts
+    public static class DmxPorts
     {
-        public static Dictionary<string, ISerialPort> GetDmxPortsByName() => 
-            GetDmxPorts()
-            .ToDictionary(x => x.PortName, x => x);
-
-        public static IEnumerable<ISerialPort> GetDmxPorts() => 
+        public static Dictionary<string, ISerialPort> GetPortsByName() =>
             SerialPort
             .GetPortNames()
-            .Select(CreateDmxPort)
-            .Where(IsNotEmpty);
+            .Select(CreatePort)
+            .Where(SerialPorts.IsNotEmpty)
+            .ToDictionary(x => x.PortName, x => x);
 
-        public static ISerialPort CreateDmxPort(string portName)
+        private static ISerialPort CreatePort(string portName)
         {
             ISerialPort result = new SystemSerialPort(portName)
             {
@@ -39,14 +35,10 @@ namespace AuLiComLib.Protocols
             }
             catch
             {
-                result = Empty;
+                result = SerialPorts.Empty;
             }
 
             return result;
         }
-
-        public static bool IsNotEmpty(ISerialPort port) => !ReferenceEquals(port, Empty);
-
-        private static readonly ISerialPort Empty = new EmptySerialPort();
     }
 }

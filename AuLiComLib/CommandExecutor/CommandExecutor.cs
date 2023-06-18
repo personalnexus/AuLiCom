@@ -1,5 +1,5 @@
 ﻿using AuLiComLib.CommandExecutor.Commands;
-using AuLiComLib.Protocols.Dmx;
+using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -11,15 +11,15 @@ namespace AuLiComLib.CommandExecutor
 {
     public class CommandExecutor
     {
-        public static ICommand[] CreateCommands(IDmxConnection connection, ICommandConsole console) => new ICommand[]
+        public static ICommand[] CreateCommands(IConnection connection, ICommandConsole console) => new ICommand[]
         {
-            new ClearCommand(connection, console),
-            new SetDmxChannelValueCommand(connection, console),
-            new ShowValuesCommand(connection, console)
+            new ClearChannelValuesCommand(connection),
+            new SetChannelValueCommand(connection),
+            new ListChannelValuesCommand(connection, console),
             // TODO: register commands here when creating new ones
         };
 
-        public CommandExecutor(IDmxConnection connection,
+        public CommandExecutor(IConnection connection,
                                ICommandConsole console)
         {
             _commands = CreateCommands(connection, console);
@@ -44,7 +44,7 @@ namespace AuLiComLib.CommandExecutor
             {
                 if (!_commands.Any(x => x.TryExecute(commandString)))
                 {
-                    _console.WriteLine($"invalid command '{commandString}");
+                    _console.WriteLine($"invalid command '{commandString}'.");
                 }
                 commandString = _console.ReadLineTrim();
             }

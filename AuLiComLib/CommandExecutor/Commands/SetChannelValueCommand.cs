@@ -1,4 +1,4 @@
-﻿using AuLiComLib.Protocols.Dmx;
+﻿using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -11,16 +11,14 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.CommandExecutor.Commands
 {
-    internal class SetDmxChannelValueCommand : ICommand
+    internal class SetChannelValueCommand : ICommand
     {
-        public SetDmxChannelValueCommand(IDmxConnection connection, ICommandConsole console)
+        public SetChannelValueCommand(IConnection connection)
         {
             _connection = connection;
-            _console = console;
         }
 
-        private readonly IDmxConnection _connection;
-        private readonly ICommandConsole _console;
+        private readonly IConnection _connection;
 
         public string Description => "SET one or more channel values:\r\n" +
                                      "    1@50   set channel 1 to 50%\r\n" +
@@ -37,7 +35,7 @@ namespace AuLiComLib.CommandExecutor.Commands
 
             if (channelAndPercentage.Length == 2)
             {
-                List<int> channels = new List<int>();
+                var channels = new List<int>();
                 foreach (string channelString in channelAndPercentage[0].Split('+', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
                 {
                     if (channelString.Contains('-'))
@@ -81,8 +79,8 @@ namespace AuLiComLib.CommandExecutor.Commands
 
                     if (result)
                     {
-                        Span<DmxChannelValue> channelValues = channels
-                            .Select(x => DmxChannelValue.FromPercentage(x, percentage))
+                        Span<ChannelValue> channelValues = channels
+                            .Select(x => ChannelValue.FromPercentage(x, percentage))
                             .ToArray()
                             .AsSpan();
                         _connection.SetValues(channelValues);

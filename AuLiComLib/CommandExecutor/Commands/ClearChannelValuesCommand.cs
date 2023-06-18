@@ -1,4 +1,4 @@
-﻿using AuLiComLib.Protocols.Dmx;
+﻿using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -8,18 +8,16 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.CommandExecutor.Commands
 {
-    internal class ClearCommand: ICommand
+    internal class ClearChannelValuesCommand: ICommand
     {
-        public ClearCommand(IDmxConnection connection, ICommandConsole console)
+        public ClearChannelValuesCommand(IConnection connection)
         {
             _connection = connection;
-            _console = console;
         }
 
-        private readonly IDmxConnection _connection;
-        private readonly ICommandConsole _console;
+        private readonly IConnection _connection;
 
-        public string Description => "CLEAR sets all values to zero";
+        public string Description => "CLEAR sets all channel values to zero";
 
         public bool TryExecute(string command)
         {
