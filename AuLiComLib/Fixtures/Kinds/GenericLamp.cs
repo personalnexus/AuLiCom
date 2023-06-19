@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AuLiComLib.Fixtures.Kinds
@@ -10,18 +11,13 @@ namespace AuLiComLib.Fixtures.Kinds
     /// <summary>
     /// A generic lamp with a single channel to control intensity
     /// </summary>
-    internal class GenericLamp : IFixture
+    public class GenericLamp : FixtureBase, IFixture
     {
-        public const string Kind = "GenericLamp";
-
-        public GenericLamp(IFixtureDefinition definition)
+        public GenericLamp(IConnection connection) : base(connection)
         {
-            Name = definition.Name;
-            Value = ChannelValue.FromByte(definition.Channel, 0);
+            Intensity = new ChannelValueProperty(this, 0);
         }
 
-        public string Name { get; }
-
-        private ChannelValue Value { get; set; }
+        public ChannelValueProperty Intensity { get; set; }
     }
 }

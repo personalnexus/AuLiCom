@@ -13,25 +13,13 @@ namespace AuLiComLib.Fixtures
     /// </summary>
     public class Fixtures
     {
-        public Fixtures(IList<IFixtureDefinition> definitions, IConnection connnection)
+        public Fixtures(params IFixture[] fixtures)
         {
-            _connnection = connnection;
-            _fixturesByName = definitions
-                .Select(CreateFixture)
-                .ToDictionary(x => x.Name, x => x);
+            _fixturesByName = fixtures.ToDictionary(x => x.Name);
         }
 
-        private readonly IConnection _connnection;
         private readonly Dictionary<string, IFixture> _fixturesByName;
 
-        private IFixture CreateFixture(IFixtureDefinition definition)
-        {
-            IFixture result = definition.Kind switch
-            {
-                GenericLamp.Kind => new GenericLamp(definition),
-                _ => throw new ArgumentException($"Invalid fixture definition kind '{definition.Kind}'")
-            };
-            return result;
-        }
+        public T Get<T>(string name) where T : IFixture => (T)_fixturesByName[name];
     }
 }

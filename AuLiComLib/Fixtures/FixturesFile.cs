@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AuLiComLib.Protocols;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -11,16 +12,18 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Fixtures
 {
-    internal class FixtureDefintionsFile
+    public class FixturesFile
     {
-        public FixtureDefintionsFile(IFileSystem fileSystem)
+        public FixturesFile(IConnection connection, IFileSystem fileSystem)
         {
+            _connection = connection;
             _fileSystem = fileSystem;
         }
 
         private readonly IFileSystem _fileSystem;
+        private readonly IConnection _connection;
 
-        public IList<FixtureDefinition> Load(string path)
+        public IFixture[] Load(string path)
         {
             if (!HasExtension(path))
             {
@@ -28,7 +31,9 @@ namespace AuLiComLib.Fixtures
             }
 
             string fileContents = _fileSystem.File.ReadAllText(path) ?? throw CreateFileEmptyException();
-            List<FixtureDefinition> result = JsonConvert.DeserializeObject<List<FixtureDefinition>>(fileContents) ?? throw CreateFileEmptyException();
+            IFixture[] result = JsonConvert.DeserializeObject<IFixture[]>(value: fileContents,
+                                                                          converters: new FixtureKindJsonConverter(_connection))
+                                                                          ?? throw CreateFileEmptyException();
             return result;
 
             ArgumentException CreateFileEmptyException() => new($"Fixture file '{path}' is empty.");
@@ -36,6 +41,6 @@ namespace AuLiComLib.Fixtures
 
         public static bool HasExtension(string path) => Path.GetExtension(path).Equals(Extension); // testable even without using IFileSystem
 
-        private const string Extension = ".alcfix";  // [A]ula [L]ight [C]ommander [FIX]tures
+        public const string Extension = ".alcfix";  // [A]ula [L]ight [C]ommander [FIX]tures
     }
 }
