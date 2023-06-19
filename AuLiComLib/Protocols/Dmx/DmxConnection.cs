@@ -92,5 +92,7 @@ namespace AuLiComLib.Protocols.Dmx
                 yield return ChannelValue.FromByte(channel, _values[channel]);
             }
         }
+
+        public byte GetValue(int channel) => _values[channel - FirstChannel];
     }
 }

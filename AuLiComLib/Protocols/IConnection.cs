@@ -8,6 +8,8 @@
         void SetValue(ChannelValue channelValue);
         void SetValues(ReadOnlySpan<ChannelValue> channelValues);
         void SetValuesToZero();
+
+        byte GetValue(int channel);
         IEnumerable<ChannelValue> GetValues();
     }
 }
