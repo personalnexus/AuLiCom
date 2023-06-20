@@ -12,6 +12,22 @@ namespace AuLiComTest
     public class FixturesFileTest
     {
         [TestClass]
+        public class HasExtension
+        {
+            [TestMethod]
+            public void ExtensionIsEmpty_ReturnsFalse() => FixturesFile.HasExtension("FileWithoutExtensionButAPeriod.").Should().BeFalse();
+
+            [TestMethod]
+            public void ExtensionIsLowerCase_ReturnsTrue() => FixturesFile.HasExtension("File.alcfix").Should().BeTrue();
+
+            [TestMethod]
+            public void ExtensionIsNull_ReturnsFalse() => FixturesFile.HasExtension("FileWithoutExtension").Should().BeFalse();
+
+            [TestMethod]
+            public void ExtensionIsUpperCase_ReturnsTrue() => FixturesFile.HasExtension("File.ALCFIX").Should().BeTrue();
+        }
+
+        [TestClass]
         public class Load
         {
             [TestMethod]

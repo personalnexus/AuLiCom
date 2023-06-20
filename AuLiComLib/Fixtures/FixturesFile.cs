@@ -39,7 +39,7 @@ namespace AuLiComLib.Fixtures
             ArgumentException CreateFileEmptyException() => new($"Fixture file '{path}' is empty.");
         }
 
-        public static bool HasExtension(string path) => Path.GetExtension(path).Equals(Extension); // testable even without using IFileSystem
+        public static bool HasExtension(string path) => Extension.Equals(Path.GetExtension(path), StringComparison.OrdinalIgnoreCase); // testable even without using IFileSystem
 
         public const string Extension = ".alcfix";  // [A]ula [L]ight [C]ommander [FIX]tures
     }
