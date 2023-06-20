@@ -12,7 +12,7 @@ AuLiCom is made up of the following component parts:
 
 **AuLiComXL** is an Excel plugin (based on ExcelDNA) to to set and get channel values.
 
-![AuLiComXL controlling an LED bar](/doc/Excel/AuLiComXL.PNG)
+![AuLiComXL controlling an LED bar](/doc/Excel/AuLiComXL.png)
 
 ## Software Architecture
 
