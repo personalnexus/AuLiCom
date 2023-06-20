@@ -35,25 +35,39 @@ namespace AuLiComTest
             {
                 // Arrange
                 Arrange(out FixturesFile fixturesFile)
-                    .AddFile(FixturesFilePath, new MockFileData(TwoFixtures));
+                    .AddFile(FixturesFilePath, new MockFileData(TwoCompleteFixtures));
 
                 // Act
                 IFixture[] fixtures = fixturesFile.Load(FixturesFilePath);
 
                 // Assert
-                    fixtures.Should().BeEquivalentTo(new IFixture[]
-                    {
-                        new GenericLamp(null)
+                fixtures.Should().BeEquivalentTo(new IFixture[]
+                {
+                        new GenericLamp(null) //TODO: use Mock connection
                         {
                             Name = "Lamp1",
                             Channel = 1
                         },
-                        new CameoLedBar3Ch2(null)
+                        new CameoLedBar3Ch2(null) //TODO: use Mock connection
                         {
                             Name = "LED",
                             Channel = 2
                         },
-                    });
+                });
+            }
+
+            [TestMethod]
+            public void FileContainsOneFixtureWithoutRequiredName_JsonExceptionIsRaised()
+            {
+                // Arrange
+                Arrange(out FixturesFile fixturesFile)
+                    .AddFile(FixturesFilePath, new MockFileData(OneFixtureWithoutRequiredName));
+
+                // Act
+                Action act = () => fixturesFile.Load(FixturesFilePath);
+
+                // Assert
+                act.Should().Throw<JsonSerializationException>();
             }
 
             [TestMethod]
@@ -82,10 +96,10 @@ namespace AuLiComTest
                 act.Should().Throw<ArgumentException>();
             }
 
-            private MockFileSystem Arrange(out FixturesFile fixturesFile)
+            private static MockFileSystem Arrange(out FixturesFile fixturesFile)
             {
                 var fileSystem = new MockFileSystem();
-                fixturesFile = new FixturesFile(null, fileSystem);
+                fixturesFile = new FixturesFile(null, fileSystem); //TODO: use Mock connection
                 return fileSystem;
             }
 
@@ -93,7 +107,7 @@ namespace AuLiComTest
             private const string NonExistentFilePath = "ThisFileDoesNotExist" + FixturesFile.Extension;
             private const string WrongExtensionFilePath = "WrongExtension" + FixturesFile.Extension + "SomethingElse";
 
-            private const string TwoFixtures = @"
+            private const string TwoCompleteFixtures = @"
 [
   {
     ""Kind"": ""GenericLamp"",
@@ -104,6 +118,14 @@ namespace AuLiComTest
     ""Kind"": ""CameoLedBar3Ch2"",
     ""Name"": ""LED"",
     ""Channel"": 2
+  }
+]
+";
+            private const string OneFixtureWithoutRequiredName = @"
+[
+  {
+    ""Kind"": ""GenericLamp"",
+    ""Channel"": 1
   }
 ]
 ";

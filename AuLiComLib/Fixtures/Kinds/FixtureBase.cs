@@ -1,9 +1,9 @@
 ﻿using AuLiComLib.Protocols;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AuLiComLib.Fixtures.Kinds
@@ -12,15 +12,18 @@ namespace AuLiComLib.Fixtures.Kinds
     {
         public FixtureBase(IConnection connection)
         {
-            Kind = this.GetType().Name;
             Connection = connection;
+            Kind = this.GetType().Name;
+            Name = "";
         }
 
         // JSON configurable properties
 
+        [JsonProperty(Required = Required.Always)]
         public string Kind { get; set; }
 
-        public string? Name { get; set; }
+        [JsonProperty(Required = Required.Always)]
+        public string Name { get; set; }
 
         public int Channel { get; set; }
 

@@ -59,9 +59,9 @@ namespace AuLiComTest
                 act.Should().Throw<InvalidCastException>();
             }
 
-            private Fixtures Arrange() => new Fixtures(
-                new GenericLamp(null) { Name = Lamp1, Channel = 1 },
-                new GenericLamp(null) { Name = Lamp2, Channel = 2 }
+            private static Fixtures Arrange() => new Fixtures(
+                new GenericLamp(null) { Name = Lamp1, Channel = 1 }, //TODO: use Mock connection
+                new GenericLamp(null) { Name = Lamp2, Channel = 2 }  //TODO: use Mock connection
             );
 
             private const string Lamp1 = "Lamp1";
