@@ -55,7 +55,7 @@ namespace AuLiComLib.Protocols.Dmx
 
         public void SetValue(ChannelValue channelValue)
         {
-            var channelValues = new Span<ChannelValue>(ref channelValue);
+            var channelValues = new Span<ChannelValue>(new[] { channelValue });
             SetValues(channelValues);
         }
 
@@ -93,6 +93,6 @@ namespace AuLiComLib.Protocols.Dmx
             }
         }
 
-        public byte GetValue(int channel) => _values[channel - FirstChannel];
+        public ChannelValue GetValue(int channel) => ChannelValue.FromByte(channel, _values[channel]);
     }
 }

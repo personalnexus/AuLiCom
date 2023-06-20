@@ -77,20 +77,20 @@ namespace AuLiComTest
             private const string NonExistentFilePath = "ThisFileDoesNotExist" + FixturesFile.Extension;
             private const string WrongExtensionFilePath = "WrongExtension" + FixturesFile.Extension + "SomethingElse";
 
-            private const string TwoFixtures = """
+            private const string TwoFixtures = @"
 [
   {
-    "Kind": "GenericLamp",
-    "Name": "Lamp1",
-    "Channel": 1
+    ""Kind"": ""GenericLamp"",
+    ""Name"": ""Lamp1"",
+    ""Channel"": 1
   },
   {
-    "Kind": "CameoLedBar3Ch2",
-    "Name": "LED",
-    "Channel": 2
+    ""Kind"": ""CameoLedBar3Ch2"",
+    ""Name"": ""LED"",
+    ""Channel"": 2
   }
 ]
-""";
+";
         }
     }
 }

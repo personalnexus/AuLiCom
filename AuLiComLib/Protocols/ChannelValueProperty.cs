@@ -20,7 +20,7 @@ namespace AuLiComLib.Protocols
 
         public byte Value
         {
-            get => _propertyHolder.Connection.GetValue(_propertyHolder.Channel + _channelOffset);
+            get => _propertyHolder.Connection.GetValue(_propertyHolder.Channel + _channelOffset).Value;
             set => _propertyHolder.Connection.SetValue(ChannelValue.FromByte(_propertyHolder.Channel + _channelOffset, value));
         }
 

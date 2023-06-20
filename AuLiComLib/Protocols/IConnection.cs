@@ -9,7 +9,7 @@
         void SetValues(ReadOnlySpan<ChannelValue> channelValues);
         void SetValuesToZero();
 
-        byte GetValue(int channel);
+        ChannelValue GetValue(int channel);
         IEnumerable<ChannelValue> GetValues();
     }
 }
