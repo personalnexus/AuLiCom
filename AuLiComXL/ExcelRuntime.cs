@@ -1,6 +1,7 @@
 ﻿using AuLiComLib.Common;
 using AuLiComLib.Protocols;
 using AuLiComLib.Protocols.Dmx;
+using AuLiComLib.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,19 @@ using System.Threading.Tasks;
 
 namespace AuLiComXL
 {
-    internal class ExcelDmxConnection: IDisposable
+    internal class ExcelRuntime: IDisposable
     {
-        public ExcelDmxConnection(ISerialPort port)
+        public ExcelRuntime(ISerialPort port)
         {
             _cancellationTokenSource = new CancellationTokenSource();
+            ScenesByName = new Dictionary<string, IScene>();
             try
             {
                 PortName = port.PortName;
                 var executor = new SystemThread(PortName);
                 Status = $"Connected to {PortName}";
                 DmxConnection = new DmxConnection(port, executor, _cancellationTokenSource.Token);
+                SceneManager = new SceneManager(DmxConnection);
             }
             catch (Exception exception)
             {
@@ -33,7 +36,7 @@ namespace AuLiComXL
             _cancellationTokenSource.Cancel();
         }
 
-        internal static string EnsureInitialized(ref ExcelDmxConnection? connection, 
+        internal static string EnsureInitialized(ref ExcelRuntime? connection, 
                                                  string portName, 
                                                  Func<bool, Dictionary<string, ISerialPort>> getAvailableDmxPorts)
         {
@@ -49,7 +52,7 @@ namespace AuLiComXL
                 connection?.Dispose();
                 if (getAvailableDmxPorts(false).TryGetValue(portName, out ISerialPort? port))
                 {
-                    connection = new ExcelDmxConnection(port);
+                    connection = new ExcelRuntime(port);
                     result = connection.Status;
                 }
                 else
@@ -66,5 +69,8 @@ namespace AuLiComXL
         public string Status { get; }
         public IConnection? DmxConnection { get; }
         public string? PortName { get; }
+
+        public ISceneManager? SceneManager { get; }
+        public Dictionary<string, IScene> ScenesByName { get; }
     }
 }
