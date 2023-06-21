@@ -20,7 +20,7 @@ namespace AuLiComXL
             Runtime.ScenesByName[name] = scene;
         }
 
-        [ExcelFunction]
+        [ExcelFunction(IsVolatile = true)]
         public static object AuLiComGetScenes() => 
             Runtime.ScenesByName.Keys.ToVerticalRange<string>();
 
@@ -54,7 +54,7 @@ namespace AuLiComXL
         public static string AuLiComCreateDmxConnection(string portName) =>
             ExcelRuntime.EnsureInitialized(ref Runtime, portName, GetDmxPorts);
 
-        [ExcelFunction]
+        [ExcelFunction(IsVolatile = true)]
         public static int AuLiComGetChannelValue(int channel) =>
             GetConnection().GetValue(channel).ValueAsPercentage;
 
@@ -79,7 +79,7 @@ namespace AuLiComXL
                 RecalculationTimer?.Dispose();
                 RecalculationTimer = new System.Timers.Timer(interval);
                 RecalculationTimer.Elapsed += (sender, EventArgs) => ExcelAsyncUtil.QueueAsMacro(x => XlCall.Excel(XlCall.xlcCalculateNow), null);
-               //TODO:  RecalculationTimer.Enabled = true;
+                RecalculationTimer.Enabled = true;
             }
             return (int)RecalculationTimer.Interval;
         }
