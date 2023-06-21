@@ -79,10 +79,8 @@ namespace AuLiComLib.CommandExecutor.Commands
 
                     if (result)
                     {
-                        Span<ChannelValue> channelValues = channels
-                            .Select(x => ChannelValue.FromPercentage(x, percentage))
-                            .ToArray()
-                            .AsSpan();
+                        IEnumerable<ChannelValue> channelValues = channels
+                            .Select(x => ChannelValue.FromPercentage(x, percentage));
                         _connection.SetValues(channelValues);
                     }
                 }

@@ -6,7 +6,7 @@
     public interface IConnection
     {
         void SetValue(ChannelValue channelValue);
-        void SetValues(ReadOnlySpan<ChannelValue> channelValues);
+        void SetValues(IEnumerable<ChannelValue> channelValues);
         void SetValuesToZero();
 
         ChannelValue GetValue(int channel);

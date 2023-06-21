@@ -55,15 +55,15 @@ namespace AuLiComLib.Protocols.Dmx
 
         public void SetValue(ChannelValue channelValue)
         {
-            var channelValues = new Span<ChannelValue>(new[] { channelValue });
+            var channelValues = new[] { channelValue };
             SetValues(channelValues);
         }
 
-        public void SetValues(ReadOnlySpan<ChannelValue> channelValues)
+        public void SetValues(IEnumerable<ChannelValue> channelValues)
         {
             var newValues = new byte[ValuesLength];
 
-            Array.Copy(_values, newValues, ValuesLength);
+            Buffer.BlockCopy(_values, 0, newValues, 0, ValuesLength);
             foreach (ChannelValue channelValue in channelValues)
             {
                 newValues[channelValue.Channel] = channelValue.Value;
