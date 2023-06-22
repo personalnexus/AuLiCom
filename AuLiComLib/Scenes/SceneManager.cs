@@ -19,11 +19,11 @@ namespace AuLiComLib.Scenes
         private readonly IConnection _connection;
         private readonly HashSet<Scene> _activeScenes;
 
-        public IScene CreateSceneFromCurrentValues(string name, double order) => CreateScene(name, order, _connection.GetValues());
+        public IScene CreateSceneFromCurrentUniverse(string name) => CreateScene(name, _connection.CurrentUniverse);
 
-        public IScene CreateScene(string name, double order, IEnumerable<ChannelValue> channelValues)
+        public IScene CreateScene(string name, IReadOnlyUniverse universe)
         {
-            var result = new Scene(name, order, channelValues);
+            var result = new Scene(name, universe);
             return result;
         }
 
@@ -55,22 +55,24 @@ namespace AuLiComLib.Scenes
 
         private void ProcessActiveScenesChange(TimeSpan fadeTime)
         {
-            byte[] targetChannelValues = GetTargetChannelValuesFromActiveScenes();
-            var changes = new ChannelValueChanges(_connection, targetChannelValues, fadeTime);
+            //
+            // If there is only one scene, that is our target universe
+            //
+            IReadOnlyUniverse targetUniverse = _activeScenes.Count == 1 
+                ? _activeScenes.First() 
+                : CombineActiveScenesIntoTargetUniverse();
+            var changes = new ChannelValueChanges(_connection, targetUniverse, fadeTime);
             changes.Apply();
         }
 
-        private byte[] GetTargetChannelValuesFromActiveScenes()
+        private IReadOnlyUniverse CombineActiveScenesIntoTargetUniverse()
         {
-            var targetChannelValues = new byte[513];
+            var result = new Universe();
             foreach (Scene scene in _activeScenes)
             {
-                for (int channel = 1; channel < targetChannelValues.Length; channel++)
-                {
-                    targetChannelValues[channel] = Math.Max(targetChannelValues[channel], scene.GetChannelValue(channel));
-                }
+                result.CombineWith(scene, aggregatingChannelValuesWith: Math.Max);
             }
-            return targetChannelValues;
+            return result;
         }
     }
 }

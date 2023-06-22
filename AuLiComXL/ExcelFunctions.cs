@@ -15,8 +15,10 @@ namespace AuLiComXL
         [ExcelFunction]
         public static void AuLiComCreateScene(string name, double[] channels, double[] values)
         {
-            IEnumerable<ChannelValue> channelValues = channels.Zip(values, (channel, value) => ChannelValue.FromPercentage((int)channel, (int)value));
-            IScene scene = GetSceneManager().CreateScene(name, 0.0, channelValues);
+            IReadOnlyUniverse universe = channels
+                .Zip(values, (channel, value) => ChannelValue.FromPercentage((int)channel, (int)value))
+                .ToReadOnlyUniverse();
+            IScene scene = GetSceneManager().CreateScene(name, universe);
             Runtime.ScenesByName[name] = scene;
         }
 

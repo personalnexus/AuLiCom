@@ -11,7 +11,7 @@ namespace AuLiComLib.Protocols
     public class ChannelValueChanges
     {
         public ChannelValueChanges(IConnection connection,
-                                   byte[] targetChannelValues,
+                                   IReadOnlyUniverse targetUniverse,
                                    TimeSpan fadeTime) 
         {
             _connection = connection;
@@ -19,12 +19,13 @@ namespace AuLiComLib.Protocols
             try
             {
                 _changes = _connection
-                        .GetValues()
-                        .Select(x => new ChannelValueChange(currentChannelValue: x,
-                                                            targetValue: targetChannelValues[x.Channel],
-                                                            stepCount: _stepCount))
-                        .Where(x => x.HasChange)
-                        .ToArray();
+                           .CurrentUniverse
+                           .GetValues()
+                           .Select(x => new ChannelValueChange(currentChannelValue: x,
+                                                               targetValue: targetUniverse.GetValue(x.Channel).Value,
+                                                               stepCount: _stepCount))
+                           .Where(x => x.HasChange)
+                           .ToArray();
             }
             catch (Exception exception)
             {
@@ -45,7 +46,9 @@ namespace AuLiComLib.Protocols
             {
                 for (int step = 0; step < _stepCount; step++)
                 {
-                    _connection.SetValues(_changes.Select(x => x.GetNextValue(step)));
+                    _changes
+                        .Select(x => x.GetNextValue(step))
+                        .SendValuesTo(_connection);
                     Thread.Sleep(FadeIntervalInMilliseconds);
                 }
             }

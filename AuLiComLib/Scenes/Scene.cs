@@ -7,24 +7,13 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Scenes
 {
-    internal class Scene : IScene
+    internal class Scene : Universe, IScene
     {
-        public Scene(string name, double order, IEnumerable<ChannelValue> values)
+        public Scene(string name, IReadOnlyUniverse universe): base(universe)
         {
-            _name = name;
-            _order = order;
-            _values = new byte[513];  //TODO: move universe size to shared place
-            foreach (var channelValue in values)
-            {
-                _values[channelValue.Channel] = channelValue.Value;
-            }
+            Name = name;
         }
 
-        private readonly string _name;
-        private readonly double _order;
-        private readonly byte[] _values;
-
-        internal byte GetChannelValue(int channel) => _values[channel];
-
+       public string Name { get; }
     }
 }

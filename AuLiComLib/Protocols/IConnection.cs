@@ -5,11 +5,7 @@
     /// </summary>
     public interface IConnection
     {
-        void SetValue(ChannelValue channelValue);
-        void SetValues(IEnumerable<ChannelValue> channelValues);
-        void SetValuesToZero();
-
-        ChannelValue GetValue(int channel);
-        IEnumerable<ChannelValue> GetValues();
+        IReadOnlyUniverse CurrentUniverse { get; }
+        void SendUniverse(IReadOnlyUniverse universe);
     }
 }

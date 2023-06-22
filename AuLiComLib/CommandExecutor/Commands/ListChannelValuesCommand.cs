@@ -26,7 +26,7 @@ namespace AuLiComLib.CommandExecutor.Commands
             bool nonZeroChannelWasShown = false;
             if (command.Equals("List", StringComparison.OrdinalIgnoreCase))
             {
-                foreach (ChannelValue channelValue in _connection
+                foreach (ChannelValue channelValue in _connection.CurrentUniverse
                                                          .GetValues()
                                                          .Where(x => x.Value > 0))
                 {

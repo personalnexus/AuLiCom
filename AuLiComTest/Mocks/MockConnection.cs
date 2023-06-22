@@ -10,25 +10,13 @@ namespace AuLiComTest.Mocks
 {
     internal class MockConnection : IConnection
     {
-        public byte[] Values = new byte[513];
-
-        public ChannelValue GetValue(int channel) => ChannelValue.FromByte(channel, Values[channel]);
-
-        public IEnumerable<ChannelValue> GetValues() => Values.Select((value, channel) => ChannelValue.FromByte(channel, value));
-
-        public void SetValue(ChannelValue channelValue) => Values[channelValue.Channel] = channelValue.Value;
-
-        public void SetValues(IEnumerable<ChannelValue> channelValues)
+        public MockConnection(IReadOnlyUniverse initialUniverse)
         {
-            foreach (ChannelValue channelValue in channelValues)
-            {
-                SetValue(channelValue);
-            }
+            CurrentUniverse = initialUniverse;
         }
 
-        public void SetValuesToZero()
-        {
-            Values = new byte[513];
-        }
+        public IReadOnlyUniverse CurrentUniverse { get; private set; }
+
+        public void SendUniverse(IReadOnlyUniverse universe) => CurrentUniverse = universe;
     }
 }

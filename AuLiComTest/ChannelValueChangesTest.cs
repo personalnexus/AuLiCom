@@ -4,6 +4,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -22,8 +23,11 @@ namespace AuLiComTest
             {
                 // Arrange
                 Arrange(out MockConnection connection);
-                byte[] targetValues = connection.Values.ToArray();
-                var changes = new ChannelValueChanges(connection, targetValues, TimeSpan.FromMilliseconds(200));
+                IReadOnlyUniverse targetUniverse = Universe
+                                                   .CreateEmpty()
+                                                   .SetValues(connection.CurrentUniverse.GetValues())
+                                                   .AsReadOnly();
+                var changes = new ChannelValueChanges(connection, targetUniverse, TimeSpan.FromMilliseconds(200));
 
                 // Act
                 Action act = () => changes.Apply();
@@ -33,7 +37,7 @@ namespace AuLiComTest
                 {
                     changes.HasChanges.Should().BeFalse();
                     act.ExecutionTime().Should().BeLessThan(TimeSpan.FromMilliseconds(16));
-                    connection.Values.Should().BeEquivalentTo(targetValues);
+                    connection.CurrentUniverse.GetValuesCopy().Should().BeEquivalentTo(targetUniverse.GetValuesCopy());
                 }
             }
 
@@ -42,10 +46,11 @@ namespace AuLiComTest
             {
                 // Arrange
                 Arrange(out MockConnection connection);
-                var targetValues = new byte[513];
-                targetValues[0] = 128;
-                targetValues[1] = 32;
-                var changes = new ChannelValueChanges(connection, targetValues, TimeSpan.FromMilliseconds(200));
+                IReadOnlyUniverse targetUniverse = Universe.CreateEmpty()
+                                                   .SetValue(1, 128)
+                                                   .SetValue(2, 32)
+                                                   .AsReadOnly();
+                var changes = new ChannelValueChanges(connection, targetUniverse, TimeSpan.FromMilliseconds(200));
 
                 // Act
                 Action act = () => changes.Apply();
@@ -57,16 +62,18 @@ namespace AuLiComTest
                     act.ExecutionTime().Should()
                         .BeGreaterThanOrEqualTo(TimeSpan.FromMilliseconds(200)).And
                         .BeLessThanOrEqualTo(TimeSpan.FromMilliseconds(300));
-                    connection.Values.Should().BeEquivalentTo(targetValues);
+                    connection.CurrentUniverse.GetValuesCopy().Should().BeEquivalentTo(targetUniverse.GetValuesCopy());
                 }
             }
 
             private static void Arrange(out MockConnection connection)
             {
-                connection = new MockConnection();
-                connection.Values = new byte[513];
-                connection.Values[0] = 64;
-                connection.Values[1] = 128;
+                IReadOnlyUniverse initialUniverse = Universe
+                                                    .CreateEmpty()
+                                                    .SetValue(1, 64)
+                                                    .SetValue(2, 128)
+                                                    .AsReadOnly();
+                connection = new MockConnection(initialUniverse);
             }
         }
     }

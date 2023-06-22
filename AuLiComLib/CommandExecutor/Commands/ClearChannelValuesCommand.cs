@@ -24,7 +24,7 @@ namespace AuLiComLib.CommandExecutor.Commands
             bool result;
             if (command.Equals("Clear", StringComparison.OrdinalIgnoreCase))
             {
-                _connection.SetValuesToZero();
+                _connection.SendUniverse(Universe.CreateEmpty());
                 result = true;
             }
             else

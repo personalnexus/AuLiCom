@@ -79,9 +79,9 @@ namespace AuLiComLib.CommandExecutor.Commands
 
                     if (result)
                     {
-                        IEnumerable<ChannelValue> channelValues = channels
-                            .Select(x => ChannelValue.FromPercentage(x, percentage));
-                        _connection.SetValues(channelValues);
+                        channels
+                            .Select(x => ChannelValue.FromPercentage(x, percentage))
+                            .SendValuesTo(_connection);
                     }
                 }
                 else
