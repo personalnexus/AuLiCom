@@ -16,8 +16,6 @@ namespace AuLiComLib.Protocols
         {
             _connection = connection;
             _stepCount = (int)(fadeTime.TotalMilliseconds / FadeIntervalInMilliseconds);
-            try
-            {
                 _changes = _connection
                            .CurrentUniverse
                            .GetValues()
@@ -27,12 +25,6 @@ namespace AuLiComLib.Protocols
                            .Where(x => x.HasChange)
                            .ToArray();
             }
-            catch (Exception exception)
-            {
-
-                throw;
-            }
-        }
 
         private readonly int _stepCount;
         private readonly IConnection _connection;
