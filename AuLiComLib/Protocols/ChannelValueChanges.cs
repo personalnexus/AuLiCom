@@ -16,15 +16,15 @@ namespace AuLiComLib.Protocols
         {
             _connection = connection;
             _stepCount = (int)(fadeTime.TotalMilliseconds / FadeIntervalInMilliseconds);
-                _changes = _connection
-                           .CurrentUniverse
-                           .GetValues()
-                           .Select(x => new ChannelValueChange(currentChannelValue: x,
-                                                               targetValue: targetUniverse.GetValue(x.Channel).Value,
-                                                               stepCount: _stepCount))
-                           .Where(x => x.HasChange)
-                           .ToArray();
-            }
+            _changes = _connection
+                        .CurrentUniverse
+                        .GetValues()
+                        .Select(x => new ChannelValueChange(currentChannelValue: x,
+                                                            targetValue: targetUniverse.GetValue(x.Channel).Value,
+                                                            stepCount: _stepCount))
+                        .Where(x => x.HasChange)
+                        .ToArray();
+        }
 
         private readonly int _stepCount;
         private readonly IConnection _connection;
@@ -39,8 +39,9 @@ namespace AuLiComLib.Protocols
                 for (int step = 0; step < _stepCount; step++)
                 {
                     _changes
-                        .Select(x => x.GetNextValue(step))
-                        .SendValuesTo(_connection);
+                    .Select(x => x.GetNextValue(step))
+                    .ToReadOnlyUniverse()
+                    .SendTo(_connection);
                     Thread.Sleep(FadeIntervalInMilliseconds);
                 }
             }

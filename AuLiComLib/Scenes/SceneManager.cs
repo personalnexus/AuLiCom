@@ -59,7 +59,7 @@ namespace AuLiComLib.Scenes
             // If there is only one scene, that is our target universe
             //
             IReadOnlyUniverse targetUniverse = _activeScenes.Count == 1 
-                ? _activeScenes.First() 
+                ? _activeScenes.First().Universe 
                 : CombineActiveScenesIntoTargetUniverse();
             var changes = new ChannelValueChanges(_connection, targetUniverse, fadeTime);
             changes.Apply();
@@ -67,12 +67,12 @@ namespace AuLiComLib.Scenes
 
         private IReadOnlyUniverse CombineActiveScenesIntoTargetUniverse()
         {
-            var result = new Universe();
+            IMutableUniverse result = Universe.CreateEmpty();
             foreach (Scene scene in _activeScenes)
             {
-                result.CombineWith(scene, aggregatingChannelValuesWith: Math.Max);
+                result.CombineWith(scene.Universe, aggregatingChannelValuesWith: ChannelValue.Max);
             }
-            return result;
+            return result.AsReadOnly();
         }
     }
 }

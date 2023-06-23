@@ -80,8 +80,9 @@ namespace AuLiComLib.CommandExecutor.Commands
                     if (result)
                     {
                         channels
-                            .Select(x => ChannelValue.FromPercentage(x, percentage))
-                            .SendValuesTo(_connection);
+                        .Select(x => ChannelValue.FromPercentage(x, percentage))
+                        .ToReadOnlyUniverse()
+                        .SendTo(_connection);
                     }
                 }
                 else

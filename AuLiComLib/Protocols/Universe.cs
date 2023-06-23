@@ -8,91 +8,39 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Protocols
 {
-    public class Universe : IMutableUniverse, IReadOnlyUniverse
+    public class Universe
     {
-        internal Universe()
-        {
-            _values = CreateEmptyValuesCopy();
-        }
-
-        internal Universe(IReadOnlyUniverse source)
-        {
-            _values = source.GetValuesCopy();
-        }
-
-        internal Universe(IEnumerable<ChannelValue> channelValues) : this()
-        {
-            foreach (ChannelValue channelValue in channelValues)
-            {
-                _values[channelValue.Channel] = channelValue.Value;
-            }
-        }
-
         public const int ChannelCount = 512;
-        private const int FirstChannel = 1;
-        private const int ValuesLength = FirstChannel + ChannelCount;
+        private const int MinChannel = 1;
+        private const int MaxChannel = ChannelCount;
 
-        private readonly byte[] _values;
-
-        //
-        // IMutableUniverse
-        //
-
-        public static IMutableUniverse CreateEmpty() => new Universe();
-
-        public IMutableUniverse SetValue(ChannelValue channelValue)
-        {
-            _values[channelValue.Channel] = channelValue.Value;
-            return this;
-        }
-
-        public IMutableUniverse SetValues(IEnumerable<ChannelValue> channelValues)
-        {
-            foreach (ChannelValue channelValue in channelValues)
-            {
-                SetValue(channelValue);
-            }
-            return this;
-        }
-
-        public IReadOnlyUniverse AsReadOnly() => this;
+        protected const int FirstChannel = 1;
+        protected const int ValuesLength = FirstChannel + ChannelCount;
 
         //
-        // IReadOnlyUniverse
+        // Factory methods. Making the constructor protected prevents outside code from circumventing our factory method.
         //
 
-        public ChannelValue GetValue(int channel) => ChannelValue.FromByte(channel, _values[channel]);
-
-        public IEnumerable<ChannelValue> GetValues()
+        protected Universe(): base()
         {
-            for (int channel = FirstChannel; channel < ValuesLength; channel++)
-            {
-                yield return ChannelValue.FromByte(channel, _values[channel]);
-            }
         }
 
-        public byte[] GetValuesCopy() => _values.BlockCopy();
+        public static IMutableUniverse CreateEmpty() => new MutableUniverse();
 
-        public void WriteValuesTo(ISerialPort port)
-        {
-            port.Write(_values, 0, ValuesLength);
-        }
+        public static IReadOnlyUniverse CreateEmptyReadOnly() => new ReadOnlyUniverse(CreateEmptyValues());
 
         //
         // Helper functions for internal use only
         //
 
-        internal static byte[] CreateEmptyValuesCopy() => new byte[ValuesLength];
+        protected static byte[] CreateEmptyValues() => new byte[Universe.ValuesLength];
 
-        internal static bool IsValidChannel(int channel) => channel is > 0 and <= ChannelCount;
-
-        internal Universe CombineWith(IReadOnlyUniverse other, Func<byte, byte, byte> aggregatingChannelValuesWith)
+        internal static void ThrowIfInvalidChannel(int channel)
         {
-            for (int channel = 1; channel < ChannelCount; channel++)
+            if (channel is < MinChannel or > MaxChannel)
             {
-                _values[channel] = aggregatingChannelValuesWith(_values[channel], other.GetValue(channel).Value);
+                throw new ArgumentOutOfRangeException($"Channel has to be between {MinChannel} and {MaxChannel}.");
             }
-            return this;
         }
     }
 }

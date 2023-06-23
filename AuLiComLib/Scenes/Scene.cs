@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Scenes
 {
-    internal class Scene : Universe, IScene
+    internal class Scene : IScene
     {
-        public Scene(string name, IReadOnlyUniverse universe): base(universe)
+        public Scene(string name, IReadOnlyUniverse universe)
         {
+            Universe = universe;
             Name = name;
         }
 
-       public string Name { get; }
+        public IReadOnlyUniverse Universe { get; }
+
+        public string Name { get; }
     }
 }

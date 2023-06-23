@@ -15,6 +15,7 @@ namespace AuLiComLib.Protocols.Dmx
                              IAsyncExecutor executor,
                              CancellationToken cancellationToken)
         {
+            CurrentUniverse = Universe.CreateEmptyReadOnly();
             _port = port;
             _cancellationToken = cancellationToken;
             _sendLoopQueue = new BlockingCollection<IReadOnlyUniverse>(boundedCapacity: 2); // TODO: extract to configuration
@@ -36,7 +37,7 @@ namespace AuLiComLib.Protocols.Dmx
             //
             // Start out by sending an empty universe
             //
-            IReadOnlyUniverse universeToSend = new Universe();
+            IReadOnlyUniverse universeToSend = Universe.CreateEmptyReadOnly();
             while (!_cancellationToken.IsCancellationRequested)
             {
                 _port.BreakState = true;
@@ -62,11 +63,8 @@ namespace AuLiComLib.Protocols.Dmx
 
         public void SendUniverse(IReadOnlyUniverse universe)
         {
-            // As the values are sent to a different thread,
-            // we have to make a copy of the universe first
-            IReadOnlyUniverse newUniverse = new Universe(universe);
-            _sendLoopQueue.Add(newUniverse, _cancellationToken);
-            CurrentUniverse = newUniverse;
+            _sendLoopQueue.Add(universe, _cancellationToken);
+            CurrentUniverse = universe;
         }
     }
 }

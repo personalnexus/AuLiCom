@@ -47,8 +47,8 @@ namespace AuLiComTest
                 // Arrange
                 Arrange(out MockConnection connection);
                 IReadOnlyUniverse targetUniverse = Universe.CreateEmpty()
-                                                   .SetValue(1, 128)
-                                                   .SetValue(2, 32)
+                                                   .SetValue(ChannelValue.FromByte(1, 128))
+                                                   .SetValue(ChannelValue.FromByte(2, 32))
                                                    .AsReadOnly();
                 var changes = new ChannelValueChanges(connection, targetUniverse, TimeSpan.FromMilliseconds(200));
 
@@ -70,8 +70,8 @@ namespace AuLiComTest
             {
                 IReadOnlyUniverse initialUniverse = Universe
                                                     .CreateEmpty()
-                                                    .SetValue(1, 64)
-                                                    .SetValue(2, 128)
+                                                    .SetValue(ChannelValue.FromByte(1, 64))
+                                                    .SetValue(ChannelValue.FromByte(2, 128))
                                                     .AsReadOnly();
                 connection = new MockConnection(initialUniverse);
             }
