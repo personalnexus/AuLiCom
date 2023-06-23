@@ -61,8 +61,7 @@ namespace AuLiComLib.Scenes
             IReadOnlyUniverse targetUniverse = _activeScenes.Count == 1 
                 ? _activeScenes.First().Universe 
                 : CombineActiveScenesIntoTargetUniverse();
-            var changes = new ChannelValueChanges(_connection, targetUniverse, fadeTime);
-            changes.Apply();
+            _connection.FadeTo(targetUniverse, fadeTime);
         }
 
         private IReadOnlyUniverse CombineActiveScenesIntoTargetUniverse()

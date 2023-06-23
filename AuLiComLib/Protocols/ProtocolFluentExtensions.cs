@@ -18,6 +18,10 @@ namespace AuLiComLib.Protocols
         public static IMutableUniverse ToMutableUniverse(this IReadOnlyUniverse source) =>
            new MutableUniverse(source);
 
+        public static void FadeTo(this IConnection connection, IReadOnlyUniverse targetUniverse, TimeSpan fadeTime) =>
+            new ChannelValueChanges(connection, targetUniverse, fadeTime)
+            .Apply();
+
         public static ChannelValue GetValue(this IConnection connection, int channel) =>
             connection
             .CurrentUniverse.
