@@ -40,10 +40,7 @@ namespace AuLiComLib.Protocols.Dmx
             IReadOnlyUniverse universeToSend = Universe.CreateEmptyReadOnly();
             while (!_cancellationToken.IsCancellationRequested)
             {
-                _port.BreakState = true;
-                Thread.Sleep(TimeSpan.FromMilliseconds(1));
-                _port.BreakState = false;
-                universeToSend.WriteValuesTo(_port);
+                Send(universeToSend);
                 //
                 // Wait for a while if there is a new universe to send,
                 // otherwise we resend the old one
@@ -54,9 +51,20 @@ namespace AuLiComLib.Protocols.Dmx
                 {
                     universeToSend = newUniverseToSend;
                 }
-
             }
+            //
+            // Also send an empty universe before we exit
+            //
+            Send(Universe.CreateEmptyReadOnly());
             _port.Close();
+        }
+
+        private void Send(IReadOnlyUniverse universeToSend)
+        {
+            _port.BreakState = true;
+            Thread.Sleep(TimeSpan.FromMilliseconds(1));
+            _port.BreakState = false;
+            universeToSend.WriteValuesTo(_port);
         }
 
         public IReadOnlyUniverse CurrentUniverse { get; private set; }
