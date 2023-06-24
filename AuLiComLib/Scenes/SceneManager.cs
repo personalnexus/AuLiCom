@@ -21,11 +21,13 @@ namespace AuLiComLib.Scenes
 
         public IScene CreateSceneFromCurrentUniverse(string name) => CreateScene(name, _connection.CurrentUniverse);
 
-        public IScene CreateScene(string name, IReadOnlyUniverse universe)
+        public virtual IScene CreateScene(string name, IReadOnlyUniverse universe)
         {
             var result = new Scene(name, universe);
             return result;
         }
+
+        public bool IsActiveScene(IScene scene) => _activeScenes.Contains(scene);
 
         public void ActivateScene(IScene newScene, TimeSpan fadeTime)
         {
