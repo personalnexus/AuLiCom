@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Common
 {
-    public abstract class TypedJsonConverter<T> : Newtonsoft.Json.JsonConverter<T>
+    public class TypedJsonConverter<T> : Newtonsoft.Json.JsonConverter<T>
     {
-        protected TypedJsonConverter(params object[] parameters)
+        public TypedJsonConverter(params object[] parameters)
         {
             _constructorByTypeName = new();
             _parameters = parameters;
         }
 
-        protected void Register<TConcrete>() where TConcrete : T => _constructorByTypeName[typeof(TConcrete).Name] = typeof(TConcrete);
+        public void Register<TConcrete>() where TConcrete : T => _constructorByTypeName[typeof(TConcrete).Name] = typeof(TConcrete);
 
         private readonly Dictionary<string, Type> _constructorByTypeName;
         private readonly object[] _parameters;
@@ -53,5 +53,7 @@ namespace AuLiComLib.Common
             }
             return result;
         }
+
+        public IEnumerable<string> GetRegisteredTypeNames() => _constructorByTypeName.Keys;
     }
 }

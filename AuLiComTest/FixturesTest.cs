@@ -6,13 +6,87 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace AuLiComTest
 {
     [TestClass]
-    public class FixturesTest
+    public class FixturesManagerTest
     {
+        [TestClass]
+        public class TryAdd
+        {
+            [TestMethod]
+            public void DuplicateName_FalseIsReturned()
+            {
+                // Arrange
+                var fixtures = new FixtureManager(
+                    new GenericLamp(null) { Name = "Lamp1", StartChannel = 1 }//TODO: use Mock connection
+                );
+                var duplicateNameLamp = new GenericLamp(null) { Name = "Lamp1", StartChannel = 5 }; //TODO: use Mock connection
+
+                // Act
+                bool addResult = fixtures.TryAdd(duplicateNameLamp);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    addResult.Should().BeFalse();
+                }
+            }
+
+            [TestMethod]
+            public void DuplicateChannel_ArgumentExceptionIsThrown()
+            {
+                // Arrange
+                var fixtures = new FixtureManager(
+                    new GenericLamp(null) { Name = "Lamp1", StartChannel = 1 }//TODO: use Mock connection
+                );
+                var duplicateNameLamp = new GenericLamp(null) { Name = "Lamp2", StartChannel = 1 }; //TODO: use Mock connection
+
+                // Act
+                Func<bool> act = () => fixtures.TryAdd(duplicateNameLamp);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    act.Should().Throw<ArgumentException>().WithMessage($"Channel 1 is already in use by Lamp1 and cannot be used by Lamp2 (Start: 1, Count: 1)");
+                }
+            }
+        }
+
+        [TestClass]
+        public class GetFixtureChannelInfos
+        {
+            [TestMethod]
+            public void Two1ChannelAndOne3ChannelFixture_FiveChannelInfosAreReturned()
+            {
+                // Arrange
+                var fixtures = new FixtureManager(
+                    new GenericLamp(null) { Name = "Lamp1", StartChannel = 1 },   //TODO: use Mock connection
+                    new CameoLedBar3Ch2(null) { Name = "LED", StartChannel = 2 }, //TODO: use Mock connection
+                    new GenericLamp(null) { Name = "Lamp2", StartChannel = 5 }    //TODO: use Mock connection
+                );
+
+                // Act
+                IEnumerable<FixtureChannelInfo> infos = fixtures.GetFixtureChannelInfos();
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    infos.Should().BeEquivalentTo(new[]
+                    {
+                        new FixtureChannelInfo("Lamp1", "GenericLamp", "Intensity", 1),
+                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", "Red", 2),
+                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", "Green", 3),
+                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", "Blue", 4),
+                        new FixtureChannelInfo("Lamp2", "GenericLamp", "Intensity", 5),
+                    });
+                }
+            }
+        }
+
         [TestClass]
         public class Get
         {
@@ -20,7 +94,7 @@ namespace AuLiComTest
             public void FixtureOfGivenNameAndTypeExists_FixtureIsReturned()
             {
                 // Arrange
-                Fixtures fixtures = Arrange();
+                FixtureManager fixtures = Arrange();
 
                 // Act
                 GenericLamp lamp1 = fixtures.Get<GenericLamp>(name: Lamp1);
@@ -29,7 +103,9 @@ namespace AuLiComTest
                 using (new AssertionScope())
                 {
                     lamp1.Should().NotBeNull();
-                    lamp1.Channel.Should().Be(1);
+                    lamp1.Name.Should().Be(Lamp1);
+                    lamp1.StartChannel.Should().Be(1);
+                    lamp1.ChannelCount.Should().Be(1);
                 }
             }
 
@@ -37,7 +113,7 @@ namespace AuLiComTest
             public void FixtureWithGivenNameDoesNotExist_KeyNotFoundExceptionIsThrown()
             {
                 // Arrange
-                Fixtures fixtures = Arrange();
+                FixtureManager fixtures = Arrange();
 
                 // Act
                 Action act = () => fixtures.Get<GenericLamp>(name: Lamp3DoesNotExist);
@@ -50,7 +126,7 @@ namespace AuLiComTest
             public void FixtureOfGivenTypeDoesNotExist_InvalidCastExceptionIsThrown()
             {
                 // Arrange
-                Fixtures fixtures = Arrange();
+                FixtureManager fixtures = Arrange();
 
                 // Act
                 Action act = () => fixtures.Get<CameoLedBar3Ch2>(name: Lamp1);
@@ -59,9 +135,9 @@ namespace AuLiComTest
                 act.Should().Throw<InvalidCastException>();
             }
 
-            private static Fixtures Arrange() => new Fixtures(
-                new GenericLamp(null) { Name = Lamp1, Channel = 1 }, //TODO: use Mock connection
-                new GenericLamp(null) { Name = Lamp2, Channel = 2 }  //TODO: use Mock connection
+            private static FixtureManager Arrange() => new FixtureManager(
+                new GenericLamp(null) { Name = Lamp1, StartChannel = 1 }, //TODO: use Mock connection
+                new GenericLamp(null) { Name = Lamp2, StartChannel = 2 }  //TODO: use Mock connection
             );
 
             private const string Lamp1 = "Lamp1";

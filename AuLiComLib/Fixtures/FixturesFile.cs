@@ -23,7 +23,7 @@ namespace AuLiComLib.Fixtures
         private readonly IFileSystem _fileSystem;
         private readonly IConnection _connection;
 
-        public IFixture[] Load(string path)
+        public IEnumerable<IFixture> Load(string path)
         {
             if (!HasExtension(path))
             {
@@ -31,9 +31,7 @@ namespace AuLiComLib.Fixtures
             }
 
             string fileContents = _fileSystem.File.ReadAllText(path) ?? throw CreateFileEmptyException();
-            IFixture[] result = JsonConvert.DeserializeObject<IFixture[]>(value: fileContents,
-                                                                          converters: new FixtureKindJsonConverter(_connection))
-                                                                          ?? throw CreateFileEmptyException();
+            IEnumerable<IFixture> result = new FixtureFactory(_connection).CreateFromJson(fileContents);
             return result;
 
             ArgumentException CreateFileEmptyException() => new($"Fixture file '{path}' is empty.");

@@ -2,7 +2,7 @@
 {
     public interface IChannelValuePropertyHolder
     {
-        int Channel { get; }
+        int StartChannel { get; }
         IConnection Connection { get; }
     }
 }

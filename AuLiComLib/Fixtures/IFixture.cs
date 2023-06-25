@@ -10,5 +10,11 @@ namespace AuLiComLib.Fixtures
     public interface IFixture
     {
         string Name { get; }
+
+        int StartChannel { get; }
+        int ChannelCount { get; }
+
+        IEnumerable<FixtureChannelInfo> GetFixtureChannelInfos();
+        FixtureInfo GetFixtureInfo();
     }
 }

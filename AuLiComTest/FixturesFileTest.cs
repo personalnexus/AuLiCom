@@ -38,20 +38,22 @@ namespace AuLiComTest
                     .AddFile(FixturesFilePath, new MockFileData(TwoCompleteFixtures));
 
                 // Act
-                IFixture[] fixtures = fixturesFile.Load(FixturesFilePath);
+                IEnumerable<IFixture> fixtures = fixturesFile.Load(FixturesFilePath);
 
                 // Assert
-                fixtures.Should().BeEquivalentTo(new IFixture[]
+                fixtures.Should().BeEquivalentTo(new[]
                 {
-                        new GenericLamp(null) //TODO: use Mock connection
+                        new
                         {
                             Name = "Lamp1",
-                            Channel = 1
+                            StartChannel = 1,
+                            ChannelCount = 1
                         },
-                        new CameoLedBar3Ch2(null) //TODO: use Mock connection
+                        new
                         {
                             Name = "LED",
-                            Channel = 2
+                            StartChannel = 2,
+                            ChannelCount = 3
                         },
                 });
             }
@@ -127,12 +129,12 @@ namespace AuLiComTest
   {
     ""$type"": ""GenericLamp"",
     ""Name"": ""Lamp1"",
-    ""Channel"": 1
+    ""StartChannel"": 1
   },
   {
     ""$type"": ""CameoLedBar3Ch2"",
     ""Name"": ""LED"",
-    ""Channel"": 2
+    ""StartChannel"": 2
   }
 ]
 ";
@@ -140,7 +142,7 @@ namespace AuLiComTest
 [
   {
     ""$type"": ""GenericLamp"",
-    ""Channel"": 1
+    ""StartChannel"": 1
   }
 ]
 ";
@@ -148,7 +150,7 @@ namespace AuLiComTest
 [
   {
     ""Name"": ""Lamp1"",
-    ""Channel"": 1
+    ""StartChannel"": 1
   }
 ]
 ";

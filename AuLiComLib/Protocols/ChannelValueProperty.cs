@@ -18,10 +18,12 @@ namespace AuLiComLib.Protocols
         private readonly IChannelValuePropertyHolder _propertyHolder;
         private readonly int _channelOffset;
 
+        public int Channel => _propertyHolder.StartChannel + _channelOffset;
+
         public byte Value
         {
-            get => _propertyHolder.Connection.GetValue(_propertyHolder.Channel + _channelOffset).Value;
-            set => _propertyHolder.Connection.SetValue(ChannelValue.FromByte(_propertyHolder.Channel + _channelOffset, value));
+            get => _propertyHolder.Connection.GetValue(Channel).Value;
+            set => _propertyHolder.Connection.SetValue(ChannelValue.FromByte(Channel, value));
         }
 
         public static implicit operator byte(ChannelValueProperty valueProperty) => valueProperty.Value;
