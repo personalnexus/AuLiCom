@@ -61,6 +61,21 @@ namespace AuLiComTest
             {
                 // Arrange
                 Arrange(out FixturesFile fixturesFile)
+                    .AddFile(FixturesFilePath, new MockFileData(OneFixtureWithoutRequiredType));
+
+
+                // Act
+                Action act = () => fixturesFile.Load(FixturesFilePath);
+
+                // Assert
+                act.Should().Throw<JsonSerializationException>();
+            }
+
+            [TestMethod]
+            public void FileContainsOneFixtureWithoutRequiredType_JsonExceptionIsRaised()
+            {
+                // Arrange
+                Arrange(out FixturesFile fixturesFile)
                     .AddFile(FixturesFilePath, new MockFileData(OneFixtureWithoutRequiredName));
 
                 // Act
@@ -110,12 +125,12 @@ namespace AuLiComTest
             private const string TwoCompleteFixtures = @"
 [
   {
-    ""Kind"": ""GenericLamp"",
+    ""$type"": ""GenericLamp"",
     ""Name"": ""Lamp1"",
     ""Channel"": 1
   },
   {
-    ""Kind"": ""CameoLedBar3Ch2"",
+    ""$type"": ""CameoLedBar3Ch2"",
     ""Name"": ""LED"",
     ""Channel"": 2
   }
@@ -124,7 +139,15 @@ namespace AuLiComTest
             private const string OneFixtureWithoutRequiredName = @"
 [
   {
-    ""Kind"": ""GenericLamp"",
+    ""$type"": ""GenericLamp"",
+    ""Channel"": 1
+  }
+]
+";
+            private const string OneFixtureWithoutRequiredType = @"
+[
+  {
+    ""Name"": ""Lamp1"",
     ""Channel"": 1
   }
 ]

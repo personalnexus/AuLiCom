@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Fixtures
 {
-    public class FixtureKindJsonConverter : KindJsonConverter<IFixture>
+    public class FixtureKindJsonConverter : TypedJsonConverter<IFixture>
     {
         public FixtureKindJsonConverter(IConnection connection): base(connection)
         {

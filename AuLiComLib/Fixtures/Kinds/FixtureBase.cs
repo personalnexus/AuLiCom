@@ -13,14 +13,10 @@ namespace AuLiComLib.Fixtures.Kinds
         public FixtureBase(IConnection connection)
         {
             Connection = connection;
-            Kind = this.GetType().Name;
             Name = "";
         }
 
         // JSON configurable properties
-
-        [JsonProperty(Required = Required.Always)]
-        public string Kind { get; set; }
 
         [JsonProperty(Required = Required.Always)]
         public string Name { get; set; }
