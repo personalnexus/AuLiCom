@@ -1,4 +1,5 @@
 ﻿using AuLiComLib.Common;
+using AuLiComLib.Fixtures;
 using AuLiComLib.Protocols;
 using AuLiComLib.Protocols.Dmx;
 using AuLiComLib.Scenes;
@@ -88,5 +89,47 @@ namespace AuLiComXL
         public static double AuLiComSetTimer(double milliseconds) =>
             ExcelRuntime
             .SetRecalculationTimer(milliseconds);
+
+
+        // Fixtures
+
+        [ExcelFunction]
+        public static object[,] AuLiComGetFixtureTypes() =>
+            ExcelRuntime
+            .GetInstance()
+            .FixtureFactory
+            .GetFixtureTypes()
+            .ToVerticalRange();
+
+        [ExcelFunction]
+        public static int AuLiComGetFixtureChannelCount(string name) =>
+            ExcelRuntime
+            .GetInstance()
+            .FixtureManager
+            .Get<IFixture>(name)
+            .ChannelCount;
+
+        [ExcelFunction]
+        public static object[,] AuLiComGetFixtureChannelInfos() =>
+            ExcelRuntime
+            .GetInstance()
+            .FixtureManager
+            .GetFixtureChannelInfos()
+            .Select(x => new object[] { x.FixtureName, x.FixtureType, x.ChannelName, x.StartChannel })
+            .To2dRange();
+
+        [ExcelFunction]
+        public static string AuLiComCreateFixture(string name, string type, int channel)
+        {
+            ExcelRuntime runtime = ExcelRuntime.GetInstance();
+            FixtureInfo fixtureInfo = new FixtureInfo(FixtureName: name,
+                                                      FixtureType: type,
+                                                      StartChannel: channel);
+            IFixture fixture = runtime.FixtureFactory.CreateFromFixtureInfo(fixtureInfo);
+            string result = runtime.FixtureManager.TryAdd(fixture) 
+                ? "Added" 
+                : "Already exists";
+            return result;
+        }
     }
 }

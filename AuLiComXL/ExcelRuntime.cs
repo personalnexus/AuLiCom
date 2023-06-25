@@ -1,4 +1,5 @@
 ﻿using AuLiComLib.Common;
+using AuLiComLib.Fixtures;
 using AuLiComLib.Protocols;
 using AuLiComLib.Protocols.Dmx;
 using AuLiComLib.Scenes;
@@ -111,6 +112,8 @@ namespace AuLiComXL
 
             DmxConnection = new DmxConnection(port, executor, _cancellationTokenSource.Token);
             SceneManager = new NamedSceneManager(DmxConnection);
+            FixtureFactory = new FixtureFactory(DmxConnection);
+            FixtureManager = new FixtureManager();
         }
 
         public void Dispose()
@@ -124,5 +127,7 @@ namespace AuLiComXL
 
         public IConnection DmxConnection { get; }
         public INamedSceneManager SceneManager { get; }
+        public IFixtureManager FixtureManager { get; }
+        public IFixtureFactory FixtureFactory { get; }
     }
 }

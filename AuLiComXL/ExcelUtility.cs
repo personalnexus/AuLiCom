@@ -17,7 +17,23 @@ namespace AuLiComXL
             {
                 result[i, 0] = array[i];
             }
+            return result;
+        }
 
+        public static T[,] To2dRange<T>(this IEnumerable<T[]> items)
+        {
+            T[][] arrays = items.ToArray();
+            var horizontalLength = arrays[0].Length;
+
+            var result = new T[arrays.Length, horizontalLength];
+            for (var i = 0; i < arrays.Length; i++)
+            {
+                var array = arrays[i];
+                for (var j = 0; j < horizontalLength; j++)
+                {
+                    result[i, j] = array[j];
+                }
+            }
             return result;
         }
     }
