@@ -2,20 +2,23 @@
 {
     public class SystemThread : IAsyncExecutor
     {
-        private readonly string _name;
-
         public SystemThread(string name)
         {
             _name = name;
         }
 
+        private readonly string _name;
+        private Thread _thread;
+
         public void ExecuteAsync(Action action)
         {
-            var thread = new Thread(new ThreadStart(action))
+            _thread = new Thread(new ThreadStart(action))
             {
                 Name = _name
             };
-            thread.Start();
+            _thread.Start();
         }
+
+        public void Join() => _thread.Join();
     }
 }

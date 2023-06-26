@@ -108,9 +108,9 @@ namespace AuLiComXL
         {
             _cancellationTokenSource = new CancellationTokenSource();
             PortName = port.PortName;
-            var executor = new SystemThread(PortName);
+            _dmxConnectionThread = new SystemThread(PortName);
 
-            DmxConnection = new DmxConnection(port, executor, _cancellationTokenSource.Token);
+            DmxConnection = new DmxConnection(port, _dmxConnectionThread, _cancellationTokenSource.Token);
             SceneManager = new NamedSceneManager(DmxConnection);
             FixtureFactory = new FixtureFactory(DmxConnection);
             FixtureManager = new FixtureManager();
@@ -119,9 +119,11 @@ namespace AuLiComXL
         public void Dispose()
         {
             _cancellationTokenSource.Cancel();
+            _dmxConnectionThread.Join();
         }
 
         private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly SystemThread _dmxConnectionThread;
 
         public string PortName { get; }
 
