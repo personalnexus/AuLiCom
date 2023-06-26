@@ -12,11 +12,23 @@ namespace AuLiComXL
     [ComVisible(false)]
     class ExcelAddin : IExcelAddIn
     {
-        public void AutoOpen() => ComServer.DllRegisterServer();
+        public void AutoOpen()
+        {
+            ComServer.DllRegisterServer();
+            ExcelRuntime.InitializeWithOnlyDmxPort();
+            ExcelIntegration.RegisterUnhandledExceptionHandler(ProcessUnhandledException);
+        }
+
         public void AutoClose()
         {
-            ComServer.DllUnregisterServer();
             ExcelRuntime.DisposeInstance();
+            ComServer.DllUnregisterServer();
+        }
+
+        private object ProcessUnhandledException(object exceptionObject)
+        {
+            // catch any exception from an Excel function and return the exception message
+            return $"#ERROR: {(exceptionObject as Exception)?.Message ?? exceptionObject}";
         }
     }
 }
