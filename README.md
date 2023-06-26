@@ -1,4 +1,4 @@
-# AuLiCom � Aula Light Commander
+# AuLiCom — Aula Light Commander
 
 Aula Light Commander connects to a serial port to control [DMX512](https://en.wikipedia.org/wiki/DMX512) devices e.g. via a USB-DMX adapter with the FTDI chip.
 
