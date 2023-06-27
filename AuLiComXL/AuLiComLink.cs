@@ -24,5 +24,11 @@ namespace AuLiComXL
             .GetInstance()
             .SceneManager
             .SetSingleActiveScene(name, TimeSpan.FromSeconds(fadeTimeInSeconds));
+
+        public void CreateSceneFromCurrentUniverse(string name) =>
+            ExcelRuntime
+            .GetInstance()
+            .SceneManager
+            .CreateSceneFromCurrentUniverse(name);
     }
 }
