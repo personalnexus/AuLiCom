@@ -9,7 +9,7 @@ namespace AuLiComXL
 {
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    [ProgId("ComAddin.FunctionLibrary")]
+    [ProgId("AuLiCom.AuLiComLink")]
     public class AuLiComLink
     {
         // TODO: design decision: should it be possible to have entirely separate runtimes in COM

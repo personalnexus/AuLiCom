@@ -15,4 +15,10 @@
     <ProjectReference Include="..\AuLiComLib\AuLiComLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="AuLiComXL-AddIn.dna">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
