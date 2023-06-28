@@ -30,8 +30,8 @@ namespace AuLiComLib.CommandExecutor.Commands
                                                          .GetValues()
                                                          .Where(x => x.Value > 0))
                 {
-                    _console.WriteLine($"{channelValue.Channel}\t" +
-                                       $"{channelValue.ValueAsPercentage}\t" +
+                    _console.WriteLine($"{channelValue.Channel.ToString().PadLeft(3)}  " +
+                                       $"{channelValue.ValueAsPercentage.ToString().PadLeft(3)}  " +
                                        $"{new string('#', channelValue.ValueAsTenth)}");
                     nonZeroChannelWasShown = true;
                 }

@@ -122,14 +122,38 @@ namespace AuLiComXL
         public static string AuLiComCreateFixture(string name, string type, int channel)
         {
             ExcelRuntime runtime = ExcelRuntime.GetInstance();
-            FixtureInfo fixtureInfo = new FixtureInfo(FixtureName: name,
-                                                      FixtureType: type,
-                                                      StartChannel: channel);
+            FixtureInfo fixtureInfo = new(FixtureName: name,
+                                          FixtureType: type,
+                                          StartChannel: channel);
             IFixture fixture = runtime.FixtureFactory.CreateFromFixtureInfo(fixtureInfo);
             string result = runtime.FixtureManager.TryAdd(fixture) 
                 ? "Added" 
                 : "Already exists";
             return result;
         }
+
+        // Commands
+
+        [ExcelFunction]
+        public static object[,] AuLiComGetCommandDescriptions() =>
+             ExcelRuntime
+            .GetInstance()
+            .CommandExecutor
+            .GetCommandDescriptions()
+            .ToVerticalRange();
+
+        [ExcelFunction]
+        public static object[,] AuLiComExecuteCommand(string commandString) =>
+             ExcelRuntime
+            .GetInstance()
+            .ExecuteCommandAndCaptureOutput(commandString)
+            .ToVerticalRange();
+
+        [ExcelFunction]
+        public static object[,] AuLiComGetCommandOutput() =>
+             ExcelRuntime
+            .GetInstance()
+            .GetLastCommandOutput()
+            .ToVerticalRange();
     }
 }

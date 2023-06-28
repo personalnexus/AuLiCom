@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Common;
+﻿using AuLiComLib.CommandExecutor;
+using AuLiComLib.Common;
 using AuLiComLib.Fixtures;
 using AuLiComLib.Protocols;
 using AuLiComLib.Protocols.Dmx;
@@ -27,7 +28,7 @@ namespace AuLiComXL
         }
 
         private static ExcelRuntime? _instance;
-        private static readonly object _instanceInitializationLock = new object();
+        private static readonly object _instanceInitializationLock = new();
 
         internal static string InitializeWithOnlyDmxPort()
         {
@@ -103,17 +104,18 @@ namespace AuLiComXL
         private static Dictionary<string, ISerialPort>? AvailablePortsByName;
 
 
-
         private ExcelRuntime(ISerialPort port)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             PortName = port.PortName;
             _dmxConnectionThread = new SystemThread(PortName);
+            _commandOutputWriter = new StringListWriteConsole();
 
             DmxConnection = new DmxConnection(port, _dmxConnectionThread, _cancellationTokenSource.Token);
             SceneManager = new NamedSceneManager(DmxConnection);
             FixtureFactory = new FixtureFactory(DmxConnection);
             FixtureManager = new FixtureManager();
+            CommandExecutor = new CommandExecutor(DmxConnection, _commandOutputWriter);
         }
 
         public void Dispose()
@@ -124,12 +126,28 @@ namespace AuLiComXL
 
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly SystemThread _dmxConnectionThread;
-
+        private readonly StringListWriteConsole _commandOutputWriter;
+        
         public string PortName { get; }
 
         public IConnection DmxConnection { get; }
         public INamedSceneManager SceneManager { get; }
         public IFixtureManager FixtureManager { get; }
+        public ICommandExecutor CommandExecutor { get; }
+
+
         public IFixtureFactory FixtureFactory { get; }
+        
+        // Commands
+
+        public IEnumerable<string> ExecuteCommandAndCaptureOutput(string commandString)
+        {
+            _commandOutputWriter.Clear();
+            string commandResult = CommandExecutor.Execute(commandString);
+            IEnumerable<string> result = _commandOutputWriter.Append(commandResult);
+            return result;
+        }
+
+        internal IEnumerable<string> GetLastCommandOutput() => _commandOutputWriter;
     }
 }
