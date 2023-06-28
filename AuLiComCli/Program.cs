@@ -49,7 +49,7 @@ else
                                           cancellationToken: cancellationTokenSource.Token);
     console.WriteLine($"DMX connection established.");
 
-    var commandExecutor = new CommandExecutor(dmxConnection, console);
+    var commandExecutor = new CommandLoopExecutor(dmxConnection, console);
     commandExecutor.Loop();
 
     console.WriteLine();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib
 {
-    public class SystemConsole : ICommandConsole
+    public class SystemConsole : ICommandReadWriteConsole
     {
         public string? ReadLineTrim() => Console.ReadLine()?.Trim();
 

@@ -1,8 +1,7 @@
 ﻿namespace AuLiComLib.CommandExecutor
 {
-    public interface ICommandConsole
+    public interface ICommandWriteConsole
     {
-        string? ReadLineTrim();
         void WriteLine(string line);
         void WriteLine();
     }

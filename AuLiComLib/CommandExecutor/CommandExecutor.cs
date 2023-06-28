@@ -1,4 +1,5 @@
-﻿using AuLiComLib.CommandExecutor.Commands;
+﻿using AuLiComLib.Common;
+using AuLiComLib.CommandExecutor.Commands;
 using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.CommandExecutor
 {
-    public class CommandExecutor
+    public class CommandExecutor : ICommandExecutor
     {
-        public static ICommand[] CreateCommands(IConnection connection, ICommandConsole console) => new ICommand[]
+        private static ICommand[] CreateCommands(IConnection connection, ICommandWriteConsole console) => new ICommand[]
         {
             new ClearChannelValuesCommand(connection),
             new SetChannelValueCommand(connection),
@@ -20,34 +21,30 @@ namespace AuLiComLib.CommandExecutor
         };
 
         public CommandExecutor(IConnection connection,
-                               ICommandConsole console)
+                               ICommandWriteConsole console)
         {
             _commands = CreateCommands(connection, console);
-            _console = console;
         }
 
         private readonly ICommand[] _commands;
-        private readonly ICommandConsole _console;
 
-        public void Loop()
+        public string Execute(string commandString)
         {
-            _console.WriteLine();
-            _console.WriteLine("The following commands are available. Press <Enter> after each command. An empty line terminates the program.");
-            foreach (ICommand command in _commands.OrderBy(x => x.Description))
+            string result;
+            if (!_commands.Any(x => x.TryExecute(commandString)))
             {
-                _console.WriteLine(command.Description);
+                result = $"INVALID '{commandString}'.";
             }
-            _console.WriteLine();
-
-            string? commandString = _console.ReadLineTrim();
-            while (!string.IsNullOrEmpty(commandString))
+            else
             {
-                if (!_commands.Any(x => x.TryExecute(commandString)))
-                {
-                    _console.WriteLine($"invalid command '{commandString}'.");
-                }
-                commandString = _console.ReadLineTrim();
+                result = "DONE.";
             }
+            return result;
         }
+
+        public IEnumerable<string> GetCommandDescriptions() => 
+            _commands
+            .Select(x => x.Description)
+            .Order();
     }
 }

@@ -9,14 +9,14 @@ namespace AuLiComLib.CommandExecutor.Commands
 {
     internal class ListChannelValuesCommand : ICommand
     {
-        public ListChannelValuesCommand(IConnection connection, ICommandConsole console)
+        public ListChannelValuesCommand(IConnection connection, ICommandWriteConsole console)
         {
             _connection = connection;
             _console = console;
         }
 
         private readonly IConnection _connection;
-        private readonly ICommandConsole _console;
+        private readonly ICommandWriteConsole _console;
 
         public string Description => "LIST all channel values that aren't zero";
 
