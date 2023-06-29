@@ -15,6 +15,10 @@ namespace AuLiComTest.Mocks
             CurrentUniverse = initialUniverse;
         }
 
+        public void Dispose()
+        {
+        }
+
         public IReadOnlyUniverse CurrentUniverse { get; private set; }
 
         public void SendUniverse(IReadOnlyUniverse universe) => CurrentUniverse = universe;

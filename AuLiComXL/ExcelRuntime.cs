@@ -106,12 +106,11 @@ namespace AuLiComXL
 
         private ExcelRuntime(ISerialPort port)
         {
-            _cancellationTokenSource = new CancellationTokenSource();
             PortName = port.PortName;
             _dmxConnectionThread = new SystemThread(PortName);
             _commandOutputWriter = new StringListWriteConsole();
 
-            DmxConnection = new DmxConnection(port, _dmxConnectionThread, _cancellationTokenSource.Token);
+            DmxConnection = new DmxConnection(port, _dmxConnectionThread);
             SceneManager = new NamedSceneManager(DmxConnection);
             FixtureFactory = new FixtureFactory(DmxConnection);
             FixtureManager = new FixtureManager();
@@ -120,11 +119,10 @@ namespace AuLiComXL
 
         public void Dispose()
         {
-            _cancellationTokenSource.Cancel();
+            DmxConnection.Dispose();
             _dmxConnectionThread.Join();
         }
 
-        private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly SystemThread _dmxConnectionThread;
         private readonly StringListWriteConsole _commandOutputWriter;
         

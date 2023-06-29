@@ -12,20 +12,21 @@ namespace AuLiComLib.Protocols.Dmx
     public class DmxConnection : IConnection
     {
         public DmxConnection(ISerialPort port,
-                             IAsyncExecutor executor,
-                             CancellationToken cancellationToken)
+                             IAsyncExecutor executor)
         {
             CurrentUniverse = Universe.CreateEmptyReadOnly();
             _port = port;
-            _cancellationToken = cancellationToken;
+            _cancellationTokenSource = new CancellationTokenSource();
             _sendLoopQueue = new BlockingCollection<IReadOnlyUniverse>(boundedCapacity: 2); // TODO: extract to configuration
 
             // Start sender loop only after everything else has been initialized
             executor.ExecuteAsync(SendLoop);
         }
 
+        public void Dispose() => _cancellationTokenSource.Cancel();
+
         private readonly ISerialPort _port;
-        private readonly CancellationToken _cancellationToken;
+        private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly BlockingCollection<IReadOnlyUniverse> _sendLoopQueue;
         
         private void SendLoop()
@@ -38,7 +39,7 @@ namespace AuLiComLib.Protocols.Dmx
             // Start out by sending an empty universe
             //
             IReadOnlyUniverse universeToSend = Universe.CreateEmptyReadOnly();
-            while (!_cancellationToken.IsCancellationRequested)
+            while (!_cancellationTokenSource.IsCancellationRequested)
             {
                 Send(universeToSend);
                 //
@@ -47,7 +48,7 @@ namespace AuLiComLib.Protocols.Dmx
                 //
                 if (_sendLoopQueue.TryTake(out IReadOnlyUniverse newUniverseToSend,
                                            millisecondsTimeout: 1000, // TODO: extract to configuration
-                                           cancellationToken: _cancellationToken))
+                                           cancellationToken: _cancellationTokenSource.Token))
                 {
                     universeToSend = newUniverseToSend;
                 }
@@ -71,7 +72,7 @@ namespace AuLiComLib.Protocols.Dmx
 
         public void SendUniverse(IReadOnlyUniverse universe)
         {
-            _sendLoopQueue.Add(universe, _cancellationToken);
+            _sendLoopQueue.Add(universe, _cancellationTokenSource.Token);
             CurrentUniverse = universe;
         }
     }

@@ -6,6 +6,7 @@ using AuLiComLib.Protocols.Dmx;
 using System.Data;
 using System.Runtime.CompilerServices;
 using System.Reflection;
+using AuLiComSim;
 
 Version? consoleVersion = Assembly.GetExecutingAssembly().GetName().Version;
 Version? libraryVersion = typeof(DmxConnection).Assembly.GetName().Version;
@@ -17,9 +18,12 @@ console.WriteLine();
 
 Dictionary<string, ISerialPort> portsByName = DmxPorts.GetPortsByName();
 
+IConnection connection;
+
 if (portsByName.Count == 0)
 {
-    console.WriteLine("There are no DMX ports. Terminating program now.");
+    console.WriteLine($"No DMX port available, using simulator instead");
+    connection = new SimulatorConnection();
 }
 else
 {
@@ -43,23 +47,22 @@ else
 
     console.WriteLine();
     console.WriteLine($"Establishing DMX connection to {selectedPort.PortName}...");
-    var cancellationTokenSource = new CancellationTokenSource();
-    var dmxConnection = new DmxConnection(port: selectedPort,
-                                          executor: new SystemThread($"DmxConnection{selectedPort.PortName}"),
-                                          cancellationToken: cancellationTokenSource.Token);
+    connection = new DmxConnection(port: selectedPort,
+                                    executor: new SystemThread($"DmxConnection{selectedPort.PortName}"));
+
     console.WriteLine($"DMX connection established.");
+}
 
-    var commandExecutor = new CommandLoopExecutor(dmxConnection, console);
-    commandExecutor.Loop();
+var commandExecutor = new CommandLoopExecutor(connection, console);
+commandExecutor.Loop();
 
-    console.WriteLine();
-    console.WriteLine($"Closing DMX connection and port...");
-    dmxConnection.SetValuesToZero();
-    Thread.Sleep(TimeSpan.FromSeconds(1)); // TODO: create wait event for DMX connection end
-    cancellationTokenSource.Cancel();
-    Thread.Sleep(TimeSpan.FromSeconds(2)); // TODO: create wait event for DMX connection end
-    foreach (ISerialPort port in portsByName.Values)
-    {
-        port.Dispose();
-    }
+console.WriteLine();
+console.WriteLine($"Closing DMX connection and port...");
+connection.SetValuesToZero();
+Thread.Sleep(TimeSpan.FromSeconds(1)); // TODO: create wait event for DMX connection end
+connection.Dispose();
+Thread.Sleep(TimeSpan.FromSeconds(2)); // TODO: create wait event for DMX connection end
+foreach (ISerialPort port in portsByName.Values)
+{
+    port.Dispose();
 }

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AuLiComLib\AuLiComLib.csproj" />
+    <ProjectReference Include="..\AuLiComSim\AuLiComSim.csproj" />
   </ItemGroup>
 
 </Project>
