@@ -16,6 +16,8 @@ AuLiCom is made up of the following component parts:
 
 * **AuLiComSim** an implementation of `IConnection` that shows a minimal graphical user-interface with the values received from the connected application to allow testing without actual DMX hardware.
 
+	![LED simulator used in AuLiComCli](/doc/Simulator/AuLiComSim.png) 
+
 * **AuLiComXL** is an Excel plugin to manage channel values, fixtures and scenes. As of June 2023, this is the most complete interface to AuLiCom's functionality.
 
 	![AuLiComXL controlling an LED bar](/doc/Excel/AuLiComXL.png)
