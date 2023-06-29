@@ -30,9 +30,9 @@ namespace AuLiComLib.Protocols
         // Aggregator function used by combining channel values of multiple scenes/universes
         //
 
-        internal static byte First(ChannelValue first, ChannelValue _) => first.Value;
-        internal static byte Second(ChannelValue _, ChannelValue second) => second.Value;
-        internal static byte Min(ChannelValue first, ChannelValue second) => Math.Min(first.Value, second.Value);
-        internal static byte Max(ChannelValue first, ChannelValue second) => Math.Max(first.Value, second.Value);
+        public static byte First(ChannelValue first, ChannelValue _) => first.Value;
+        public static byte Second(ChannelValue _, ChannelValue second) => second.Value;
+        public static byte Min(ChannelValue first, ChannelValue second) => Math.Min(first.Value, second.Value);
+        public static byte Max(ChannelValue first, ChannelValue second) => Math.Max(first.Value, second.Value);
     }
 }
