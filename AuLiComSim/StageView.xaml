@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AuLiComSim"
         mc:Ignorable="d"
-        Title="Stage" 
+        Title="AuLiComSim Stage" 
         Height="150" 
         Width="470"
-        Foreground="Black">
+        Foreground="Black"
+        Topmost="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
