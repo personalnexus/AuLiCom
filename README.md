@@ -14,7 +14,7 @@ AuLiCom is made up of the following component parts:
 
 * **AuLiComGui** is a planned graphical user-interface, but which as of June 2023 has not been started yet.
 
-* **AuLiComSim** is a planned simulator that implements `IConnection` and shows a minimal graphical user-interface with the values received from the connected application to allow testing without actual DMX hardware.
+* **AuLiComSim** an implementation of `IConnection` that shows a minimal graphical user-interface with the values received from the connected application to allow testing without actual DMX hardware.
 
 * **AuLiComXL** is an Excel plugin to manage channel values, fixtures and scenes. As of June 2023, this is the most complete interface to AuLiCom's functionality.
 
