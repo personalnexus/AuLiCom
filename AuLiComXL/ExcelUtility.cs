@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComXL
 {
-    internal static class ExcelUtility
+    public static class ExcelUtility
     {
         internal static object[,] ToVerticalRange<T>(this IEnumerable<T> items)
         {
@@ -22,16 +22,24 @@ namespace AuLiComXL
 
         public static T[,] To2dRange<T>(this IEnumerable<T[]> items)
         {
+            T[,] result;
             T[][] arrays = items.ToArray();
-            var horizontalLength = arrays[0].Length;
-
-            var result = new T[arrays.Length, horizontalLength];
-            for (var i = 0; i < arrays.Length; i++)
+            if (arrays.Length == 0)
             {
-                var array = arrays[i];
-                for (var j = 0; j < horizontalLength; j++)
+                result = new T[0, 0];
+            }
+            else
+            {
+                var horizontalLength = arrays[0].Length;
+
+                result = new T[arrays.Length, horizontalLength];
+                for (var i = 0; i < arrays.Length; i++)
                 {
-                    result[i, j] = array[j];
+                    var array = arrays[i];
+                    for (var j = 0; j < horizontalLength; j++)
+                    {
+                        result[i, j] = array[j];
+                    }
                 }
             }
             return result;
