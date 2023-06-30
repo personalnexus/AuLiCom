@@ -29,6 +29,6 @@ namespace AuLiComXL
             ExcelRuntime
             .GetInstance()
             .SceneManager
-            .CreateSceneFromCurrentUniverse(name);
+            .SetSceneFromCurrentUniverse(name);
     }
 }

@@ -19,9 +19,9 @@ namespace AuLiComLib.Scenes
         private readonly IConnection _connection;
         private readonly HashSet<Scene> _activeScenes;
 
-        public IScene CreateSceneFromCurrentUniverse(string name) => CreateScene(name, _connection.CurrentUniverse);
+        public IScene SetSceneFromCurrentUniverse(string name) => SetScene(name, _connection.CurrentUniverse);
 
-        public virtual IScene CreateScene(string name, IReadOnlyUniverse universe)
+        public virtual IScene SetScene(string name, IReadOnlyUniverse universe)
         {
             var result = new Scene(name, universe);
             return result;

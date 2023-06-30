@@ -16,9 +16,9 @@ namespace AuLiComLib.Scenes
 
         private readonly Dictionary<string, IScene> _scenesByName;
 
-        public override IScene CreateScene(string name, IReadOnlyUniverse universe)
+        public override IScene SetScene(string name, IReadOnlyUniverse universe)
         {
-            IScene newScene = base.CreateScene(name, universe);
+            IScene newScene = base.SetScene(name, universe);
             if (_scenesByName.Remove(name, out IScene? oldScene)
                 && oldScene != null
                 && IsActiveScene(oldScene))

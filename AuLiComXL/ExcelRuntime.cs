@@ -16,7 +16,19 @@ namespace AuLiComXL
 {
     internal class ExcelRuntime: IDisposable
     {
-        public static ExcelRuntime GetInstance([CallerMemberName] string? callingMethod = null) => _instance ?? throw new InvalidOperationException($"Must initialize AuLiCom's Excel runtime before calling {callingMethod}.");
+        public static ExcelRuntime GetInstanceForStateUpdate([CallerMemberName] string? callingMethod = null)
+        {
+            State++;
+            return GetInstanceCore(callingMethod);
+        }
+
+        public static ExcelRuntime GetInstance([CallerMemberName] string? callingMethod = null) =>
+            GetInstanceCore(callingMethod);
+
+        private static ExcelRuntime GetInstanceCore(string? callingMethod) =>
+            _instance ?? throw new InvalidOperationException($"Must initialize AuLiCom's Excel runtime before calling {callingMethod}.");
+
+        private static long State;
 
         public static void DisposeInstance()
         {
@@ -69,14 +81,14 @@ namespace AuLiComXL
                 if (_instance?.PortName != port.PortName)
                 {
                     _instance?.Dispose();
+                    _instance = new ExcelRuntime(port);
                 }
-                _instance = new ExcelRuntime(port);
                 return GetRuntimeStatus();
             }
         }
 
 
-        private static string GetRuntimeStatus() => _instance != null ? $"Connected to {_instance.PortName}" : "Not Connected";
+        private static string GetRuntimeStatus() => _instance != null ? $"CONNECTED:{_instance.PortName}:{State}" : "NOT CONNECTED";
 
 
         internal static double SetRecalculationTimer(double milliseconds)
