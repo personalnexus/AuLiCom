@@ -11,7 +11,9 @@ namespace AuLiComLib.CommandExecutor
 {
     public class CommandLoopExecutor : CommandExecutor, ICommandLoopExecutor
     {
-        public CommandLoopExecutor(IConnection connection, ICommandReadWriteConsole console) : base(connection, console)
+        public CommandLoopExecutor(IConnection connection, 
+                                   ICommandReadWriteConsole console,
+                                   ICommandFixtures fixtures) : base(connection, console, fixtures)
         {
             _console = console;
         }

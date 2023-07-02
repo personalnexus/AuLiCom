@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Fixtures.Kinds;
+﻿using AuLiComLib.CommandExecutor;
+using AuLiComLib.Fixtures.Kinds;
 using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
@@ -70,5 +71,16 @@ namespace AuLiComLib.Fixtures
             _fixturesByName
             .Values
             .Select(x => x.GetFixtureInfo());
+
+        public bool TryGetChannelsByName(string channelName, out IEnumerable<int> channels)
+        {
+            List<int> channelsList =
+             GetFixtureChannelInfos()
+            .Where(x => x.ChannelName.Contains(channelName, StringComparison.OrdinalIgnoreCase))
+            .Select(x => x.StartChannel)
+            .ToList();
+            channels = channelsList;
+            return channelsList.Any();
+        }
     }
 }

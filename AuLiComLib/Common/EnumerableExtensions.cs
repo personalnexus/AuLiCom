@@ -10,7 +10,7 @@ namespace AuLiComLib.Common
     {
         public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
         {
-            foreach (var item in items)
+            foreach (T item in items)
             {
                 action(item);
             }
@@ -19,5 +19,7 @@ namespace AuLiComLib.Common
         public static string ToDelimitedString<T>(this IEnumerable<T> items, string delimiter) => string.Join(delimiter, items);
 
         public static IEnumerable<T> Order<T>(this IEnumerable<T> items) => items.OrderBy(x => x);
+
+        public static void AddTo<T>(this IEnumerable<T> items, ICollection<T> collection) => items.ForEach(collection.Add);
     }
 }

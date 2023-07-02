@@ -12,18 +12,17 @@ namespace AuLiComLib.CommandExecutor
 {
     public class CommandExecutor : ICommandExecutor
     {
-        private static ICommand[] CreateCommands(IConnection connection, ICommandWriteConsole console) => new ICommand[]
+       public CommandExecutor(IConnection connection,
+                              ICommandWriteConsole console,
+                              ICommandFixtures fixtures)
         {
-            new ClearChannelValuesCommand(connection),
-            new SetChannelValueCommand(connection),
-            new ListChannelValuesCommand(connection, console),
-            // TODO: register commands here when creating new ones
-        };
-
-        public CommandExecutor(IConnection connection,
-                               ICommandWriteConsole console)
-        {
-            _commands = CreateCommands(connection, console);
+            _commands = new ICommand[]
+            {
+                new ClearChannelValuesCommand(connection),
+                new SetChannelValueCommand(connection, console, fixtures),
+                new ListChannelValuesCommand(connection, console),
+                // TODO: register commands here when creating new ones
+            };
         }
 
         private readonly ICommand[] _commands;
