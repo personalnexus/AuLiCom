@@ -17,6 +17,26 @@ namespace AuLiComTest
         [TestClass]
         public class TryParse
         {
+            // Successes
+
+            [TestMethod]
+            public void EverythingWithWhitespace_AllChannelsAtPercentage() => ShouldBeSuccess(
+                " 1 + 4        -  5 + BLue @ 99 ",
+                ChannelValue.FromPercentage(1, 99),
+                ChannelValue.FromPercentage(3, 99),
+                ChannelValue.FromPercentage(4, 99),
+                ChannelValue.FromPercentage(5, 99),
+                ChannelValue.FromPercentage(6, 99));
+
+            [TestMethod]
+            public void DuplicateChannels_EveryChannelOnlyOnceAtPercentage() => ShouldBeSuccess(
+                " 1 + 4 + 3-5 + 1-4 @ 95 ",
+                ChannelValue.FromPercentage(1, 95),
+                ChannelValue.FromPercentage(2, 95),
+                ChannelValue.FromPercentage(3, 95),
+                ChannelValue.FromPercentage(4, 95),
+                ChannelValue.FromPercentage(5, 95));
+
             [TestMethod]
             public void OneChannelAndNoPercentage_ChannelAt100Percent() => ShouldBeSuccess(
                 "12@",
@@ -30,8 +50,8 @@ namespace AuLiComTest
             [TestMethod]
             public void TwoChannelsAndPercentage_BothChannelsAtPercentage() => ShouldBeSuccess(
                 "14+11@83",
-                ChannelValue.FromPercentage(14, 83),
-                ChannelValue.FromPercentage(11, 83));
+                ChannelValue.FromPercentage(11, 83),
+                ChannelValue.FromPercentage(14, 83));
 
             [TestMethod]
             public void ChannelRangeAndPercentage_EntireRangeAtPercentage() => ShouldBeSuccess(
@@ -54,6 +74,8 @@ namespace AuLiComTest
                 "red@89",
                 ChannelValue.FromPercentage(1, 89),
                 ChannelValue.FromPercentage(4, 89));
+
+            // Errors
 
             [TestMethod]
             public void PercentageIsNotANumber_Error() => ShouldBeError(

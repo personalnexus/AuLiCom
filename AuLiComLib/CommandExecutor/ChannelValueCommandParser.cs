@@ -65,7 +65,7 @@ namespace AuLiComLib.CommandExecutor
 
         private void ParseChannels(string channelsString, out IEnumerable<int> channels)
         {
-            var channelsList = new List<int>();
+            var channelsList = new SortedSet<int>();
             string[] channelSections = channelsString.Split(SectionIndicator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             if (channelSections.Length == 0)
             {
@@ -77,7 +77,9 @@ namespace AuLiComLib.CommandExecutor
                 if (channelSection.Contains(RangeIndicator))
                 {
                     ParseChannelRange(channelSection, out int channelStart, out int channelEnd);
-                    channelsList.AddRange(Enumerable.Range(channelStart, channelEnd - channelStart + 1)); // both ends are inclusive
+                    Enumerable
+                    .Range(channelStart, channelEnd - channelStart + 1) // end is inclusive
+                    .AddTo(channelsList);
                 }
                 else if (int.TryParse(channelSection, out int channel))
                 {
@@ -85,7 +87,7 @@ namespace AuLiComLib.CommandExecutor
                 }
                 else if (_fixtures.TryGetChannelsByName(channelSection, out IEnumerable<int> namedChannels))
                 {
-                    channelsList.AddRange(namedChannels);
+                    namedChannels.AddTo(channelsList);
                 }
                 else
                 {
