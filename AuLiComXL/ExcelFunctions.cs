@@ -120,12 +120,13 @@ namespace AuLiComXL
             .To2dRange();
 
         [ExcelFunction]
-        public static string AuLiComSetFixture(object connection, string name, string type, int channel)
+        public static string AuLiComSetFixture(object connection, string name, string type, int channel, string alias = "")
         {
             ExcelRuntime runtime = ExcelRuntime.GetInstanceForStateUpdate();
             FixtureInfo fixtureInfo = new(FixtureName: name,
                                           FixtureType: type,
-                                          StartChannel: channel);
+                                          StartChannel: channel,
+                                          Alias: alias);
             IFixture fixture = runtime.FixtureFactory.CreateFromFixtureInfo(fixtureInfo);
             string result = runtime.FixtureManager.TryAdd(fixture) 
                 ? "Added" 

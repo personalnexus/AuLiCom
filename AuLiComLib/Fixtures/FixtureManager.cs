@@ -72,11 +72,16 @@ namespace AuLiComLib.Fixtures
             .Values
             .Select(x => x.GetFixtureInfo());
 
-        public bool TryGetChannelsByName(string channelName, out IEnumerable<int> channels)
+        /// <summary>
+        /// Return all channels where the channel name, fixture name or alias contains the given nameOrAliasSubstring
+        /// </summary>
+        public bool TryGetChannelsByName(string nameOrAliasSubstring, out IEnumerable<int> channels)
         {
             List<int> channelsList =
              GetFixtureChannelInfos()
-            .Where(x => x.ChannelName.Contains(channelName, StringComparison.OrdinalIgnoreCase))
+            .Where(x => x.ChannelName.Contains(nameOrAliasSubstring, StringComparison.OrdinalIgnoreCase)
+                        || x.FixtureName.Contains(nameOrAliasSubstring, StringComparison.OrdinalIgnoreCase)
+                        || x.FixtureAlias?.Contains(nameOrAliasSubstring, StringComparison.OrdinalIgnoreCase) == true)
             .Select(x => x.StartChannel)
             .ToList();
             channels = channelsList;

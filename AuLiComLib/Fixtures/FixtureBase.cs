@@ -29,7 +29,8 @@ namespace AuLiComLib.Fixtures
 
         public FixtureInfo GetFixtureInfo() => new FixtureInfo(FixtureName: Name,
                                                                FixtureType: GetType().Name,
-                                                               StartChannel: StartChannel);
+                                                               StartChannel: StartChannel,
+                                                               Alias: Alias);
 
         public IEnumerable<FixtureChannelInfo> GetFixtureChannelInfos()
         {
@@ -37,6 +38,7 @@ namespace AuLiComLib.Fixtures
                 .Select(x => new FixtureChannelInfo(
                     FixtureName: Name,
                     FixtureType: GetType().Name,
+                    FixtureAlias: Alias,
                     ChannelName: x.Name,
                     StartChannel: ((ChannelValueProperty)x.GetValue(this)).Channel));
         }
@@ -55,6 +57,9 @@ namespace AuLiComLib.Fixtures
 
         [JsonProperty(Required = Required.Always)]
         public int StartChannel { get; set; }
+
+        [JsonProperty]
+        public string Alias { get; set; }
 
         // IChannelValuePropertyHolder
 

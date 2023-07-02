@@ -57,6 +57,66 @@ namespace AuLiComTest
         }
 
         [TestClass]
+        public class TryGetChannelsByName
+        {
+            [TestMethod]
+            public void MatchesNothing_EmptyEnumerableIsReturned()
+            {
+                // Arrange
+                var fixtures = new FixtureManager();
+
+                // Act
+                bool result = fixtures.TryGetChannelsByName("Do not match", out IEnumerable<int> channels);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    result.Should().BeFalse();
+                    channels.Should().BeEmpty();
+                }
+            }
+
+            [TestMethod]
+            public void MatchesLedFixtureName_AllLedChannelsAreReturned() => ShouldBeSuccess(
+                "led",
+                2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
+
+            [TestMethod]
+            public void MatchesAllAlias_AllFixtureChannelsAreReturned() => ShouldBeSuccess(
+                "AlL",
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
+
+            [TestMethod]
+            public void MatchesGreenChannels_ThreeGreenChannelsAreReturned() => ShouldBeSuccess(
+                "Green",
+                6, 9, 12);
+
+            [TestMethod]
+            public void MatchesLampIntensity_LampIntensityIsReturned() => ShouldBeSuccess(
+                "Intensity",
+                1);
+
+            private void ShouldBeSuccess(string nameOrAliasSubstring, params int[] expectedChannels)
+            {
+                // Arrange
+                FixtureManager fixtures = new FixtureManager(
+                    new GenericLamp(null) { Name = "Lamp1", StartChannel = 1, Alias = "All" }, //TODO: use Mock connection
+                    new CameoLedBar12Ch(null) { Name = "LED", StartChannel = 2, Alias = "All Color" });  //TODO: use Mock connection
+
+                // Act
+                bool result = fixtures.TryGetChannelsByName("Intensity", out IEnumerable<int> channels);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    result.Should().BeTrue();
+                    channels.Should().BeEquivalentTo(new[] { 1 });
+                }
+            }
+
+        }
+
+        [TestClass]
         public class GetFixtureChannelInfos
         {
             [TestMethod]
@@ -77,11 +137,11 @@ namespace AuLiComTest
                 {
                     infos.Should().BeEquivalentTo(new[]
                     {
-                        new FixtureChannelInfo("Lamp1", "GenericLamp", "Intensity", 1),
-                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", "Red", 2),
-                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", "Green", 3),
-                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", "Blue", 4),
-                        new FixtureChannelInfo("Lamp2", "GenericLamp", "Intensity", 5),
+                        new FixtureChannelInfo("Lamp1", "GenericLamp", null, "Intensity", 1),
+                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", null, "Red", 2),
+                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", null, "Green", 3),
+                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", null, "Blue", 4),
+                        new FixtureChannelInfo("Lamp2", "GenericLamp", null, "Intensity", 5),
                     });
                 }
             }

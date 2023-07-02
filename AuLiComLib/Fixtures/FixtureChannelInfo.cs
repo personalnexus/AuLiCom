@@ -8,6 +8,7 @@ namespace AuLiComLib.Fixtures
 {
     public readonly record struct FixtureChannelInfo(string FixtureName,
                                                      string FixtureType,
+                                                     string? FixtureAlias,
                                                      string ChannelName,
                                                      int StartChannel);
 }

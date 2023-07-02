@@ -2,5 +2,6 @@
 {
     public readonly record struct FixtureInfo(string FixtureName,
                                               string FixtureType,
-                                              int StartChannel);
+                                              int StartChannel,
+                                              string Alias);
 }
