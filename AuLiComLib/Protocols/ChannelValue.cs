@@ -25,6 +25,7 @@ namespace AuLiComLib.Protocols
 
         public static ChannelValue FromByte(int channel, byte value) => new(channel, value);
         public static ChannelValue FromPercentage(int channel, int percentage) => new(channel, (byte)Math.Round(255 * (percentage / 100d), MidpointRounding.ToZero));
+        public static IEnumerable<ChannelValue> From(IEnumerable<int> channels, int at) => channels.Select(x => FromPercentage(x, at));
 
         //
         // Aggregator function used by combining channel values of multiple scenes/universes

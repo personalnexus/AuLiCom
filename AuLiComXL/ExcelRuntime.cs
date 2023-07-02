@@ -126,7 +126,7 @@ namespace AuLiComXL
             SceneManager = new NamedSceneManager(DmxConnection);
             FixtureFactory = new FixtureFactory(DmxConnection);
             FixtureManager = new FixtureManager();
-            CommandExecutor = new CommandExecutor(DmxConnection, _commandOutputWriter);
+            CommandExecutor = new CommandExecutor(DmxConnection, _commandOutputWriter, FixtureManager);
         }
 
         public void Dispose()
