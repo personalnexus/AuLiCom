@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Common;
+﻿using AuLiComLib.CommandExecutor.ChannelValueCommands;
+using AuLiComLib.Common;
 using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,12 @@ namespace AuLiComLib.CommandExecutor.Commands
         {
             _connection = connection;
             _console = console;
-            _parser = new ChannelValueCommandParser(fixtures);
+            _parser = new ChannelValueAdjustmentParser(fixtures);
         }
 
         private readonly IConnection _connection;
         private readonly ICommandWriteConsole _console;
-        private readonly ChannelValueCommandParser _parser;
+        private readonly ChannelValueAdjustmentParser _parser;
 
         public string Description => "SET one or more channel values:\r\n" +
                                      "    1@50   set channel 1 to 50%\r\n" +
@@ -35,17 +36,15 @@ namespace AuLiComLib.CommandExecutor.Commands
 
         public bool TryExecute(string command)
         {
-            bool result = _parser.TryParse(command, out var channelValues, out string errors);
+            bool result = _parser.TryParse(command, out ChannelValueAdjustment adjustment, out string errors);
             if (!result)
             {
                 _console.WriteLine(errors);
             }
             else
             {
-                _connection
-                .CurrentUniverse
-                .ToMutableUniverse()
-                .SetValues(channelValues)
+                adjustment
+                .ApplyTo(_connection.CurrentUniverse)
                 .AsReadOnly()
                 .SendTo(_connection);
             }

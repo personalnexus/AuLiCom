@@ -1,4 +1,4 @@
-﻿using AuLiComLib.CommandExecutor;
+﻿using AuLiComLib.CommandExecutor.ChannelValueCommands;
 using AuLiComLib.Protocols;
 using AuLiComTest.Mocks;
 using FluentAssertions;
@@ -20,7 +20,30 @@ namespace AuLiComTest
             // Successes
 
             [TestMethod]
-            public void EverythingWithWhitespace_AllChannelsAtPercentage() => ShouldBeSuccess(
+            public void Add10PercentToChannel1_Channel1Is21PercentAndRestIsUnchanged() => ShouldBeSuccessWithBaseUniverse(
+                "1@+10",
+                channel1: 21);
+
+            [TestMethod]
+            public void Subtract15PercentFromChannel1Through2_Channel1IsFlooredAt0And2IsAdjustedAnd3IsUnchanged() => ShouldBeSuccessWithBaseUniverse(
+                "1-2@-15",
+                channel1: 0,
+                channel2: 7);
+
+            [TestMethod]
+            public void MultiplyChannels2And3With4_Channel2IsDoubledAndChannel3IsCappedAt100Percent() => ShouldBeSuccessWithBaseUniverse(
+                "2-3@*4",
+                channel2: 88,
+                channel3: 100);
+
+            [TestMethod]
+            public void DivideChannels1And3By20_Channel1IsFlooredAt0Channel3IsRoundedTo2() => ShouldBeSuccessWithBaseUniverse(
+                "1+3@/16",
+                channel1: 0,
+                channel3: 2);
+
+            [TestMethod]
+            public void EverythingWithWhitespace_AllChannelsAtPercentage() => ShouldBeSuccessWithEmptyUniverse(
                 " 1 + 4        -  5 + BLue @ 99 ",
                 ChannelValue.FromPercentage(1, 99),
                 ChannelValue.FromPercentage(3, 99),
@@ -29,7 +52,7 @@ namespace AuLiComTest
                 ChannelValue.FromPercentage(6, 99));
 
             [TestMethod]
-            public void DuplicateChannels_EveryChannelOnlyOnceAtPercentage() => ShouldBeSuccess(
+            public void DuplicateChannels_EveryChannelOnlyOnceAtPercentage() => ShouldBeSuccessWithEmptyUniverse(
                 " 1 + 4 + 3-5 + 1-4 @ 95 ",
                 ChannelValue.FromPercentage(1, 95),
                 ChannelValue.FromPercentage(2, 95),
@@ -38,23 +61,23 @@ namespace AuLiComTest
                 ChannelValue.FromPercentage(5, 95));
 
             [TestMethod]
-            public void OneChannelAndNoPercentage_ChannelAt100Percent() => ShouldBeSuccess(
+            public void OneChannelAndNoPercentage_ChannelAt100Percent() => ShouldBeSuccessWithEmptyUniverse(
                 "12@",
                 ChannelValue.FromPercentage(12, 100));
 
             [TestMethod]
-            public void OneChannelAndPercentage_ChannelAtPercentage() => ShouldBeSuccess(
+            public void OneChannelAndPercentage_ChannelAtPercentage() => ShouldBeSuccessWithEmptyUniverse(
                 "14@80",
                 ChannelValue.FromPercentage(14, 80));
 
             [TestMethod]
-            public void TwoChannelsAndPercentage_BothChannelsAtPercentage() => ShouldBeSuccess(
+            public void TwoChannelsAndPercentage_BothChannelsAtPercentage() => ShouldBeSuccessWithEmptyUniverse(
                 "14+11@83",
                 ChannelValue.FromPercentage(11, 83),
                 ChannelValue.FromPercentage(14, 83));
 
             [TestMethod]
-            public void ChannelRangeAndPercentage_EntireRangeAtPercentage() => ShouldBeSuccess(
+            public void ChannelRangeAndPercentage_EntireRangeAtPercentage() => ShouldBeSuccessWithEmptyUniverse(
                 "11-14@86",
                 ChannelValue.FromPercentage(11, 86),
                 ChannelValue.FromPercentage(12, 86),
@@ -62,7 +85,7 @@ namespace AuLiComTest
                 ChannelValue.FromPercentage(14, 86));
 
             [TestMethod]
-            public void TwoChannelRangesAndPercentage_BothRangesAtPercentage() => ShouldBeSuccess(
+            public void TwoChannelRangesAndPercentage_BothRangesAtPercentage() => ShouldBeSuccessWithEmptyUniverse(
                 "11-12+14-15@86",
                 ChannelValue.FromPercentage(11, 86),
                 ChannelValue.FromPercentage(12, 86),
@@ -70,7 +93,7 @@ namespace AuLiComTest
                 ChannelValue.FromPercentage(15, 86));
 
             [TestMethod]
-            public void ChannelNameAndPercentage_BothChannelsWithThisNameAtPercentage() => ShouldBeSuccess(
+            public void ChannelNameAndPercentage_BothChannelsWithThisNameAtPercentage() => ShouldBeSuccessWithEmptyUniverse(
                 "red@89",
                 ChannelValue.FromPercentage(1, 89),
                 ChannelValue.FromPercentage(4, 89));
@@ -81,11 +104,6 @@ namespace AuLiComTest
             public void PercentageIsNotANumber_Error() => ShouldBeError(
                 "1@humpelpumpel",
                 "Percentage has to be an integer, not 'humpelpumpel'");
-
-            [TestMethod]
-            public void PercentageIsLessThan0_Error() => ShouldBeError(
-                "1@-44",
-                "Percentage has to be between 0 and 100, not '-44'");
 
             [TestMethod]
             public void PercentageIsGreaterThan100_Error() => ShouldBeError(
@@ -124,19 +142,34 @@ namespace AuLiComTest
 
             // Helper methods
 
-            private static void ShouldBeSuccess(string command, params ChannelValue[] expectedValues)
+            private static void ShouldBeSuccessWithEmptyUniverse(string command, params ChannelValue[] expectedValues) =>
+                ShouldBeSuccess(command, Universe.CreateEmptyReadOnly(), expectedValues);
+
+            private static void ShouldBeSuccessWithBaseUniverse(string command, 
+                                                                int channel1 = 11,
+                                                                int channel2 = 22,
+                                                                int channel3 = 33) =>
+                ShouldBeSuccess(command, 
+                                BaseUniverse, 
+                                ChannelValue.FromPercentage(1, channel1),
+                                ChannelValue.FromPercentage(2, channel2),
+                                ChannelValue.FromPercentage(3, channel3));
+
+            private static void ShouldBeSuccess(string command, IReadOnlyUniverse universe, params ChannelValue[] expectedValues)
             {
                 // Arrange
-                ChannelValueCommandParser parser = Arrange();
+                ChannelValueAdjustmentParser parser = Arrange();
+                byte[] expectedBytes = Universe.CreateEmpty().SetValues(expectedValues).AsReadOnly().GetValuesCopy();
 
                 // Act
-                var parseResult = parser.TryParse(command, out IEnumerable<ChannelValue> values, out string error);
+                bool parseResult = parser.TryParse(command, out ChannelValueAdjustment adjustment, out string error);
+                byte[] actualBytes = adjustment.ApplyTo(universe).AsReadOnly().GetValuesCopy();
 
                 // Assert
                 using (new AssertionScope())
                 {
                     parseResult.Should().BeTrue();
-                    values.Should().BeEquivalentTo(expectedValues);
+                    actualBytes.Should().BeEquivalentTo(expectedBytes);
                     error.Should().BeNullOrEmpty();
                 }
             }
@@ -144,21 +177,21 @@ namespace AuLiComTest
             private static void ShouldBeError(string command, string expectedError)
             {
                 // Arrange
-                ChannelValueCommandParser parser = Arrange();
+                ChannelValueAdjustmentParser parser = Arrange();
 
                 // Act
-                var parseResult = parser.TryParse(command, out IEnumerable<ChannelValue> values, out string error);
+                bool parseResult = parser.TryParse(command, out ChannelValueAdjustment adjustment, out string error);
 
                 // Assert
                 using (new AssertionScope())
                 {
                     parseResult.Should().BeFalse();
-                    values.Should().BeEmpty();
+                    adjustment.Should().Be(default(ChannelValueAdjustment));
                     error.Should().Be(expectedError);
                 }
             }
 
-            private static ChannelValueCommandParser Arrange()
+            private static ChannelValueAdjustmentParser Arrange()
             {
                 var fixtures = new MockCommandFixtures
                 {
@@ -169,9 +202,17 @@ namespace AuLiComTest
                     { "Green2", 5 },
                     { "Blue2", 6 },
                 };
-                var result = new ChannelValueCommandParser(fixtures);
+                var result = new ChannelValueAdjustmentParser(fixtures);
                 return result;
             }
+
+            private static readonly IReadOnlyUniverse BaseUniverse = 
+                Universe
+                .CreateEmpty()
+                .SetValue(ChannelValue.FromPercentage(1, 11))
+                .SetValue(ChannelValue.FromPercentage(2, 22))
+                .SetValue(ChannelValue.FromPercentage(3, 33))
+                .AsReadOnly();
         }
     }
 }
