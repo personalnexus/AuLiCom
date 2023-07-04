@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace AuLiComTest
 {
     [TestClass]
-    public class ChannelValueCommandParserTest
+    public class ChannelValueAdjustmentParserTest
     {
         [TestClass]
         public class TryParse
