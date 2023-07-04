@@ -59,7 +59,7 @@ namespace AuLiComLib.Fixtures
         public int StartChannel { get; set; }
 
         [JsonProperty]
-        public string Alias { get; set; }
+        public string? Alias { get; set; }
 
         // IChannelValuePropertyHolder
 
