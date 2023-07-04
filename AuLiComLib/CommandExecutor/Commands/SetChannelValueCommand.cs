@@ -27,12 +27,16 @@ namespace AuLiComLib.CommandExecutor.Commands
         private readonly ChannelValueAdjustmentParser _parser;
 
         public string Description => "SET one or more channel values:\r\n" +
-                                     "    1@50   set channel 1 to 50%\r\n" +
-                                     "    1-3@60 set channels 1 through 3 to 60%\r\n" +
-                                     "    1+4@70 set channels 1 and 4 to 70%\r\n" +
-                                     "    1-5+7-10@80 set channels 1 through 5 and 7 through 10 to 80%\r\n" +
-                                     "    Red@90 set channels on fixtures where the channel name contains 'red' (ignoring case) to 90%\r\n" +
-                                     "    1-12@ set channels 1 through 12 to 100%";
+                                     "    1@+10  increase channel 1 by 10 percentage points\r\n" +
+                                     "    2+3@-15  lower channels 2 and 3 by 15 percentage points\r\n" +
+                                     "    4-7@*3  triple the percentage values of channels 4 through 7\r\n" +
+                                     "    8-9+10@/2  halve the percentage values of channels 8 through 9 and 10\r\n" +
+                                     "    11@50   set channel 11 to 50%\r\n" +
+                                     "    12-15@60 set channels 11 through 15 to 60%\r\n" +
+                                     "    16+19@70 set channels 16 and 19 to 70%\r\n" +
+                                     "    20-25+27-30@80 set channels 20 through 25 and 27 through 30 to 80%\r\n" +
+                                     "    Red@90 set channels on fixtures where channel name, fixture name or alias contains 'red' (ignoring case) to 90%\r\n" +
+                                     "    31-33@ set channels 31 through 33 to 100%";
 
         public bool TryExecute(string command)
         {
