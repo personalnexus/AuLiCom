@@ -7,6 +7,7 @@ using AuLiComLib.Scenes;
 using ExcelDna.Integration;
 using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -126,7 +127,10 @@ namespace AuLiComXL
             SceneManager = new NamedSceneManager(DmxConnection);
             FixtureFactory = new FixtureFactory(DmxConnection);
             FixtureManager = new FixtureManager();
-            CommandExecutor = new CommandExecutor(DmxConnection, _commandOutputWriter, FixtureManager);
+            CommandExecutor = new CommandExecutor(DmxConnection,
+                                                  _commandOutputWriter,
+                                                  FixtureManager,
+                                                  new FileSystem());
         }
 
         public void Dispose()

@@ -2,6 +2,7 @@
 using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,8 @@ namespace AuLiComLib.CommandExecutor
     {
         public CommandLoopExecutor(IConnection connection, 
                                    ICommandReadWriteConsole console,
-                                   ICommandFixtures fixtures) : base(connection, console, fixtures)
+                                   ICommandFixtures fixtures,
+                                   IFileSystem fileSystem) : base(connection, console, fixtures, fileSystem)
         {
             _console = console;
         }

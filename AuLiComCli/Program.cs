@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Reflection;
 using AuLiComSim;
 using AuLiComLib.Fixtures;
+using System.IO.Abstractions;
 
 Version? consoleVersion = Assembly.GetExecutingAssembly().GetName().Version;
 Version? libraryVersion = typeof(DmxConnection).Assembly.GetName().Version;
@@ -54,7 +55,10 @@ else
     console.WriteLine($"DMX connection established.");
 }
 
-var commandExecutor = new CommandLoopExecutor(connection, console, new FixtureManager());
+var commandExecutor = new CommandLoopExecutor(connection,
+                                              console,
+                                              new FixtureManager(),
+                                              new FileSystem());
 commandExecutor.Loop();
 
 console.WriteLine();

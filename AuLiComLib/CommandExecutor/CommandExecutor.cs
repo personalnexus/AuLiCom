@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO.Abstractions;
 
 namespace AuLiComLib.CommandExecutor
 {
@@ -14,7 +15,8 @@ namespace AuLiComLib.CommandExecutor
     {
        public CommandExecutor(IConnection connection,
                               ICommandWriteConsole console,
-                              ICommandFixtures fixtures)
+                              ICommandFixtures fixtures,
+                              IFileSystem fileSystem)
         {
             _commands = new ICommand[]
             {

@@ -15,7 +15,9 @@ namespace AuLiComLib.CommandExecutor.Commands
 {
     internal class SetChannelValueCommand : ICommand
     {
-        public SetChannelValueCommand(IConnection connection, ICommandWriteConsole console, ICommandFixtures fixtures)
+        public SetChannelValueCommand(IConnection connection,
+                                      ICommandWriteConsole console,
+                                      ICommandFixtures fixtures)
         {
             _connection = connection;
             _console = console;

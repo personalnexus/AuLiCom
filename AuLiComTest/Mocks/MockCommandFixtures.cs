@@ -1,4 +1,5 @@
 ﻿using AuLiComLib.CommandExecutor;
+using AuLiComLib.Fixtures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,11 @@ namespace AuLiComTest.Mocks
         public IEnumerator GetEnumerator()
         {
             return ((IEnumerable)_channelsByName).GetEnumerator();
+        }
+
+        public void SetFixtures(IEnumerable<IFixture> fixtures)
+        {
+            throw new NotImplementedException();
         }
 
         public bool TryGetChannelsByName(string channelName, out IEnumerable<int> channels)
