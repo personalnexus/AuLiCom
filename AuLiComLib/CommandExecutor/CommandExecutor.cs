@@ -22,6 +22,7 @@ namespace AuLiComLib.CommandExecutor
             {
                 new ClearChannelValuesCommand(connection),
                 new ListChannelValuesCommand(connection, console),
+                new LoadFileCommand(connection, console, fixtures, fileSystem),
                 // TODO: register commands here when creating new ones
                 // SetChannelValueCommand must come last, because it does not start with a command
                 // name and therefore outputs an error when encountering an invalid command.
