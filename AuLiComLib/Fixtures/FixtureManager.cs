@@ -19,8 +19,18 @@ namespace AuLiComLib.Fixtures
         {
             _fixturesByName = new();
             _fixturesByChannel = new();
+            SetFixtures(fixtures);
+        }
+
+        private readonly Dictionary<string, IFixture> _fixturesByName;
+        private readonly Dictionary<int, IFixture> _fixturesByChannel;
+
+        public void SetFixtures(IEnumerable<IFixture> fixtures)
+        {
+            _fixturesByName.Clear();
+            _fixturesByChannel.Clear();
             HashSet<string> duplicateNames = fixtures
-                .Where(x => !TryAdd(x))
+                .Where(x => !TryAdd(x)) // this actually adds the fixtures
                 .Select(x => x.Name)
                 .ToHashSet();
             if (duplicateNames.Count > 0)
@@ -28,9 +38,6 @@ namespace AuLiComLib.Fixtures
                 throw new ArgumentException($"{duplicateNames.Count} duplicate names: \r\n{string.Join(", ", duplicateNames)}");
             }
         }
-
-        private readonly Dictionary<string, IFixture> _fixturesByName;
-        private readonly Dictionary<int, IFixture> _fixturesByChannel;
 
         public bool TryAdd(IFixture fixture)
         {
