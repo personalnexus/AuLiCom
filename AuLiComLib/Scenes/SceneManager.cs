@@ -57,6 +57,7 @@ namespace AuLiComLib.Scenes
 
         private void ProcessActiveScenesChange(TimeSpan fadeTime)
         {
+            Version++;
             //
             // If there is only one scene, that is our target universe
             //
@@ -75,5 +76,7 @@ namespace AuLiComLib.Scenes
             }
             return result.AsReadOnly();
         }
+
+        public int Version { get; private set; }
     }
 }

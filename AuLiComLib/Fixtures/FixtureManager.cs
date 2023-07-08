@@ -44,6 +44,7 @@ namespace AuLiComLib.Fixtures
             bool result = _fixturesByName.TryAdd(fixture.Name, fixture);
             if (result)
             {
+                Version++;
                 try
                 {
                     foreach (int channel in Enumerable.Range(fixture.StartChannel, fixture.ChannelCount))
@@ -94,5 +95,7 @@ namespace AuLiComLib.Fixtures
             channels = channelsList;
             return channelsList.Any();
         }
+
+        public int Version { get; private set; }
     }
 }

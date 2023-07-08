@@ -1,8 +1,9 @@
 ﻿using AuLiComLib.CommandExecutor;
+using AuLiComLib.Common;
 
 namespace AuLiComLib.Fixtures
 {
-    public interface IFixtureManager: ICommandFixtures
+    public interface IFixtureManager: ICommandFixtures, IVersioned
     {
         bool TryAdd(IFixture fixture);
         T Get<T>(string name) where T : IFixture;

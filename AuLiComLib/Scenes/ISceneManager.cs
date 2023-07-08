@@ -1,8 +1,9 @@
-﻿using AuLiComLib.Protocols;
+﻿using AuLiComLib.Common;
+using AuLiComLib.Protocols;
 
 namespace AuLiComLib.Scenes
 {
-    public interface ISceneManager
+    public interface ISceneManager: IVersioned
     {
         IScene SetSceneFromCurrentUniverse(string name);
         IScene SetScene(string name, IReadOnlyUniverse universe);
