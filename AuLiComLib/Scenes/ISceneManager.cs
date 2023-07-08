@@ -3,7 +3,7 @@ using AuLiComLib.Protocols;
 
 namespace AuLiComLib.Scenes
 {
-    public interface ISceneManager: IVersioned
+    public interface ISceneManager
     {
         IScene SetSceneFromCurrentUniverse(string name);
         IScene SetScene(string name, IReadOnlyUniverse universe);

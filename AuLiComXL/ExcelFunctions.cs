@@ -28,7 +28,7 @@ namespace AuLiComXL
         }
 
         [ExcelFunction]
-        public static object AuLiComGetScenes(object connection) =>
+        public static object AuLiComGetScenes(object scenes) =>
             ExcelRuntime
             .GetInstance()
             .SceneManager
@@ -69,8 +69,8 @@ namespace AuLiComXL
             .Initialize(portName)
             .ToVerticalRange();
 
-        [ExcelFunction]
-        public static int AuLiComGetChannelValue(object connection, int channel) =>
+        [ExcelFunction(IsVolatile = true)]
+        public static int AuLiComGetChannelValue(int channel) =>
             ExcelRuntime
             .GetInstance()
             .DmxConnection
@@ -81,7 +81,8 @@ namespace AuLiComXL
         public static void AuLiComSetChannelValue(object connection, int channel, int percentage) =>
             ExcelRuntime
             .GetInstance()
-            .SetDmxChannelValue(channel, percentage);
+            .DmxConnection
+            .SetValue(ChannelValue.FromPercentage(channel, percentage));
 
 
         // Recalculation
@@ -103,7 +104,7 @@ namespace AuLiComXL
             .ToVerticalRange();
 
         [ExcelFunction]
-        public static int AuLiComGetFixtureChannelCount(object connection, string name) =>
+        public static int AuLiComGetFixtureChannelCount(object fixtures, string name) =>
             ExcelRuntime
             .GetInstance()
             .FixtureManager
@@ -111,7 +112,7 @@ namespace AuLiComXL
             .ChannelCount;
 
         [ExcelFunction]
-        public static object[,] AuLiComGetFixtureChannelInfos(object connection) =>
+        public static object[,] AuLiComGetFixtureChannelInfos(object fixtures) =>
             ExcelRuntime
             .GetInstance()
             .FixtureManager
@@ -133,6 +134,7 @@ namespace AuLiComXL
                 : "Already exists";
             return result;
         }
+
 
         // Commands
 

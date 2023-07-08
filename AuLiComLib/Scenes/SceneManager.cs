@@ -57,14 +57,19 @@ namespace AuLiComLib.Scenes
 
         private void ProcessActiveScenesChange(TimeSpan fadeTime)
         {
-            Version++;
             //
             // If there is only one scene, that is our target universe
             //
             IReadOnlyUniverse targetUniverse = _activeScenes.Count == 1 
                 ? _activeScenes.First().Universe 
                 : CombineActiveScenesIntoTargetUniverse();
-            _connection.FadeTo(targetUniverse, fadeTime);
+            //
+            // Only fade if there is actually a change
+            //
+            if (!targetUniverse.HasSameValuesAs(_connection.CurrentUniverse))
+            {
+                _connection.FadeTo(targetUniverse, fadeTime);
+            }
         }
 
         private IReadOnlyUniverse CombineActiveScenesIntoTargetUniverse()
@@ -76,7 +81,5 @@ namespace AuLiComLib.Scenes
             }
             return result.AsReadOnly();
         }
-
-        public int Version { get; private set; }
     }
 }

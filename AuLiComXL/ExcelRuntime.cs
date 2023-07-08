@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComXL
 {
-    internal class ExcelRuntime: IDisposable, IVersioned
+    internal class ExcelRuntime: IDisposable
     {
         public static ExcelRuntime GetInstance([CallerMemberName] string? callingMethod = null) =>
             GetInstanceCore(callingMethod);
@@ -85,11 +85,11 @@ namespace AuLiComXL
         {
             if (_instance == null)
             {
-                yield return "NOT CONNECTED";
+                yield return "DMX:(None)";
             }
             else
             {
-                yield return $"DMX:{_instance.PortName}:{_instance.Version}";
+                yield return $"DMX:{_instance.PortName}";
                 yield return $"FIXTURES:{_instance.FixtureManager.Version}";
                 yield return $"SCENES:{_instance.SceneManager.Version}";
             }
@@ -160,7 +160,6 @@ namespace AuLiComXL
 
         public IEnumerable<string> ExecuteCommandAndCaptureOutput(string commandString)
         {
-            Version++;
             _commandOutputWriter.Clear();
             string commandResult = CommandExecutor.Execute(commandString);
             IEnumerable<string> result = _commandOutputWriter.Append(commandResult);
@@ -168,16 +167,5 @@ namespace AuLiComXL
         }
 
         internal IEnumerable<string> GetLastCommandOutput() => _commandOutputWriter;
-
-        internal void SetDmxChannelValue(int channel, int percentage)
-        {
-            Version++;
-            DmxConnection
-            .SetValue(ChannelValue.FromPercentage(channel, percentage));
-        }
-
-        // IVersioned
-
-        public int Version { get; private set; }
     }
 }
