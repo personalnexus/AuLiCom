@@ -7,5 +7,7 @@
         byte[] GetValuesCopy();
 
         void WriteValuesTo(ISerialPort port);
+
+        bool HasSameValuesAs(IReadOnlyUniverse other);
     }
 }

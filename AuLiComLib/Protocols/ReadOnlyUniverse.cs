@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,20 @@ namespace AuLiComLib.Protocols
         public void WriteValuesTo(ISerialPort port)
         {
             port.Write(_values, 0, Universe.ValuesLength);
+        }
+
+        public bool HasSameValuesAs(IReadOnlyUniverse other)
+        {
+            bool result = true;
+            for(int channel = FirstChannel;channel < ValuesLength; channel++)
+            {
+                if (_values[channel] != other.GetValue(channel).Value)
+                {
+                    result = false;
+                    break;
+                }
+            }
+            return result;
         }
     }
 }
