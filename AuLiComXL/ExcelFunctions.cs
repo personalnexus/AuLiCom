@@ -21,7 +21,7 @@ namespace AuLiComXL
             .Zip(values, (channel, value) => ChannelValue.FromPercentage((int)channel, (int)value))
             .ToReadOnlyUniverse();
             ExcelRuntime
-            .GetInstanceForStateUpdate()
+            .GetInstance()
             .SceneManager
             .SetScene(name, universe);
             return name;
@@ -39,14 +39,14 @@ namespace AuLiComXL
         [ExcelFunction]
         public static void AuLiComRemoveScene(object connection, string name) =>
             ExcelRuntime
-            .GetInstanceForStateUpdate()
+            .GetInstance()
             .SceneManager
             .RemoveScene(name);
 
         [ExcelFunction]
         public static void AuLiComSetSingleActiveScene(object connection, string name, double fadeTimeInSeconds) =>
             ExcelRuntime
-            .GetInstanceForStateUpdate()
+            .GetInstance()
             .SceneManager
             .SetSingleActiveScene(name, TimeSpan.FromSeconds(fadeTimeInSeconds));
 
@@ -64,9 +64,10 @@ namespace AuLiComXL
         // DMX Connection
 
         [ExcelFunction(IsVolatile = true)]
-        public static string AuLiComSetDmxConnection(string portName) => 
+        public static object[,] AuLiComSetDmxConnection(string portName) => 
             ExcelRuntime
-            .Initialize(portName);
+            .Initialize(portName)
+            .ToVerticalRange();
 
         [ExcelFunction]
         public static int AuLiComGetChannelValue(object connection, int channel) =>
@@ -79,9 +80,8 @@ namespace AuLiComXL
         [ExcelFunction]
         public static void AuLiComSetChannelValue(object connection, int channel, int percentage) =>
             ExcelRuntime
-            .GetInstanceForStateUpdate()
-            .DmxConnection
-            .SetValue(ChannelValue.FromPercentage(channel, percentage));
+            .GetInstance()
+            .SetDmxChannelValue(channel, percentage);
 
 
         // Recalculation
@@ -122,7 +122,7 @@ namespace AuLiComXL
         [ExcelFunction]
         public static string AuLiComSetFixture(object connection, string name, string type, int channel, string alias = "")
         {
-            ExcelRuntime runtime = ExcelRuntime.GetInstanceForStateUpdate();
+            ExcelRuntime runtime = ExcelRuntime.GetInstance();
             FixtureInfo fixtureInfo = new(FixtureName: name,
                                           FixtureType: type,
                                           StartChannel: channel,
@@ -147,7 +147,7 @@ namespace AuLiComXL
         [ExcelFunction]
         public static object[,] AuLiComExecuteCommand(object connection, string commandString) =>
              ExcelRuntime
-            .GetInstanceForStateUpdate()
+            .GetInstance()
             .ExecuteCommandAndCaptureOutput(commandString)
             .ToVerticalRange();
 

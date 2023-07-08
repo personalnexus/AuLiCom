@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Common
 {
-    internal static class EnumerableExtensions
+    public static class EnumerableExtensions
     {
         public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
         {

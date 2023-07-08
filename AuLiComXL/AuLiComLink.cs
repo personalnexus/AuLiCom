@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuLiComLib.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -15,9 +16,15 @@ namespace AuLiComXL
         // TODO: design decision: should it be possible to have entirely separate runtimes in COM
         // or is this class just a way to control the runtime that the Excel functions use?
 
-        public string Initialize(string portName) => ExcelRuntime.Initialize(portName);
+        public string Initialize(string portName) => 
+            ExcelRuntime
+            .Initialize(portName)
+            .ToDelimitedString(Environment.NewLine);
 
-        public string InitializeWithOnlyDmxPort => ExcelRuntime.InitializeWithOnlyDmxPort();
+        public string InitializeWithOnlyDmxPort => 
+            ExcelRuntime
+            .InitializeWithOnlyDmxPort()
+            .ToDelimitedString(Environment.NewLine);
 
         public void SetSingleActiveScene(string name, double fadeTimeInSeconds) => 
             ExcelRuntime

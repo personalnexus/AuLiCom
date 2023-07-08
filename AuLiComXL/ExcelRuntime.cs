@@ -15,21 +15,13 @@ using System.Threading.Tasks;
 
 namespace AuLiComXL
 {
-    internal class ExcelRuntime: IDisposable
+    internal class ExcelRuntime: IDisposable, IVersioned
     {
-        public static ExcelRuntime GetInstanceForStateUpdate([CallerMemberName] string? callingMethod = null)
-        {
-            State++;
-            return GetInstanceCore(callingMethod);
-        }
-
         public static ExcelRuntime GetInstance([CallerMemberName] string? callingMethod = null) =>
             GetInstanceCore(callingMethod);
 
         private static ExcelRuntime GetInstanceCore(string? callingMethod) =>
             _instance ?? throw new InvalidOperationException($"Must initialize AuLiCom's Excel runtime before calling {callingMethod}.");
-
-        private static long State;
 
         public static void DisposeInstance()
         {
@@ -43,7 +35,7 @@ namespace AuLiComXL
         private static ExcelRuntime? _instance;
         private static readonly object _instanceInitializationLock = new();
 
-        internal static string InitializeWithOnlyDmxPort()
+        internal static IEnumerable<string> InitializeWithOnlyDmxPort()
         {
             lock (_instanceInitializationLock)
             {
@@ -58,12 +50,12 @@ namespace AuLiComXL
                 }
                 else
                 {
-                    return $"There is more than one DMX port. Select the right one and pass it to {nameof(Initialize)}. {string.Join(", ", dmxPortsByName.Keys)}";
+                    return new string[] { $"There is more than one DMX port. Select the right one and pass it to {nameof(Initialize)}. {string.Join(", ", dmxPortsByName.Keys)}" };
                 }
             }
         }
 
-        internal static string Initialize(string portName)
+        internal static IEnumerable<string> Initialize(string portName)
         {
             lock (_instanceInitializationLock)
             {
@@ -75,7 +67,7 @@ namespace AuLiComXL
             }
         }
 
-        internal static string Initialize(ISerialPort port)
+        internal static IEnumerable<string> Initialize(ISerialPort port)
         {
             lock (_instanceInitializationLock)
             {
@@ -89,7 +81,19 @@ namespace AuLiComXL
         }
 
 
-        private static string GetRuntimeStatus() => _instance != null ? $"CONNECTED:{_instance.PortName}:{State}" : "NOT CONNECTED";
+        private static IEnumerable<string> GetRuntimeStatus()
+        {
+            if (_instance == null)
+            {
+                yield return "NOT CONNECTED";
+            }
+            else
+            {
+                yield return $"DMX:{_instance.PortName}:{_instance.Version}";
+                yield return $"FIXTURES:{_instance.FixtureManager.Version}";
+                yield return $"SCENES:{_instance.SceneManager.Version}";
+            }
+        }
 
 
         internal static double SetRecalculationTimer(double milliseconds)
@@ -156,6 +160,7 @@ namespace AuLiComXL
 
         public IEnumerable<string> ExecuteCommandAndCaptureOutput(string commandString)
         {
+            Version++;
             _commandOutputWriter.Clear();
             string commandResult = CommandExecutor.Execute(commandString);
             IEnumerable<string> result = _commandOutputWriter.Append(commandResult);
@@ -163,5 +168,16 @@ namespace AuLiComXL
         }
 
         internal IEnumerable<string> GetLastCommandOutput() => _commandOutputWriter;
+
+        internal void SetDmxChannelValue(int channel, int percentage)
+        {
+            Version++;
+            DmxConnection
+            .SetValue(ChannelValue.FromPercentage(channel, percentage));
+        }
+
+        // IVersioned
+
+        public int Version { get; private set; }
     }
 }
