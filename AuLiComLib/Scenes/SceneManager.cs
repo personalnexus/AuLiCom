@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Protocols;
+﻿using AuLiComLib.Common;
+using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Scenes
 {
-    public class SceneManager : ISceneManager
+    public class SceneManager : VersionedBase, ISceneManager
     {
         public SceneManager(IConnection connection)
         {

@@ -18,27 +18,35 @@ namespace AuLiComLib.Scenes
 
         public override IScene SetScene(string name, IReadOnlyUniverse universe)
         {
-            IScene newScene = base.SetScene(name, universe);
-            if (!_scenesByName.Remove(name, out IScene oldScene))
+            try
             {
-                // This is an entirely new scene
-                Version++;
-            }
-            else
-            {
-                if (!oldScene.Universe.HasSameValuesAs(newScene.Universe))
+                IScene newScene = base.SetScene(name, universe);
+                if (!_scenesByName.Remove(name, out IScene oldScene))
                 {
-                    // This was an existing scene, but with updated values
+                    // This is an entirely new scene
                     Version++;
                 }
-                if (IsActiveScene(oldScene))
+                else
                 {
-                    DeactivateScene(oldScene, fadeTime: TimeSpan.Zero);
-                    ActivateScene(newScene, fadeTime: TimeSpan.Zero);
+                    if (!oldScene.Universe.HasSameValuesAs(newScene.Universe))
+                    {
+                        // This was an existing scene, but with updated values
+                        Version++;
+                    }
+                    if (IsActiveScene(oldScene))
+                    {
+                        DeactivateScene(oldScene, fadeTime: TimeSpan.Zero);
+                        ActivateScene(newScene, fadeTime: TimeSpan.Zero);
+                    }
                 }
+                _scenesByName.Add(name, newScene);
+                return newScene;
             }
-            _scenesByName.Add(name, newScene);
-            return newScene;
+            catch
+            (Exception ex)
+            {
+                return null;
+            }
         }
 
         public void RemoveScene(string name) => _scenesByName.Remove(name);
@@ -46,7 +54,5 @@ namespace AuLiComLib.Scenes
         public void SetSingleActiveScene(string name, TimeSpan fadeTime) => SetSingleActiveScene(_scenesByName[name], fadeTime);
 
         public IReadOnlyDictionary<string, IScene> ScenesByName => _scenesByName;
-
-        public int Version { get; private set; }
     }
 }

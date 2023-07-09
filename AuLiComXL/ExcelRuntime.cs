@@ -35,7 +35,7 @@ namespace AuLiComXL
         private static ExcelRuntime? _instance;
         private static readonly object _instanceInitializationLock = new();
 
-        internal static IEnumerable<string> InitializeWithOnlyDmxPort()
+        internal static string InitializeWithOnlyDmxPort()
         {
             lock (_instanceInitializationLock)
             {
@@ -50,12 +50,12 @@ namespace AuLiComXL
                 }
                 else
                 {
-                    return new string[] { $"There is more than one DMX port. Select the right one and pass it to {nameof(Initialize)}. {string.Join(", ", dmxPortsByName.Keys)}" };
+                    return $"There is more than one DMX port. Select the right one and pass it to {nameof(Initialize)}. {string.Join(", ", dmxPortsByName.Keys)}";
                 }
             }
         }
 
-        internal static IEnumerable<string> Initialize(string portName)
+        internal static string Initialize(string portName)
         {
             lock (_instanceInitializationLock)
             {
@@ -67,7 +67,7 @@ namespace AuLiComXL
             }
         }
 
-        internal static IEnumerable<string> Initialize(ISerialPort port)
+        internal static string Initialize(ISerialPort port)
         {
             lock (_instanceInitializationLock)
             {
@@ -81,19 +81,7 @@ namespace AuLiComXL
         }
 
 
-        private static IEnumerable<string> GetRuntimeStatus()
-        {
-            if (_instance == null)
-            {
-                yield return "DMX:(None)";
-            }
-            else
-            {
-                yield return $"DMX:{_instance.PortName}";
-                yield return $"FIXTURES:{_instance.FixtureManager.Version}";
-                yield return $"SCENES:{_instance.SceneManager.Version}";
-            }
-        }
+        private static string GetRuntimeStatus() => $"DMX:{_instance?.PortName ?? "(none)"}";
 
 
         internal static double SetRecalculationTimer(double milliseconds)

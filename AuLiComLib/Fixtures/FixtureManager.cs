@@ -1,4 +1,5 @@
 ﻿using AuLiComLib.CommandExecutor;
+using AuLiComLib.Common;
 using AuLiComLib.Fixtures.Kinds;
 using AuLiComLib.Protocols;
 using System;
@@ -13,7 +14,7 @@ namespace AuLiComLib.Fixtures
     /// <summary>
     /// Manages the fixtures which in turn have one or more channels.
     /// </summary>
-    public class FixtureManager : IFixtureManager
+    public class FixtureManager : VersionedBase, IFixtureManager
     {
         public FixtureManager(params IFixture[] fixtures)
         {
@@ -95,7 +96,5 @@ namespace AuLiComLib.Fixtures
             channels = channelsList;
             return channelsList.Any();
         }
-
-        public int Version { get; private set; }
     }
 }

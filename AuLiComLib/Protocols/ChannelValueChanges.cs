@@ -15,7 +15,8 @@ namespace AuLiComLib.Protocols
                                    TimeSpan fadeTime) 
         {
             _connection = connection;
-            _stepCount = (int)(fadeTime.TotalMilliseconds / FadeIntervalInMilliseconds);
+            _stepCount = Math.Max(1,
+                                  (int)(fadeTime.TotalMilliseconds / FadeIntervalInMilliseconds));
             _changes = _connection
                         .CurrentUniverse
                         .GetValues()

@@ -50,6 +50,13 @@ namespace AuLiComXL
             .SceneManager
             .SetSingleActiveScene(name, TimeSpan.FromSeconds(fadeTimeInSeconds));
 
+        [ExcelFunction]
+        public static object AuLiComGetScenesVersion(object connection) =>
+            ExcelRuntime
+            .GetInstance()
+            .SceneManager
+            .ObserveVersion();
+
 
         // DMX Ports
 
@@ -63,14 +70,13 @@ namespace AuLiComXL
 
         // DMX Connection
 
-        [ExcelFunction(IsVolatile = true)]
-        public static object[,] AuLiComSetDmxConnection(string portName) => 
+        [ExcelFunction]
+        public static string AuLiComSetDmxConnection(string portName) => 
             ExcelRuntime
-            .Initialize(portName)
-            .ToVerticalRange();
+            .Initialize(portName);
 
-        [ExcelFunction(IsVolatile = true)]
-        public static int AuLiComGetChannelValue(int channel) =>
+        [ExcelFunction]
+        public static int AuLiComGetChannelValue(object channelsVersion, int channel) =>
             ExcelRuntime
             .GetInstance()
             .DmxConnection
@@ -84,6 +90,12 @@ namespace AuLiComXL
             .DmxConnection
             .SetValue(ChannelValue.FromPercentage(channel, percentage));
 
+        [ExcelFunction]
+        public static object AuLiComGetChannelsVersion(object connection) =>
+            ExcelRuntime
+            .GetInstance()
+            .DmxConnection
+            .ObserveVersion();
 
         // Recalculation
 
@@ -134,6 +146,13 @@ namespace AuLiComXL
                 : "Already exists";
             return result;
         }
+
+        [ExcelFunction]
+        public static object AuLiComGetFixturesVersion(object connection) =>
+            ExcelRuntime
+            .GetInstance()
+            .FixtureManager
+            .ObserveVersion();
 
 
         // Commands

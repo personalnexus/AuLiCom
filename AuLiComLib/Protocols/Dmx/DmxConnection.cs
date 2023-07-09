@@ -9,7 +9,7 @@ using AuLiComLib.Common;
 
 namespace AuLiComLib.Protocols.Dmx
 {
-    public class DmxConnection : IConnection
+    public class DmxConnection : VersionedBase, IConnection
     {
         public DmxConnection(ISerialPort port,
                              IAsyncExecutor executor)
@@ -74,6 +74,7 @@ namespace AuLiComLib.Protocols.Dmx
         {
             _sendLoopQueue.Add(universe, _cancellationTokenSource.Token);
             CurrentUniverse = universe;
+            Version++;
         }
     }
 }
