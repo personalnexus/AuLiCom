@@ -76,6 +76,7 @@ namespace AuLiComLib.Protocols.Dmx
             _sendLoopQueue.Add(universe, _cancellationTokenSource.Token);
             CurrentUniverse = universe;
             Version++;
+            _observers.ForEach(x => x.OnNext(this));
         }
 
         // IObservable
