@@ -22,7 +22,11 @@ namespace AuLiComTest.Mocks
 
         public IReadOnlyUniverse CurrentUniverse { get; private set; }
 
-        public void SendUniverse(IReadOnlyUniverse universe) => CurrentUniverse = universe;
+        public void SendUniverse(IReadOnlyUniverse universe)
+        {
+            CurrentUniverse = universe;
+            Version++;
+        }
 
         public IDisposable Subscribe(IObserver<IConnection> observer)
         {

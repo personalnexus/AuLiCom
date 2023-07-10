@@ -16,9 +16,10 @@ namespace AuLiComLib.Protocols.Dmx
         {
             CurrentUniverse = Universe.CreateEmptyReadOnly();
             _port = port;
+            _observers = new HashSet<IObserver<IConnection>>();
             _cancellationTokenSource = new CancellationTokenSource();
             _sendLoopQueue = new BlockingCollection<IReadOnlyUniverse>(boundedCapacity: 2); // TODO: extract to configuration
-
+            
             // Start sender loop only after everything else has been initialized
             executor.ExecuteAsync(SendLoop);
         }
@@ -75,6 +76,16 @@ namespace AuLiComLib.Protocols.Dmx
             _sendLoopQueue.Add(universe, _cancellationTokenSource.Token);
             CurrentUniverse = universe;
             Version++;
+        }
+
+        // IObservable
+
+        private readonly HashSet<IObserver<IConnection>> _observers;
+
+        public IDisposable Subscribe(IObserver<IConnection> observer)
+        {
+            _observers.Add(observer);
+            return new ActionDisposable(() => _observers.Remove(observer));
         }
     }
 }
