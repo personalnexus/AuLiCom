@@ -84,6 +84,19 @@ namespace AuLiComXL
             .ValueAsPercentage;
 
         [ExcelFunction]
+        public static object AuLiComGetChannelValues(double[] channels)
+        {
+            return ExcelRuntime
+                   .GetInstance()
+                   .DmxConnection
+                   .Select(connection => connection
+                                         .GetValues(channels.ToIntegerArray())
+                                         .Select(x => x.ValueAsPercentage)
+                                         .ToVerticalRange())
+                   .Observe(callerParameters: channels);
+        }
+
+        [ExcelFunction]
         public static void AuLiComSetChannelValue(object connection, int channel, int percentage) =>
             ExcelRuntime
             .GetInstance()

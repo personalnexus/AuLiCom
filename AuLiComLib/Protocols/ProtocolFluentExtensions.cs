@@ -27,6 +27,12 @@ namespace AuLiComLib.Protocols
             .CurrentUniverse.
             GetValue(channel);
 
+        public static IEnumerable<ChannelValue> GetValues(this IConnection connection, int[] channels) =>
+            channels
+            .Select(x => connection
+                         .CurrentUniverse
+                         .GetValue(x));
+
         public static void SetValue(this IConnection connection, ChannelValue channelValue) => 
             connection
             .CurrentUniverse

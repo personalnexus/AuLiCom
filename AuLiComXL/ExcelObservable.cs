@@ -1,5 +1,4 @@
-﻿using AuLiComLib.Common;
-using ExcelDna.Integration;
+﻿using ExcelDna.Integration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace AuLiComXL
 {
-    internal class ExcelObservable : IExcelObservable
+    internal class ExcelObservable<T> : IExcelObservable
     {
-       public ExcelObservable(Func<IExcelObserver, Action> subscribeAndMakeUnsubscriber) => 
-            _processSubscribe = (observer) =>
-            {
-                Action unsubscriber = subscribeAndMakeUnsubscriber(observer);
-                return new ActionDisposable(unsubscriber);
-            };
+        public ExcelObservable(IObservable<T> observable)
+        {
+            _observable = observable;
+        }
 
-        private readonly Func<IExcelObserver, IDisposable> _processSubscribe;
+        private readonly IObservable<T> _observable;
 
-        public IDisposable Subscribe(IExcelObserver observer) => _processSubscribe(observer);
+        public IDisposable Subscribe(IExcelObserver observer) =>
+            _observable.Subscribe(onNext: x => observer.OnNext(x),
+                                  onCompleted: observer.OnCompleted,
+                                  onError: observer.OnError);
     }
 }

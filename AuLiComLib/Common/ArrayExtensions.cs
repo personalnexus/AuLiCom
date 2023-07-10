@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Common
 {
-    internal static class ArrayExtensions
+    public static class ArrayExtensions
     {
-        internal static byte[] BlockCopy(this byte[] source)
+        public static byte[] BlockCopy(this byte[] source)
         {
             var result = new byte[source.Length];
             Buffer.BlockCopy(source, 0, result, 0, source.Length);
             return result;
         }
+
+        public static int[] ToIntegerArray(this double[] values) => values.Select(x => (int)x).ToArray();
     }
 }
