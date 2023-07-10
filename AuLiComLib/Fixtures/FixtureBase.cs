@@ -16,8 +16,12 @@ namespace AuLiComLib.Fixtures
         {
             Connection = connection;
             Name = "";
-
-            foreach (PropertyInfo? channelValuePropertyInfo in GetChannelValuePropertyInfos())
+            _channelValuePropertyInfos =
+                GetType()
+                .GetProperties()
+                .Where(x => x.PropertyType == typeof(ChannelValueProperty))
+                .ToArray();
+            foreach (PropertyInfo? channelValuePropertyInfo in _channelValuePropertyInfos)
             {
                 channelValuePropertyInfo.SetValue(this, new ChannelValueProperty(this, ChannelCount++));
             }
@@ -32,23 +36,21 @@ namespace AuLiComLib.Fixtures
                                                                StartChannel: StartChannel,
                                                                Alias: Alias);
 
-        public IEnumerable<FixtureChannelInfo> GetFixtureChannelInfos()
-        {
-            return GetChannelValuePropertyInfos()
-                .Select(x => new FixtureChannelInfo(
-                    FixtureName: Name,
-                    FixtureType: GetType().Name,
-                    FixtureAlias: Alias,
-                    ChannelName: x.Name,
-                    StartChannel: ((ChannelValueProperty)x.GetValue(this)).Channel));
-        }
+        public IEnumerable<FixtureChannelInfo> GetFixtureChannelInfos() =>
+            _channelValuePropertyInfos
+            .Select(x => new FixtureChannelInfo(
+                FixtureName: Name,
+                FixtureType: GetType().Name,
+                FixtureAlias: Alias,
+                ChannelName: x.Name,
+                StartChannel: GetChannelValue(x).Channel));
 
-        private IEnumerable<PropertyInfo> GetChannelValuePropertyInfos()
-        {
-            return GetType()
-                   .GetProperties()
-                   .Where(x => x.PropertyType == typeof(ChannelValueProperty));
-        }
+        // Cached accessors for channel value properties
+
+        private PropertyInfo[] _channelValuePropertyInfos;
+
+        private ChannelValue GetChannelValue(PropertyInfo x) => ((ChannelValueProperty)x.GetValue(this)).ChannelValue;
+
 
         // JSON configurable properties
 

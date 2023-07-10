@@ -26,6 +26,8 @@ namespace AuLiComLib.Protocols
             set => _propertyHolder.Connection.SetValue(ChannelValue.FromByte(Channel, value));
         }
 
+        public ChannelValue ChannelValue => ChannelValue.FromByte(Channel, Value);
+
         public static implicit operator byte(ChannelValueProperty valueProperty) => valueProperty.Value;
     }
 }
