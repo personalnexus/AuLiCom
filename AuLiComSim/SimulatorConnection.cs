@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Protocols;
+﻿using AuLiComLib.Common;
+using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +11,7 @@ using System.Windows.Media;
 
 namespace AuLiComSim
 {
-    public class SimulatorConnection : IConnection, IDisposable
+    public class SimulatorConnection : VersionedBase, IConnection, IDisposable
     {
         private StageView _stageView;
         private readonly Thread _uiThread;
@@ -41,6 +42,7 @@ namespace AuLiComSim
         public void SendUniverse(IReadOnlyUniverse universe)
         {
             CurrentUniverse = universe;
+            Version++;
 
             _stageView.Dispatcher.InvokeAsync(() =>
             {
@@ -48,6 +50,11 @@ namespace AuLiComSim
                 _stageView.Led2.FillWithRgbFrom(universe, startingAtChannel: 7);
                 _stageView.Led3.FillWithRgbFrom(universe, startingAtChannel: 10);
             });
+        }
+
+        public IDisposable Subscribe(IObserver<IConnection> observer)
+        {
+            throw new NotImplementedException();
         }
     }
 }
