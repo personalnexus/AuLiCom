@@ -81,6 +81,11 @@ namespace AuLiComLib.Fixtures
             .Values
             .Select(x => x.GetFixtureInfo());
 
+        public int GetChannelCountTotal() =>
+            _fixturesByName
+            .Values
+            .Sum(x => x.ChannelCount);
+
         /// <summary>
         /// Return all channels where the channel name, fixture name or alias contains the given nameOrAliasSubstring
         /// </summary>

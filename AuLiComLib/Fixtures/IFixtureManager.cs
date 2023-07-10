@@ -9,5 +9,6 @@ namespace AuLiComLib.Fixtures
         T Get<T>(string name) where T : IFixture;
         IEnumerable<FixtureChannelInfo> GetFixtureChannelInfos();
         IEnumerable<FixtureInfo> GetFixtureInfos();
+        int GetChannelCountTotal();
     }
 }

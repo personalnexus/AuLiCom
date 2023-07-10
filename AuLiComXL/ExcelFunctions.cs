@@ -124,6 +124,13 @@ namespace AuLiComXL
             .ChannelCount;
 
         [ExcelFunction]
+        public static int AuLiComGetFixtureChannelCountTotal(object fixtures) =>
+            ExcelRuntime
+            .GetInstance()
+            .FixtureManager
+            .GetChannelCountTotal();
+
+        [ExcelFunction]
         public static object[,] AuLiComGetFixtureChannelInfos(object fixtures) =>
             ExcelRuntime
             .GetInstance()
