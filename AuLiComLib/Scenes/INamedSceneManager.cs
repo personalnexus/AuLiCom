@@ -10,7 +10,10 @@ namespace AuLiComLib.Scenes
 
         void RemoveScene(string name);
 
-        void SetSingleActiveScene(string name, TimeSpan fadeTime);
+        void ActivateSingleScene(string name, TimeSpan fadeTime);
+
+        void DeactivateAllScenes();
+
         int Version { get; }
     }
 }

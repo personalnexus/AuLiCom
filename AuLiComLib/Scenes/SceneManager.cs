@@ -46,7 +46,7 @@ namespace AuLiComLib.Scenes
             }
         }
 
-        public void SetSingleActiveScene(IScene newScene, TimeSpan fadeTime)
+        public void ActivateSingleScene(IScene newScene, TimeSpan fadeTime)
         {
             if (newScene is Scene sceneObject)
             {
@@ -54,6 +54,12 @@ namespace AuLiComLib.Scenes
                 _activeScenes.Add(sceneObject);
                 ProcessActiveScenesChange(fadeTime);
             }
+        }
+
+        public void DeactivateAllScenes()
+        {
+            _activeScenes.Clear();
+            ProcessActiveScenesChange(TimeSpan.Zero);
         }
 
         private void ProcessActiveScenesChange(TimeSpan fadeTime)

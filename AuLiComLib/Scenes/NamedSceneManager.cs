@@ -1,5 +1,5 @@
 ﻿using AuLiComLib.Common;
-﻿using AuLiComLib.Protocols;
+using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,23 +19,18 @@ namespace AuLiComLib.Scenes
 
         public override IScene SetScene(string name, IReadOnlyUniverse universe)
         {
-            try
-            {
-                IScene newScene = base.SetScene(name, universe);
+            IScene newScene = base.SetScene(name, universe);
             if (!_scenesByName.TryGetValue(name, out IScene oldScene))
-                {
-                    // This is an entirely new scene
+            {
+                // This is an entirely new scene
                 _scenesByName[name] = newScene;
                 _observers.OnNext(this);
-                }
-                else
-                {
+            }
+            else
+            {
                 // This was an existing scene, but with updated values
-                    if (!oldScene.Universe.HasSameValuesAs(newScene.Universe))
-                    {
-                        // This was an existing scene, but with updated values
-                        Version++;
-                    }
+                if (!oldScene.Universe.HasSameValuesAs(newScene.Universe))
+                {
                     if (IsActiveScene(oldScene))
                     {
                         DeactivateScene(oldScene, fadeTime: TimeSpan.Zero);
@@ -45,18 +40,12 @@ namespace AuLiComLib.Scenes
                     _observers.OnNext(this);
                 }
             }
-                return newScene;
-            }
-            catch
-            (Exception ex)
-            {
-                return null;
-            }
+            return newScene;
         }
 
         public void RemoveScene(string name) => _scenesByName.Remove(name);
 
-        public void SetSingleActiveScene(string name, TimeSpan fadeTime) => SetSingleActiveScene(_scenesByName[name], fadeTime);
+        public void ActivateSingleScene(string name, TimeSpan fadeTime) => ActivateSingleScene(_scenesByName[name], fadeTime);
 
         public IReadOnlyDictionary<string, IScene> ScenesByName => _scenesByName;
 

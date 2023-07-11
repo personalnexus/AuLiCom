@@ -26,11 +26,26 @@ namespace AuLiComXL
             .InitializeWithOnlyDmxPort()
             .ToDelimitedString(Environment.NewLine);
 
-        public void SetSingleActiveScene(string name, double fadeTimeInSeconds) => 
+        // Scenes
+
+        public int GetSceneCount() =>
             ExcelRuntime
             .GetInstance()
             .SceneManager
-            .SetSingleActiveScene(name, TimeSpan.FromSeconds(fadeTimeInSeconds));
+            .ScenesByName
+            .Count;
+
+        public void SetSingleActiveScene(string name, double fadeTimeInSeconds) =>
+            ExcelRuntime
+            .GetInstance()
+            .SceneManager
+            .ActivateSingleScene(name, TimeSpan.FromSeconds(fadeTimeInSeconds));
+
+        public void DeactivateAllScenes() =>
+            ExcelRuntime
+            .GetInstance()
+            .SceneManager
+            .DeactivateAllScenes();
 
         public void CreateSceneFromCurrentUniverse(string name) =>
             ExcelRuntime

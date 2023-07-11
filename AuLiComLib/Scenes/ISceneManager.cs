@@ -11,6 +11,6 @@ namespace AuLiComLib.Scenes
         void ActivateScene(IScene newScene, TimeSpan fadeTime);
         void DeactivateScene(IScene newScene, TimeSpan fadeTime);
 
-        void SetSingleActiveScene(IScene newScene, TimeSpan fadeTime);
+        void ActivateSingleScene(IScene newScene, TimeSpan fadeTime);
     }
 }

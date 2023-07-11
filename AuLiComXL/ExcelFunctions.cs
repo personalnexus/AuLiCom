@@ -33,8 +33,8 @@ namespace AuLiComXL
             .GetInstance()
             .SceneManager
             .Select(sceneManager => sceneManager
-            .ScenesByName
-            .Keys
+                                    .ScenesByName
+                                    .Keys
                                     .ToVerticalRange<string>())
             .Observe<object[,]>(callerParameters: null);
 
@@ -46,11 +46,11 @@ namespace AuLiComXL
             .RemoveScene(name);
 
         [ExcelFunction]
-        public static void AuLiComSetSingleActiveScene(object connection, string name, double fadeTimeInSeconds) =>
+        public static void AuLiComActivateSingleScene(string name, double fadeTimeInSeconds) =>
             ExcelRuntime
             .GetInstance()
             .SceneManager
-            .SetSingleActiveScene(name, TimeSpan.FromSeconds(fadeTimeInSeconds));
+            .ActivateSingleScene(name, TimeSpan.FromSeconds(fadeTimeInSeconds));
 
         [ExcelFunction]
         public static object AuLiComGetScenesVersion() =>
@@ -84,7 +84,7 @@ namespace AuLiComXL
             .GetInstance()
             .DmxConnection
             .Select(connection => connection
-            .GetValue(channel)
+                                  .GetValue(channel)
                                   .ValueAsPercentage)
             .Observe<int>();
 
@@ -156,8 +156,8 @@ namespace AuLiComXL
             .GetInstance()
             .FixtureManager
             .Select(fixtureManager => fixtureManager
-            .GetFixtureChannelInfos()
-            .Select(x => new object[] { x.FixtureName, x.FixtureType, x.ChannelName, x.StartChannel })
+                                      .GetFixtureChannelInfos()
+                                      .Select(x => new object[] { x.FixtureName, x.FixtureType, x.ChannelName, x.StartChannel })
                                       .To2dRange())
             .Observe<object[,]>();
 
