@@ -26,9 +26,15 @@ AuLiComSim is a library containing an implementation of `IConnection` that shows
 
 ## AuLiComXL
 
-AuLiComXL is an Excel plugin to manage channel values, fixtures and scenes. As of July 2023, this is the most complete interface to AuLiCom's functionality.
+AuLiComXL is an Excel plugin to manage channel values, fixtures and scenes. The plugin exposes formulas to be used in a spreadsheet as well as a COM server to be used from VBA.
 
-![AuLiComXL controlling an LED bar](/doc/Excel/AuLiComXL.png)
+The following screenshots from [This Excel spreadsheet](/doc/Excel/TestWithComServer.xlsm) show what AuLiComXL can do. As of July 2023, this is the most complete interface to AuLiCom's functionality.
+
+![AuLiComXL showing channels of an LED bar](/doc/Excel/Excel-Channels.png)
+
+![AuLiComXL switching between pre-defined scenes](/doc/Excel/Excel-Scenes.png)
+
+![AuLiComXL definition of fixtures](/doc/Excel/Excel-Fixtures.png)
 
 # Further Reading
 
