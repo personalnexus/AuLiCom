@@ -33,7 +33,7 @@ namespace AuLiComLib.Protocols
 
         public bool HasChanges => _changes.Length > 0;
 
-        public void Apply()
+        public async Task Apply()
         {
             if (HasChanges)
             {
@@ -43,7 +43,7 @@ namespace AuLiComLib.Protocols
                     .Select(x => x.GetNextValue(step))
                     .ToReadOnlyUniverse()
                     .SendTo(_connection);
-                    Thread.Sleep(FadeIntervalInMilliseconds);
+                    await Task.Delay(FadeIntervalInMilliseconds);
                 }
             }
         }
