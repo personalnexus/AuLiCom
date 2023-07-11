@@ -43,13 +43,13 @@ namespace AuLiComLib.Fixtures
                 FixtureType: GetType().Name,
                 FixtureAlias: Alias,
                 ChannelName: x.Name,
-                StartChannel: GetChannelValue(x).Channel));
+                StartChannel: GetChannelValueProperty(x).Channel));
 
         // Cached accessors for channel value properties
 
         private PropertyInfo[] _channelValuePropertyInfos;
 
-        private ChannelValue GetChannelValue(PropertyInfo x) => ((ChannelValueProperty)x.GetValue(this)).ChannelValue;
+        private ChannelValueProperty GetChannelValueProperty(PropertyInfo x) => (ChannelValueProperty)x.GetValue(this);
 
 
         // JSON configurable properties
