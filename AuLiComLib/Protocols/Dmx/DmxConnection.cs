@@ -6,17 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AuLiComLib.Common;
+using AuLiComLib.Fixtures;
 
 namespace AuLiComLib.Protocols.Dmx
 {
-    public class DmxConnection : VersionedBase, IConnection
+    public class DmxConnection : IConnection
     {
         public DmxConnection(ISerialPort port,
                              IAsyncExecutor executor)
         {
             CurrentUniverse = Universe.CreateEmptyReadOnly();
             _port = port;
-            _observers = new HashSet<IObserver<IConnection>>();
             _cancellationTokenSource = new CancellationTokenSource();
             _sendLoopQueue = new BlockingCollection<IReadOnlyUniverse>(boundedCapacity: 2); // TODO: extract to configuration
             
@@ -75,18 +75,14 @@ namespace AuLiComLib.Protocols.Dmx
         {
             _sendLoopQueue.Add(universe, _cancellationTokenSource.Token);
             CurrentUniverse = universe;
-            Version++;
-            _observers.ForEach(x => x.OnNext(this));
+            _observers.OnNext(this);
         }
 
         // IObservable
 
-        private readonly HashSet<IObserver<IConnection>> _observers;
+        private readonly Observers<IConnection> _observers = new();
+        public IDisposable Subscribe(IObserver<IConnection> observer) => _observers.Subscribe(observer);
 
-        public IDisposable Subscribe(IObserver<IConnection> observer)
-        {
-            _observers.Add(observer);
-            return new ActionDisposable(() => _observers.Remove(observer));
-        }
+        public int Version => _observers.Version;
     }
 }

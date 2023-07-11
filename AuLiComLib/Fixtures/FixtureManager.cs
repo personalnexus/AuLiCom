@@ -14,10 +14,11 @@ namespace AuLiComLib.Fixtures
     /// <summary>
     /// Manages the fixtures which in turn have one or more channels.
     /// </summary>
-    public class FixtureManager : VersionedBase, IFixtureManager
+    public class FixtureManager : IFixtureManager
     {
         public FixtureManager(params IFixture[] fixtures)
         {
+            _observers = new();
             _fixturesByName = new();
             _fixturesByChannel = new();
             SetFixtures(fixtures);
@@ -45,7 +46,6 @@ namespace AuLiComLib.Fixtures
             bool result = _fixturesByName.TryAdd(fixture.Name, fixture);
             if (result)
             {
-                Version++;
                 try
                 {
                     foreach (int channel in Enumerable.Range(fixture.StartChannel, fixture.ChannelCount))
@@ -59,10 +59,12 @@ namespace AuLiComLib.Fixtures
                             _fixturesByChannel.Add(channel, fixture);
                         }
                     }
+                    _observers.OnNext(this);
                 }
                 catch
                 {
                     _fixturesByName.Remove(fixture.Name);
+                    _observers.OnNext(this);
                     throw;
                 }
             }
@@ -101,5 +103,13 @@ namespace AuLiComLib.Fixtures
             channels = channelsList;
             return channelsList.Any();
         }
+
+        // IObservable
+
+        private readonly Observers<IFixtureManager> _observers = new();
+
+        public IDisposable Subscribe(IObserver<IFixtureManager> observer) => _observers.Subscribe(observer);
+
+        public int Version => _observers.Version;
     }
 }

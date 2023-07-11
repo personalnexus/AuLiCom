@@ -15,7 +15,7 @@ namespace AuLiComXL
         // Scenes
 
         [ExcelFunction]
-        public static string AuLiComSetScene(object connection, string name, double[] channels, double[] values)
+        public static string AuLiComSetScene(string name, double[] channels, double[] values)
         {
             IReadOnlyUniverse universe = channels
             .Zip(values, (channel, value) => ChannelValue.FromPercentage((int)channel, (int)value))
@@ -28,16 +28,18 @@ namespace AuLiComXL
         }
 
         [ExcelFunction]
-        public static object AuLiComGetScenes(object scenes) =>
+        public static object AuLiComGetScenes() =>
             ExcelRuntime
             .GetInstance()
             .SceneManager
+            .Select(sceneManager => sceneManager
             .ScenesByName
             .Keys
-            .ToVerticalRange<string>();
+                                    .ToVerticalRange<string>())
+            .Observe<object[,]>(callerParameters: null);
 
         [ExcelFunction]
-        public static void AuLiComRemoveScene(object connection, string name) =>
+        public static void AuLiComRemoveScene(string name) =>
             ExcelRuntime
             .GetInstance()
             .SceneManager
@@ -51,11 +53,12 @@ namespace AuLiComXL
             .SetSingleActiveScene(name, TimeSpan.FromSeconds(fadeTimeInSeconds));
 
         [ExcelFunction]
-        public static object AuLiComGetScenesVersion(object connection) =>
+        public static object AuLiComGetScenesVersion() =>
             ExcelRuntime
             .GetInstance()
             .SceneManager
-            .ObserveVersion();
+            .Select(x => x.Version)
+            .Observe<int>();
 
 
         // DMX Ports
@@ -76,12 +79,14 @@ namespace AuLiComXL
             .Initialize(portName);
 
         [ExcelFunction]
-        public static int AuLiComGetChannelValue(object channelsVersion, int channel) =>
+        public static object AuLiComGetChannelValue(int channel) =>
             ExcelRuntime
             .GetInstance()
             .DmxConnection
+            .Select(connection => connection
             .GetValue(channel)
-            .ValueAsPercentage;
+                                  .ValueAsPercentage)
+            .Observe<int>();
 
         [ExcelFunction]
         public static object AuLiComGetChannelValues(double[] channels)
@@ -97,23 +102,24 @@ namespace AuLiComXL
         }
 
         [ExcelFunction]
-        public static void AuLiComSetChannelValue(object connection, int channel, int percentage) =>
+        public static void AuLiComSetChannelValue(int channel, int percentage) =>
             ExcelRuntime
             .GetInstance()
             .DmxConnection
             .SetValue(ChannelValue.FromPercentage(channel, percentage));
 
         [ExcelFunction]
-        public static object AuLiComGetChannelsVersion(object connection) =>
+        public static object AuLiComGetChannelsVersion() =>
             ExcelRuntime
             .GetInstance()
             .DmxConnection
-            .ObserveVersion();
+            .Select(x => x.Version)
+            .Observe<int>();
 
         // Recalculation
 
         [ExcelFunction]
-        public static double AuLiComSetTimer(object connection, double milliseconds) =>
+        public static double AuLiComSetTimer(double milliseconds) =>
             ExcelRuntime
             .SetRecalculationTimer(milliseconds);
 
@@ -121,7 +127,7 @@ namespace AuLiComXL
         // Fixtures
 
         [ExcelFunction]
-        public static object[,] AuLiComGetFixtureTypes(object connection) =>
+        public static object[,] AuLiComGetFixtureTypes() =>
             ExcelRuntime
             .GetInstance()
             .FixtureFactory
@@ -129,7 +135,7 @@ namespace AuLiComXL
             .ToVerticalRange();
 
         [ExcelFunction]
-        public static int AuLiComGetFixtureChannelCount(object fixtures, string name) =>
+        public static int AuLiComGetFixtureChannelCount(string name) =>
             ExcelRuntime
             .GetInstance()
             .FixtureManager
@@ -137,20 +143,23 @@ namespace AuLiComXL
             .ChannelCount;
 
         [ExcelFunction]
-        public static int AuLiComGetFixtureChannelCountTotal(object fixtures) =>
+        public static object AuLiComGetFixtureChannelCountTotal() =>
             ExcelRuntime
             .GetInstance()
             .FixtureManager
-            .GetChannelCountTotal();
+            .Select(x => x.GetChannelCountTotal())
+            .Observe<int>();
 
         [ExcelFunction]
-        public static object[,] AuLiComGetFixtureChannelInfos(object fixtures) =>
+        public static object AuLiComGetFixtureChannelInfos(object fixtures) =>
             ExcelRuntime
             .GetInstance()
             .FixtureManager
+            .Select(fixtureManager => fixtureManager
             .GetFixtureChannelInfos()
             .Select(x => new object[] { x.FixtureName, x.FixtureType, x.ChannelName, x.StartChannel })
-            .To2dRange();
+                                      .To2dRange())
+            .Observe<object[,]>();
 
         [ExcelFunction]
         public static string AuLiComSetFixture(object connection, string name, string type, int channel, string alias = "")
@@ -172,7 +181,8 @@ namespace AuLiComXL
             ExcelRuntime
             .GetInstance()
             .FixtureManager
-            .ObserveVersion();
+            .Select(x => x.Version)
+            .Observe<int>();
 
 
         // Commands

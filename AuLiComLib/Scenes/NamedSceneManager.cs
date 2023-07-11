@@ -1,3 +1,4 @@
+﻿using AuLiComLib.Common;
 ﻿using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,15 @@ namespace AuLiComLib.Scenes
             try
             {
                 IScene newScene = base.SetScene(name, universe);
-                if (!_scenesByName.Remove(name, out IScene oldScene))
+            if (!_scenesByName.TryGetValue(name, out IScene oldScene))
                 {
                     // This is an entirely new scene
-                    Version++;
+                _scenesByName[name] = newScene;
+                _observers.OnNext(this);
                 }
                 else
                 {
+                // This was an existing scene, but with updated values
                     if (!oldScene.Universe.HasSameValuesAs(newScene.Universe))
                     {
                         // This was an existing scene, but with updated values
@@ -38,8 +41,10 @@ namespace AuLiComLib.Scenes
                         DeactivateScene(oldScene, fadeTime: TimeSpan.Zero);
                         ActivateScene(newScene, fadeTime: TimeSpan.Zero);
                     }
+                    _scenesByName[name] = newScene;
+                    _observers.OnNext(this);
                 }
-                _scenesByName.Add(name, newScene);
+            }
                 return newScene;
             }
             catch
@@ -54,5 +59,12 @@ namespace AuLiComLib.Scenes
         public void SetSingleActiveScene(string name, TimeSpan fadeTime) => SetSingleActiveScene(_scenesByName[name], fadeTime);
 
         public IReadOnlyDictionary<string, IScene> ScenesByName => _scenesByName;
+
+        // IObservable
+
+        private readonly Observers<INamedSceneManager> _observers = new();
+        public IDisposable Subscribe(IObserver<INamedSceneManager> observer) => _observers.Subscribe(observer);
+
+        public int Version => _observers.Version;
     }
 }

@@ -4,12 +4,13 @@ using System.Xml.Linq;
 
 namespace AuLiComLib.Scenes
 {
-    public interface INamedSceneManager: ISceneManager, IVersioned
+    public interface INamedSceneManager: ISceneManager, IObservable<INamedSceneManager>
     {
         IReadOnlyDictionary<string, IScene> ScenesByName { get; }
 
         void RemoveScene(string name);
 
         void SetSingleActiveScene(string name, TimeSpan fadeTime);
+        int Version { get; }
     }
 }

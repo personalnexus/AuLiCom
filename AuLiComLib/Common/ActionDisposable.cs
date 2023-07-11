@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Common
 {
-    public class ActionDisposable : VersionedBase, IDisposable
+    public class ActionDisposable : IDisposable
     {
         public ActionDisposable(Action action) => _action = action;
 

@@ -11,21 +11,12 @@ namespace AuLiComXL
 {
     internal static class ExcelObservableExtensions
     {
-        public static object Observe<T>(this IObservable<T> observable, object callerParameters, [CallerMemberName] string callerFunctionName = null) =>
+        public static object Observe<T>(this IObservable<T> observable, [CallerMemberName] string callerFunctionName = null) =>
+            Observe<T>(observable, null, callerFunctionName);
+
+        public static object Observe<T>(this IObservable<T> observable, object? callerParameters, [CallerMemberName] string callerFunctionName = null) =>
             ExcelAsyncUtil.Observe(callerFunctionName: callerFunctionName,
                                    callerParameters: callerParameters,
                                    observableSource: () => new ExcelObservable<T>(observable));
-
-        public static object ObserveVersion(this IVersioned versioned, [CallerMemberName] string callerFunctionName = null) =>
-            ExcelAsyncUtil.Observe(callerFunctionName: callerFunctionName,
-                                   callerParameters: null,
-                                   observableSource: () =>
-                                       new ExcelVersionObservable(observer =>
-                                       {
-                                           var eventHandler = new EventHandler<VersionChangedEventArgs>((sender, EventArgs) => observer.OnNext(versioned.Version));
-                                           versioned.VersionChanged += eventHandler;
-                                           return () => versioned.VersionChanged -= eventHandler;
-                                       })
-                                   );
     }
 }

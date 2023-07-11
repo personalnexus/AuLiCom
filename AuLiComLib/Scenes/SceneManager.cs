@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Scenes
 {
-    public class SceneManager : VersionedBase, ISceneManager
+    public class SceneManager : ISceneManager
     {
         public SceneManager(IConnection connection)
         {

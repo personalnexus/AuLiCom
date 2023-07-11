@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComTest.Mocks
 {
-    internal class MockConnection : VersionedBase, IConnection
+    internal class MockConnection : IConnection
     {
         public MockConnection(IReadOnlyUniverse initialUniverse)
         {
@@ -25,12 +25,15 @@ namespace AuLiComTest.Mocks
         public void SendUniverse(IReadOnlyUniverse universe)
         {
             CurrentUniverse = universe;
-            Version++;
+            _observers.OnNext(this);
         }
 
-        public IDisposable Subscribe(IObserver<IConnection> observer)
-        {
-            throw new NotImplementedException();
-        }
+        // IObservable
+
+        private readonly Observers<IConnection> _observers = new();
+
+        public IDisposable Subscribe(IObserver<IConnection> observer) => _observers.Subscribe(observer);
+
+        public int Version => _observers.Version;
     }
 }
