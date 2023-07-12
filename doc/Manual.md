@@ -33,3 +33,7 @@ The following is an incomplete list of how different channel sections and adjust
 - ``20-25 + 27-30 @ 80``	set channels 20 through 25 and 27 through 30 to 80% 
 - ``Red @ 90``	set channels on fixtures where channel name, fixture name or lias contains 'red' (ignoring case) to 90%
 - ``31-33 @``	set channels 31 through 33 to 100%
+
+## Ease of Use
+
+To make entering the <kbd>@</kbd> character easier, I have remapped it to <kbd>NumLock</kbd> using [PowerToys Keyboard Manager](https://learn.microsoft.com/en-us/windows/powertoys/keyboard-manager). This way, all the keys needed to enter basic commands are available on the keypad for single handed use and I only need to use my second hand with the keyboard when entering channel/fixture names.
