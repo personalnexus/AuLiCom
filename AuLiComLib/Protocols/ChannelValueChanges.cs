@@ -23,7 +23,6 @@ namespace AuLiComLib.Protocols
                         .Select(x => new ChannelValueChange(currentChannelValue: x,
                                                             targetValue: targetUniverse.GetValue(x.Channel).Value,
                                                             stepCount: _stepCount))
-                        .Where(x => x.HasChange)
                         .ToArray();
         }
 
@@ -31,7 +30,7 @@ namespace AuLiComLib.Protocols
         private readonly IConnection _connection;
         private readonly ChannelValueChange[] _changes;
 
-        public bool HasChanges => _changes.Length > 0;
+        public bool HasChanges => _changes.Any(x => x.HasChange);
 
         public async Task Apply()
         {

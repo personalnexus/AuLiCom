@@ -66,6 +66,32 @@ namespace AuLiComTest
                 }
             }
 
+            [TestMethod]
+            public void SomeTargetValuesAreDifferentSomeTheSame_TargetValuesAreApplied()
+            {
+                // Arrange
+                Arrange(out MockConnection connection);
+                IReadOnlyUniverse targetUniverse = connection
+                                                   .CurrentUniverse
+                                                   .ToMutableUniverse()
+                                                   .SetValue(ChannelValue.FromByte(2, 32)) // leave channel 1 unchanged
+                                                   .AsReadOnly();
+                var changes = new ChannelValueChanges(connection, targetUniverse, TimeSpan.FromMilliseconds(200));
+
+                // Act
+                Action act = () => changes.Apply().GetAwaiter().GetResult();
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    changes.HasChanges.Should().BeTrue();
+                    act.ExecutionTime().Should()
+                        .BeGreaterThanOrEqualTo(TimeSpan.FromMilliseconds(200)).And
+                        .BeLessThanOrEqualTo(TimeSpan.FromMilliseconds(300));
+                    connection.CurrentUniverse.GetValuesCopy().Should().BeEquivalentTo(targetUniverse.GetValuesCopy());
+                }
+            }
+
             private static void Arrange(out MockConnection connection)
             {
                 IReadOnlyUniverse initialUniverse = Universe
