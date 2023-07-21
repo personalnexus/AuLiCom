@@ -16,7 +16,11 @@ namespace AuLiComLib.Common
             _parameters = parameters;
         }
 
-        public void Register<TConcrete>() where TConcrete : T => _constructorByTypeName[typeof(TConcrete).Name] = typeof(TConcrete);
+        public TypedJsonConverter<T> Register<TConcrete>() where TConcrete : T
+        {
+            _constructorByTypeName[typeof(TConcrete).Name] = typeof(TConcrete);
+            return this;
+        }
 
         private readonly Dictionary<string, Type> _constructorByTypeName;
         private readonly object[] _parameters;
