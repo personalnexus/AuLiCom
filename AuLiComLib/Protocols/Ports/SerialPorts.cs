@@ -12,6 +12,8 @@ namespace AuLiComLib.Protocols
     {
         public static readonly ISerialPort Empty = new EmptySerialPort();
 
+        public const string EmptyPortName = "Empty";
+
         public static bool IsNotEmpty(ISerialPort port) => !ReferenceEquals(port, SerialPorts.Empty);
 
         private class EmptySerialPort : ISerialPort
@@ -22,7 +24,7 @@ namespace AuLiComLib.Protocols
 
             public bool BreakState { get; set; }
 
-            public string PortName => "Empty";
+            public string PortName => EmptyPortName;
 
             public void Close() => IsOpen = false;
 

@@ -59,7 +59,11 @@ namespace AuLiComXL
         {
             lock (_instanceInitializationLock)
             {
-                if (GetDmxPorts(forceRefresh: false).TryGetValue(portName, out ISerialPort? port))
+                if (SerialPorts.EmptyPortName.Equals(portName, StringComparison.OrdinalIgnoreCase))
+                {
+                    Initialize(SerialPorts.Empty);
+                }
+                else if (GetDmxPorts(forceRefresh: false).TryGetValue(portName, out ISerialPort? port))
                 {
                     Initialize(port);
                 }
