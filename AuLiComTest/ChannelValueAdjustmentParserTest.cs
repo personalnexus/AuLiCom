@@ -1,4 +1,4 @@
-﻿using AuLiComLib.CommandExecutor.ChannelValueCommands;
+﻿using AuLiComLib.CommandExecutor.ChannelValueAdjustments;
 using AuLiComLib.Protocols;
 using AuLiComTest.Mocks;
 using FluentAssertions;
@@ -202,7 +202,7 @@ namespace AuLiComTest
                     { "Green2", 5 },
                     { "Blue2", 6 },
                 };
-                var result = new ChannelValueAdjustmentParser(fixtures);
+                var result = new ChannelValueAdjustmentParser(fixtures, null);  //TODO: use mock 
                 return result;
             }
 

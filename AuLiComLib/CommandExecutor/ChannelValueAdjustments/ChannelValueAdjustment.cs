@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-namespace AuLiComLib.CommandExecutor.ChannelValueCommands
+namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 {
     public readonly struct ChannelValueAdjustment
     {

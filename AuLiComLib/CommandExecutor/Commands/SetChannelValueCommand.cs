@@ -1,4 +1,4 @@
-﻿using AuLiComLib.CommandExecutor.ChannelValueCommands;
+﻿using AuLiComLib.CommandExecutor.ChannelValueAdjustments;
 using AuLiComLib.Common;
 using AuLiComLib.Protocols;
 using System;

@@ -1,6 +1,6 @@
 ﻿using AuLiComLib.Protocols;
 
-namespace AuLiComLib.CommandExecutor.ChannelValueCommands
+namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 {
     public class ChannelValueAdjustmentStrategyAddPercentage : IChannelValueAdjustmentStrategy
     {

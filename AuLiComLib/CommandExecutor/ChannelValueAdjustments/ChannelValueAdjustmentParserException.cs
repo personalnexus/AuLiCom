@@ -1,4 +1,4 @@
-﻿namespace AuLiComLib.CommandExecutor.ChannelValueCommands
+﻿namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 {
     internal class ChannelValueAdjustmentParserException : ArgumentException
     {
