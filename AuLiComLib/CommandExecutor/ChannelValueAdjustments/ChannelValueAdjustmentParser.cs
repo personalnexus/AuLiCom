@@ -12,13 +12,17 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 {
     public class ChannelValueAdjustmentParser
     {
-        public ChannelValueAdjustmentParser(ICommandFixtures fixtures)
+        public ChannelValueAdjustmentParser(ICommandFixtures fixtures,
+                                            IChannelValueAdjustmentProvider previousAdjustmentProvider)
         {
             _fixtures = fixtures;
+            _previousAdjustmentProvider = previousAdjustmentProvider;
         }
 
         private readonly ICommandFixtures _fixtures;
+        private readonly IChannelValueAdjustmentProvider _previousAdjustmentProvider;
 
+        private const string RepeatPreviousIndicator = "*";
         private const char PercentageIndicator = '@';
         private const char SectionIndicator = '+';
         private const char RangeIndicator = '-';
@@ -41,16 +45,25 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
             bool result;
             try
             {
-                if (!command.TrySplitIn(2, PercentageIndicator, out string[] channelsAndPercentage))
+                if (command.Trim() == RepeatPreviousIndicator)
                 {
-                    throw new ChannelValueAdjustmentParserException($"Command has to contain exactly one '{PercentageIndicator}'.");
+                    result = true;
+                    channelValueAdjustment = _previousAdjustmentProvider.PreviousAdjustment;
+                    error = "";
                 }
-                ParseChannels(channelsAndPercentage[0].Trim(), out IEnumerable<int> channelNumbers);
-                ParseAdjustmentStrategy(channelsAndPercentage[1].Trim(), out IChannelValueAdjustmentStrategy adjustmentStrategy);
+                else
+                {
+                    if (!command.TrySplitIn(2, PercentageIndicator, out string[] channelsAndPercentage))
+                    {
+                        throw new ChannelValueAdjustmentParserException($"Command has to contain exactly one '{PercentageIndicator}'.");
+                    }
+                    ParseChannels(channelsAndPercentage[0].Trim(), out IEnumerable<int> channelNumbers);
+                    ParseAdjustmentStrategy(channelsAndPercentage[1].Trim(), out IChannelValueAdjustmentStrategy adjustmentStrategy);
 
-                result = true;
-                channelValueAdjustment = new ChannelValueAdjustment(channelNumbers, adjustmentStrategy);
-                error = "";
+                    result = true;
+                    channelValueAdjustment = new ChannelValueAdjustment(channelNumbers, adjustmentStrategy);
+                    error = "";
+                }
             }
             catch (ChannelValueAdjustmentParserException exception)
             {
@@ -63,36 +76,43 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 
         private void ParseChannels(string channelsString, out IEnumerable<int> channels)
         {
-            var channelsList = new SortedSet<int>();
-            string[] channelSections = channelsString.Split(SectionIndicator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            if (channelSections.Length == 0)
+            if (channelsString == RepeatPreviousIndicator)
             {
-                throw new ChannelValueAdjustmentParserException("Command has to contain at least one channel.");
+                channels = _previousAdjustmentProvider.PreviousAdjustment.Channels;
             }
+            else
+            {
+                var channelsList = new SortedSet<int>();
+                string[] channelSections = channelsString.Split(SectionIndicator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                if (channelSections.Length == 0)
+                {
+                    throw new ChannelValueAdjustmentParserException("Command has to contain at least one channel.");
+                }
 
-            foreach (string channelSection in channelSections)
-            {
-                if (channelSection.Contains(RangeIndicator))
+                foreach (string channelSection in channelSections)
                 {
-                    ParseChannelRange(channelSection, out int channelStart, out int channelEnd);
-                    Enumerable
-                    .Range(channelStart, channelEnd - channelStart + 1) // end is inclusive
-                    .AddTo(channelsList);
+                    if (channelSection.Contains(RangeIndicator))
+                    {
+                        ParseChannelRange(channelSection, out int channelStart, out int channelEnd);
+                        Enumerable
+                        .Range(channelStart, channelEnd - channelStart + 1) // end is inclusive
+                        .AddTo(channelsList);
+                    }
+                    else if (int.TryParse(channelSection, out int channel))
+                    {
+                        channelsList.Add(channel);
+                    }
+                    else if (_fixtures.TryGetChannelsByName(channelSection, out IEnumerable<int> namedChannels))
+                    {
+                        namedChannels.AddTo(channelsList);
+                    }
+                    else
+                    {
+                        throw new ChannelValueAdjustmentParserException($"There are no channels named '{channelSection}'.");
+                    }
                 }
-                else if (int.TryParse(channelSection, out int channel))
-                {
-                    channelsList.Add(channel);
-                }
-                else if (_fixtures.TryGetChannelsByName(channelSection, out IEnumerable<int> namedChannels))
-                {
-                    namedChannels.AddTo(channelsList);
-                }
-                else
-                {
-                    throw new ChannelValueAdjustmentParserException($"There are no channels named '{channelSection}'.");
-                }
+                channels = channelsList;
             }
-            channels = channelsList;
         }
 
         private static void ParseChannelRange(string channelGroup, out int channelStart, out int channelEnd)

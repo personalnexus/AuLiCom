@@ -12,17 +12,17 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
     {
         public ChannelValueAdjustment(IEnumerable<int> channels, IChannelValueAdjustmentStrategy adjustmentStrategy)
         {
-            _channels = channels;
+            Channels = channels.ToArray();
             _adjustmentStrategy = adjustmentStrategy;
         }
 
-        private readonly IEnumerable<int> _channels;
+        public int[] Channels { get; }
         private readonly IChannelValueAdjustmentStrategy _adjustmentStrategy;
 
         public IMutableUniverse ApplyTo(IReadOnlyUniverse source) 
         {
             var result = source.ToMutableUniverse();
-            foreach (int channel in _channels)
+            foreach (int channel in Channels)
             {
                 ChannelValue sourceChannel = source.GetValue(channel);
                 ChannelValue targetChannel = _adjustmentStrategy.ApplyTo(sourceChannel);
