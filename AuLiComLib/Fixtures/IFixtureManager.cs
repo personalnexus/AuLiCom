@@ -10,6 +10,5 @@ namespace AuLiComLib.Fixtures
         IEnumerable<FixtureChannelInfo> GetFixtureChannelInfos();
         IEnumerable<FixtureInfo> GetFixtureInfos();
         int GetChannelCountTotal();
-        int Version { get; }
     }
 }

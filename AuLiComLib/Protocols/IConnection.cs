@@ -9,6 +9,5 @@ namespace AuLiComLib.Protocols
     {
         IReadOnlyUniverse CurrentUniverse { get; }
         void SendUniverse(IReadOnlyUniverse universe);
-        int Version { get; }
     }
 }

@@ -8,6 +8,7 @@ namespace AuLiComLib.Common
 {
     public interface IObservableEx<out T>: IObservable<T>
     {
+        int Version { get; }
         void UpdateObservers();
     }
 }
