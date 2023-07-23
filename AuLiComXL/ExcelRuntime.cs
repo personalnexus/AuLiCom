@@ -159,5 +159,12 @@ namespace AuLiComXL
         }
 
         internal IEnumerable<string> GetLastCommandOutput() => _commandOutputWriter;
+
+        internal void UpdateObservables()
+        {
+            FixtureManager.UpdateObservers();
+            SceneManager.UpdateObservers();
+            DmxConnection.UpdateObservers();
+        }
     }
 }

@@ -26,6 +26,11 @@ namespace AuLiComXL
             .InitializeWithOnlyDmxPort()
             .ToDelimitedString(Environment.NewLine);
 
+        public void UpdateObservables() =>
+            ExcelRuntime
+            .GetInstance()
+            .UpdateObservables();
+
         // Scenes
 
         public int GetSceneCount() =>

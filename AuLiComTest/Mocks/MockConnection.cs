@@ -35,5 +35,7 @@ namespace AuLiComTest.Mocks
         public IDisposable Subscribe(IObserver<IConnection> observer) => _observers.Subscribe(observer);
 
         public int Version => _observers.Version;
+
+        public void UpdateObservers() => _observers.OnNext(this);
     }
 }

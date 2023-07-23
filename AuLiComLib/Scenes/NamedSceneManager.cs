@@ -55,5 +55,7 @@ namespace AuLiComLib.Scenes
         public IDisposable Subscribe(IObserver<INamedSceneManager> observer) => _observers.Subscribe(observer);
 
         public int Version => _observers.Version;
+
+        public void UpdateObservers() => _observers.OnNext(this);
     }
 }
