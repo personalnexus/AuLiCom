@@ -1,4 +1,5 @@
-﻿using AuLiComLib.CommandExecutor;
+﻿using AuLiComLib.Chasers;
+using AuLiComLib.CommandExecutor;
 using AuLiComLib.Common;
 using AuLiComLib.Fixtures;
 using AuLiComLib.Protocols;
@@ -127,6 +128,7 @@ namespace AuLiComXL
                                                   _commandOutputWriter,
                                                   FixtureManager,
                                                   new FileSystem());
+            ChaserManager = new ChaserManager(DmxConnection);
         }
 
         public void Dispose()
@@ -144,6 +146,7 @@ namespace AuLiComXL
         public INamedSceneManager SceneManager { get; }
         public IFixtureManager FixtureManager { get; }
         public ICommandExecutor CommandExecutor { get; }
+        public IChaserManager ChaserManager { get; }
 
 
         public IFixtureFactory FixtureFactory { get; }
@@ -165,6 +168,25 @@ namespace AuLiComXL
             FixtureManager.UpdateObservers();
             SceneManager.UpdateObservers();
             DmxConnection.UpdateObservers();
+        }
+
+        // Chasers
+
+        internal void SetChaser(string name, string kindName, string[] sceneNames)
+        {
+            if (!Enum.TryParse<ChaserKind>(kindName, out ChaserKind kind))
+            {
+                throw new ArgumentOutOfRangeException($"Value of {nameof(kindName)} is invalid: {kindName}.");
+            }
+            else
+            {
+                IScene[] scenes = sceneNames
+                                  .Select(x => SceneManager
+                                               .ScenesByName
+                                               .GetValueOrDefault(x) ?? throw new ArgumentException($"No scene named '{x}'."))
+                                  .ToArray();
+                ChaserManager.SetChaser(name, kind, scenes);
+            }
         }
     }
 }

@@ -208,5 +208,24 @@ namespace AuLiComXL
             .GetInstance()
             .GetLastCommandOutput()
             .ToVerticalRange();
+
+        // Chasers
+
+        [ExcelFunction]
+        public static void AuLiComSetChaser(string name, string kindName, string[] sceneNames) =>
+            ExcelRuntime
+            .GetInstance()
+            .SetChaser(name, kindName, sceneNames);
+
+        [ExcelFunction]
+        public static object AuLiComGetChasers(object connection) =>
+            ExcelRuntime
+            .GetInstance()
+            .ChaserManager
+            .Select(x => x
+                         .ChasersByName
+                         .Keys
+                         .ToVerticalRange())
+            .Observe<object[,]>();
     }
 }
