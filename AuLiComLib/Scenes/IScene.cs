@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Scenes
 {
-    public interface IScene
+    public interface IScene: IReadOnlyUniverseProvider
     {
         string Name { get; }
-        IReadOnlyUniverse Universe { get; }
     }
 }
