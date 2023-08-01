@@ -8,7 +8,7 @@ namespace AuLiComLib.Chasers
 {
     public enum ChaserKind
     {
-        Repeat,
+        Loop,
         BackAndForth,
         Random
     }

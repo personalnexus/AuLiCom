@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Chasers
 {
-    public class Chaser
+    public class Chaser : IChaser
     {
         public Chaser(string name,
-                      ChaserKind kind, 
-                      params IReadOnlyUniverse[] steps)
+                      ChaserKind kind,
+                      IReadOnlyUniverseProvider[] steps)
         {
             Name = name;
             Kind = kind;
@@ -20,6 +20,6 @@ namespace AuLiComLib.Chasers
 
         public string Name { get; }
         public ChaserKind Kind { get; }
-        public IReadOnlyUniverse[] Steps { get; }
+        public IReadOnlyUniverseProvider[] Steps { get; }
     }
 }
