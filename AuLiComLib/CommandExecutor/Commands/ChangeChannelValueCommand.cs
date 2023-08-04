@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.CommandExecutor.Commands
 {
-    internal class SetChannelValueCommand : ICommand, IChannelValueAdjustmentProvider
+    internal class ChangeChannelValueCommand : ICommand, IChannelValueAdjustmentProvider
     {
-        public SetChannelValueCommand(IConnection connection,
+        public ChangeChannelValueCommand(IConnection connection,
                                       ICommandWriteConsole console,
                                       ICommandFixtures fixtures)
         {
@@ -28,7 +28,7 @@ namespace AuLiComLib.CommandExecutor.Commands
         private readonly ICommandWriteConsole _console;
         private readonly ChannelValueAdjustmentParser _parser;
 
-        public string Description => "SET one or more channel values:\r\n" +
+        public string Description => "CHANGE one or more channel values:\r\n" +
                                      "    1@+10  increase channel 1 by 10 percentage points\r\n" +
                                      "    2+3@-15  lower channels 2 and 3 by 15 percentage points\r\n" +
                                      "    4-7@*3  triple the percentage values of channels 4 through 7\r\n" +

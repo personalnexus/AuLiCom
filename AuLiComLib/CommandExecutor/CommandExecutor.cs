@@ -29,7 +29,7 @@ namespace AuLiComLib.CommandExecutor
                 // TODO: register commands here when creating new ones
                 // SetChannelValueCommand must come last, because it does not start with a command
                 // name and therefore outputs an error when encountering an invalid command.
-                new SetChannelValueCommand(connection, console, fixtures),
+                new ChangeChannelValueCommand(connection, console, fixtures),
             };
         }
 
