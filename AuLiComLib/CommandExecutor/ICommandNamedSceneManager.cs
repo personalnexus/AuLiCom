@@ -10,5 +10,6 @@ namespace AuLiComLib.CommandExecutor
     public interface ICommandNamedSceneManager
     {
         void SetScene(string name, IReadOnlyUniverse universe);
+        void ActivateSingleScene(string name);
     }
 }

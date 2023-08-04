@@ -17,8 +17,10 @@ namespace AuLiComLib.Scenes
 
         void ICommandNamedSceneManager.SetScene(string name, IReadOnlyUniverse universe) => SetScene(name, universe);
 
+        void ICommandNamedSceneManager.ActivateSingleScene(string name) => ActivateSingleScene(name, TimeSpan.Zero);
+
         // INamedSceneManager
-        
+
         public override IScene SetScene(string name, IReadOnlyUniverse universe)
         {
             IScene newScene = base.SetScene(name, universe);

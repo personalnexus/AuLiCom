@@ -25,6 +25,7 @@ namespace AuLiComLib.CommandExecutor
                 new ListChannelValuesCommand(connection, console),
                 new LoadFileCommand(connection, console, fixtures, fileSystem),
                 new SetSceneCommand(connection, sceneManager),
+                new GetSceneCommand(sceneManager),
                 // TODO: register commands here when creating new ones
                 // SetChannelValueCommand must come last, because it does not start with a command
                 // name and therefore outputs an error when encountering an invalid command.
