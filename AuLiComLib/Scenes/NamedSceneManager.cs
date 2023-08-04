@@ -1,14 +1,10 @@
-﻿using AuLiComLib.Common;
+﻿using AuLiComLib.CommandExecutor;
+using AuLiComLib.Common;
 using AuLiComLib.Protocols;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AuLiComLib.Scenes
 {
-    public class NamedSceneManager : SceneManager, INamedSceneManager
+    public class NamedSceneManager : SceneManager, INamedSceneManager, ICommandNamedSceneManager
     {
         public NamedSceneManager(IConnection connection) : base(connection)
         {
@@ -17,6 +13,12 @@ namespace AuLiComLib.Scenes
 
         private readonly Dictionary<string, IScene> _scenesByName;
 
+        // ICommandSceneManager
+
+        void ICommandNamedSceneManager.SetScene(string name, IReadOnlyUniverse universe) => SetScene(name, universe);
+
+        // INamedSceneManager
+        
         public override IScene SetScene(string name, IReadOnlyUniverse universe)
         {
             IScene newScene = base.SetScene(name, universe);

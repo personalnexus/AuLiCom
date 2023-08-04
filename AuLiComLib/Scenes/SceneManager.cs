@@ -1,11 +1,4 @@
-﻿using AuLiComLib.Common;
-using AuLiComLib.Protocols;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AuLiComLib.Protocols;
 
 namespace AuLiComLib.Scenes
 {
@@ -19,6 +12,8 @@ namespace AuLiComLib.Scenes
 
         private readonly IConnection _connection;
         private readonly HashSet<Scene> _activeScenes;
+
+        // ISceneManager
 
         public IScene SetSceneFromCurrentUniverse(string name) => SetScene(name, _connection.CurrentUniverse);
 

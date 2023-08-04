@@ -15,7 +15,8 @@ namespace AuLiComLib.CommandExecutor
         public CommandLoopExecutor(IConnection connection, 
                                    ICommandReadWriteConsole console,
                                    ICommandFixtures fixtures,
-                                   IFileSystem fileSystem) : base(connection, console, fixtures, fileSystem)
+                                   ICommandNamedSceneManager sceneManager,
+                                   IFileSystem fileSystem) : base(connection, console, fixtures, sceneManager, fileSystem)
         {
             _console = console;
         }

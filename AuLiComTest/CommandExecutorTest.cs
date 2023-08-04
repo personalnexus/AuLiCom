@@ -44,7 +44,7 @@ namespace AuLiComTest
                 // Arrange
                 var connection = new MockConnection(Universe.CreateEmptyReadOnly());
                 var outputStringList = new StringListWriteConsole();
-                var commandExecutor = new CommandExecutor(connection, outputStringList, null, null); //TODO: use fixtures and file system mock
+                var commandExecutor = new CommandExecutor(connection, outputStringList, null, null, null); //TODO: use fixtures, scene manager and file system mock
 
                 // Act
                 string result = commandExecutor.Execute(command);

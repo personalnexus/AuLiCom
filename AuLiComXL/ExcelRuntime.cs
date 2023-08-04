@@ -121,14 +121,16 @@ namespace AuLiComXL
             _commandOutputWriter = new StringListWriteConsole();
 
             DmxConnection = new DmxConnection(port, _dmxConnectionThread);
-            SceneManager = new NamedSceneManager(DmxConnection);
+            var sceneManager = new NamedSceneManager(DmxConnection);
             FixtureFactory = new FixtureFactory(DmxConnection);
             FixtureManager = new FixtureManager();
             CommandExecutor = new CommandExecutor(DmxConnection,
                                                   _commandOutputWriter,
                                                   FixtureManager,
+                                                  sceneManager,
                                                   new FileSystem());
             ChaserManager = new ChaserManager(DmxConnection);
+            SceneManager = sceneManager;
         }
 
         public void Dispose()
