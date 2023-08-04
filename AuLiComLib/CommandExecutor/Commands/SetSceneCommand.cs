@@ -24,9 +24,9 @@ namespace AuLiComLib.CommandExecutor.Commands
         public bool TryExecute(string command)
         {
             bool result;
-            if (command.StartsWith("SET ", StringComparison.OrdinalIgnoreCase) && command.Length > 5)
+            if (command.StartsWith("SET ", StringComparison.OrdinalIgnoreCase) && command.Length > 4)
             {
-                string name = command[2..];
+                string name = command[4..];
                 _sceneManager.SetScene(name, _connection.CurrentUniverse);
                 result = true;
             }
