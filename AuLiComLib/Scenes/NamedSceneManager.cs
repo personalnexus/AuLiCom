@@ -8,7 +8,7 @@ namespace AuLiComLib.Scenes
     {
         public NamedSceneManager(IConnection connection) : base(connection)
         {
-            _scenesByName = new Dictionary<string, IScene>();
+            _scenesByName = new Dictionary<string, IScene>(StringComparer.CurrentCultureIgnoreCase);
         }
 
         private readonly Dictionary<string, IScene> _scenesByName;
@@ -61,5 +61,12 @@ namespace AuLiComLib.Scenes
         public int Version => _observers.Version;
 
         public void UpdateObservers() => _observers.OnNext(this);
+
+        // IReadOnlyUniverseProvider
+
+        public IReadOnlyUniverse GetUniverseByName(string name) => 
+            _scenesByName.TryGetValue(name, out IScene scene)
+                ? scene.Universe
+                : throw new ArgumentException($"No scene named '{name}'.");
     }
 }

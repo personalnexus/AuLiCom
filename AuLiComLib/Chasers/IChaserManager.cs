@@ -7,6 +7,9 @@ namespace AuLiComLib.Chasers
     public interface IChaserManager: IObservableEx<IChaserManager>
     {
         IReadOnlyDictionary<string, IChaser> ChasersByName { get; }
-        IChaser SetChaser(string name, ChaserKind kind, IReadOnlyUniverseProvider[] steps);
+        IChaser SetChaser(string name, ChaserKind kind, TimeSpan stepDuration, string[] stepNames);
+
+        Task StartPlaying(string name, IReadOnlyUniverseProvider universeProvider);
+        void StopPlaying(string name);
     }
 }

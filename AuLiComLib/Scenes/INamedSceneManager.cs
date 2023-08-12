@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace AuLiComLib.Scenes
 {
-    public interface INamedSceneManager: ISceneManager, IObservableEx<INamedSceneManager>
+    public interface INamedSceneManager: ISceneManager, IReadOnlyUniverseProvider, IObservableEx<INamedSceneManager>
     {
         IReadOnlyDictionary<string, IScene> ScenesByName { get; }
 

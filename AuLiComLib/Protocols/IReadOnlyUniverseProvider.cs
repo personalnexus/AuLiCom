@@ -8,6 +8,6 @@ namespace AuLiComLib.Protocols
 {
     public interface IReadOnlyUniverseProvider
     {
-        IReadOnlyUniverse Universe { get; }
+        IReadOnlyUniverse GetUniverseByName(string name);
     }
 }

@@ -38,19 +38,6 @@ namespace AuLiComLib.Protocols
             port.Write(_values, 0, Universe.ValuesLength);
         }
 
-        // IEqualityComparer
-
-        public static IEqualityComparer<IReadOnlyUniverseProvider>? HasSameValuesComparer { get; internal set; } = new ReadOnlyUniverseHasSameValuesComparer();
-
-        private class ReadOnlyUniverseHasSameValuesComparer : IEqualityComparer<IReadOnlyUniverseProvider>
-        {
-            public bool Equals(IReadOnlyUniverseProvider? x, IReadOnlyUniverseProvider? y) =>
-                ReferenceEquals(x?.Universe, y?.Universe)
-                || (x?.Universe != null && y?.Universe != null && x.Universe.HasSameValuesAs(y.Universe));
-
-            public int GetHashCode([DisallowNull] IReadOnlyUniverseProvider obj) => obj.GetHashCode();
-        }
-
         public bool HasSameValuesAs(IReadOnlyUniverse other)
         {
             bool result = true;

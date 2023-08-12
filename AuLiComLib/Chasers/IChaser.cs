@@ -6,6 +6,11 @@ namespace AuLiComLib.Chasers
     {
         string Name { get; }
         ChaserKind Kind { get; }
-        IReadOnlyUniverseProvider[] Steps { get; }
+        TimeSpan StepDuration { get; }
+        string[] StepNames { get; }
+
+        Task StartPlaying(IConnection connection,
+                          IReadOnlyUniverseProvider provider);
+        void StopPlaying();
     }
 }
