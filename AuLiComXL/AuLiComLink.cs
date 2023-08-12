@@ -57,5 +57,25 @@ namespace AuLiComXL
             .GetInstance()
             .SceneManager
             .SetSceneFromCurrentUniverse(name);
+
+
+        // Chasers
+
+        public int GetChaserCount() =>
+            ExcelRuntime
+            .GetInstance()
+            .ChaserManager
+            .ChasersByName
+            .Count;
+
+        public void StartChaser(string name) =>
+            ExcelRuntime
+            .GetInstance()
+            .StartChaser(name);
+
+        public void StopChaser(string name) =>
+            ExcelRuntime
+            .GetInstance()
+            .StopChaser(name);
     }
 }

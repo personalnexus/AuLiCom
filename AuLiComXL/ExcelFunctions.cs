@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Common;
+﻿using AuLiComLib.Chasers;
+using AuLiComLib.Common;
 using AuLiComLib.Fixtures;
 using AuLiComLib.Protocols;
 using AuLiComLib.Protocols.Dmx;
@@ -116,6 +117,7 @@ namespace AuLiComXL
             .Select(x => x.Version)
             .Observe<int>();
 
+
         // Recalculation
 
         [ExcelFunction]
@@ -209,13 +211,20 @@ namespace AuLiComXL
             .GetLastCommandOutput()
             .ToVerticalRange();
 
+
         // Chasers
 
         [ExcelFunction]
-        public static void AuLiComSetChaser(string name, string kindName, string[] sceneNames) =>
+        public static void AuLiComSetChaser(string name, string kindName, int stepDurationInMilliseconds, object[] sceneNames) =>
             ExcelRuntime
             .GetInstance()
-            .SetChaser(name, kindName, sceneNames);
+            .SetChaser(name, 
+                       kindName, 
+                       stepDurationInMilliseconds, 
+                       sceneNames
+                       .Where(x => x != ExcelEmpty.Value)
+                       .Select(x => x.ToString())
+                       .ToArray());
 
         [ExcelFunction]
         public static object AuLiComGetChasers(object connection) =>
@@ -227,5 +236,24 @@ namespace AuLiComXL
                          .Keys
                          .ToVerticalRange())
             .Observe<object[,]>();
+
+        [ExcelFunction]
+        public static object AuLiComGetChaserKinds(object connection) =>
+            Enum
+            .GetNames(typeof(ChaserKind))
+            .ToVerticalRange();
+
+        [ExcelFunction]
+        public static void AuLiComStartChaser(string name) =>
+            ExcelRuntime
+            .GetInstance()
+            .StartChaser(name);
+
+        [ExcelFunction]
+        public static void AuLiComStopChaser(string name) =>
+            ExcelRuntime
+            .GetInstance()
+            .StopChaser(name);
+
     }
 }

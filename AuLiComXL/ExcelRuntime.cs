@@ -174,7 +174,7 @@ namespace AuLiComXL
 
         // Chasers
 
-        internal void SetChaser(string name, string kindName, string[] sceneNames)
+        internal void SetChaser(string name, string kindName, int stepDurationInMilliseconds, string[] sceneNames)
         {
             if (!Enum.TryParse<ChaserKind>(kindName, out ChaserKind kind))
             {
@@ -182,13 +182,12 @@ namespace AuLiComXL
             }
             else
             {
-                IScene[] scenes = sceneNames
-                                  .Select(x => SceneManager
-                                               .ScenesByName
-                                               .GetValueOrDefault(x) ?? throw new ArgumentException($"No scene named '{x}'."))
-                                  .ToArray();
-                ChaserManager.SetChaser(name, kind, scenes);
+                ChaserManager.SetChaser(name, kind, TimeSpan.FromMilliseconds(stepDurationInMilliseconds), sceneNames);
             }
         }
+
+        internal void StartChaser(string name) => ChaserManager.StartPlaying(name, SceneManager);
+
+        internal void StopChaser(string name) => ChaserManager.StopPlaying(name);
     }
 }
