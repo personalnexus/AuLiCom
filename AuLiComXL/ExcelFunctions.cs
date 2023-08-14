@@ -159,6 +159,7 @@ namespace AuLiComXL
             .FixtureManager
             .Select(fixtureManager => fixtureManager
                                       .GetFixtureChannelInfos()
+                                      .OrderBy(x => x.StartChannel)
                                       .Select(x => new object[] { x.FixtureName, x.FixtureType, x.ChannelName, x.StartChannel })
                                       .To2dRange())
             .Observe<object[,]>();
