@@ -19,6 +19,16 @@ namespace AuLiComXL
             }
             return result;
         }
+        internal static object[,] ToHorizontalRange<T>(this IEnumerable<T> items)
+        {
+            T[] array = items.ToArray();
+            object[,] result = new object[1, array.Length];
+            for (int i = 0; i < array.Length; i++)
+            {
+                result[0, i] = array[i];
+            }
+            return result;
+        }
 
         public static T[,] To2dRange<T>(this IEnumerable<T[]> items)
         {

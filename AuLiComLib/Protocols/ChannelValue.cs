@@ -32,6 +32,8 @@ namespace AuLiComLib.Protocols
             _ => (int)value
         });
 
+        public string ToPercentageString() => $"{Channel}@{ValueAsPercentage}";
+
         //
         // Aggregator function used by combining channel values of multiple scenes/universes
         //

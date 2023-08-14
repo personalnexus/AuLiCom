@@ -11,8 +11,8 @@ namespace AuLiComLib.Protocols
     public class Universe
     {
         public const int ChannelCount = 512;
-        private const int MinChannel = 1;
-        private const int MaxChannel = ChannelCount;
+        internal const int MinChannel = 1;
+        internal const int MaxChannel = ChannelCount;
 
         protected const int FirstChannel = 1;
         protected const int ValuesLength = FirstChannel + ChannelCount;

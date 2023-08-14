@@ -27,6 +27,18 @@ namespace AuLiComLib.Protocols
             .CurrentUniverse.
             GetValue(channel);
 
+        public static IEnumerable<string> GetChannelPercentages(this IReadOnlyUniverse universe)
+        {
+            for (int channel = Universe.MinChannel; channel < Universe.MaxChannel; channel++)
+            {
+                ChannelValue channelValue = universe.GetValue(channel);
+                if (channelValue.Value > 0)
+                {
+                    yield return channelValue.ToPercentageString();
+                }
+            }
+        }
+
         public static IEnumerable<ChannelValue> GetValues(this IConnection connection, int[] channels) =>
             channels
             .Select(x => connection

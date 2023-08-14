@@ -61,6 +61,19 @@ namespace AuLiComXL
             .Select(x => x.Version)
             .Observe<int>();
 
+        [ExcelFunction]
+        public static object AuLiComGetSceneChannelPercentages(string name) =>
+            ExcelRuntime
+            .GetInstance()
+            .SceneManager
+            .Select(sceneManager => sceneManager
+                                    .ScenesByName[name]
+                                    .Universe
+                                    .GetChannelPercentages()
+                                    .ToHorizontalRange())
+            .Observe<object[,]>(callerParameters: name);
+
+
 
         // DMX Ports
 
