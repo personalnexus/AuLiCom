@@ -21,7 +21,15 @@ namespace AuLiComLib.Fixtures
             .Register<CameoPixBar650CPro_3Ch1>()
             .Register<CameoPixBar650CPro_3Ch2>()
             .Register<CameoThunderWash600Rgbw_7Ch2>()
-            .Register<GenericLamp>();
+            .Register<CantataPc>()
+            .Register<CantataProfiler>()
+            .Register<ElationKl4Fresnel_1Ch>()
+            .Register<GenericLamp>()
+            .Register<OtherPc>()
+            .Register<Par64>()
+            .Register<Par56Silver>()
+            .Register<Profiler>();
+
 
         private readonly TypedJsonConverter<IConfigurableFixture> _converter;
 

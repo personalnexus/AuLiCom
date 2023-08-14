@@ -126,7 +126,7 @@ namespace AuLiComTest
                 var fixtures = new FixtureManager(
                     new GenericLamp(null) { Name = "Lamp1", StartChannel = 1 },   //TODO: use Mock connection
                     new CameoLedBar_3Ch2(null) { Name = "LED", StartChannel = 2 }, //TODO: use Mock connection
-                    new GenericLamp(null) { Name = "Lamp2", StartChannel = 5 }    //TODO: use Mock connection
+                    new CantataPc(null) { Name = "Lamp2", StartChannel = 5 }    //TODO: use Mock connection
                 );
 
                 // Act
@@ -141,7 +141,7 @@ namespace AuLiComTest
                         new FixtureChannelInfo("LED", "CameoLedBar_3Ch2", null, "Red", 2),
                         new FixtureChannelInfo("LED", "CameoLedBar_3Ch2", null, "Green", 3),
                         new FixtureChannelInfo("LED", "CameoLedBar_3Ch2", null, "Blue", 4),
-                        new FixtureChannelInfo("Lamp2", "GenericLamp", null, "Intensity", 5),
+                        new FixtureChannelInfo("Lamp2", "CantataPc", null, "Intensity", 5),
                     });
                 }
             }
