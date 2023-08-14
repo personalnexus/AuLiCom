@@ -5,7 +5,7 @@ namespace AuLiComLib.Chasers
     public interface IChaser
     {
         string Name { get; }
-        ChaserKind Kind { get; }
+        ChaserType Kind { get; }
         TimeSpan StepDuration { get; }
         string[] StepNames { get; }
 

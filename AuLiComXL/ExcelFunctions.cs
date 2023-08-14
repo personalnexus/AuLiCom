@@ -238,9 +238,9 @@ namespace AuLiComXL
             .Observe<object[,]>();
 
         [ExcelFunction]
-        public static object AuLiComGetChaserKinds(object connection) =>
+        public static object AuLiComGetChaserTypes(object connection) =>
             Enum
-            .GetNames(typeof(ChaserKind))
+            .GetNames(typeof(ChaserType))
             .ToVerticalRange();
 
         [ExcelFunction]

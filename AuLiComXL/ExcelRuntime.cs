@@ -176,7 +176,7 @@ namespace AuLiComXL
 
         internal void SetChaser(string name, string kindName, int stepDurationInMilliseconds, string[] sceneNames)
         {
-            if (!Enum.TryParse<ChaserKind>(kindName, out ChaserKind kind))
+            if (!Enum.TryParse<ChaserType>(kindName, out ChaserType kind))
             {
                 throw new ArgumentOutOfRangeException($"Value of {nameof(kindName)} is invalid: {kindName}.");
             }

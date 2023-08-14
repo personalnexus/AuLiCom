@@ -24,7 +24,7 @@ namespace AuLiComLib.Chasers
         public IReadOnlyDictionary<string, IChaser> ChasersByName => _chasersByName;
 
         public IChaser SetChaser(string name, 
-                                 ChaserKind kind, 
+                                 ChaserType kind, 
                                  TimeSpan stepDuration, 
                                  string[] stepNames)
         {

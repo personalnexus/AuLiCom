@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace AuLiComLib.Fixtures.Kinds
+namespace AuLiComLib.Fixtures.Types
 {
     /// <summary>
     /// A generic lamp with a single channel to control intensity

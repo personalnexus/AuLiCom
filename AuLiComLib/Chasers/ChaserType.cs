@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Chasers
 {
-    public enum ChaserKind
+    public enum ChaserType
     {
         Once,
         Loop,

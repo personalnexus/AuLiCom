@@ -1,5 +1,5 @@
 using AuLiComLib.Fixtures;
-using AuLiComLib.Fixtures.Kinds;
+using AuLiComLib.Fixtures.Types;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Newtonsoft.Json;

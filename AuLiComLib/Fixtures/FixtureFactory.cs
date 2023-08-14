@@ -1,5 +1,5 @@
 ﻿using AuLiComLib.Common;
-using AuLiComLib.Fixtures.Kinds;
+using AuLiComLib.Fixtures.Types;
 using AuLiComLib.Protocols;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

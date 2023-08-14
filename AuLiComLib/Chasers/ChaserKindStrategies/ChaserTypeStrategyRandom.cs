@@ -2,11 +2,11 @@
 
 namespace AuLiComLib.Chasers.ChaserPlayStrategy
 {
-    internal class ChaserKindStrategyRandom: IChaserKindStrategy
+    internal class ChaserTypeStrategyRandom: IChaserKindStrategy
     {
         private readonly IReadOnlyUniverse[] _steps;
 
-        public ChaserKindStrategyRandom(IReadOnlyUniverse[] steps) => _steps = steps;
+        public ChaserTypeStrategyRandom(IReadOnlyUniverse[] steps) => _steps = steps;
 
         public IEnumerable<IReadOnlyUniverse> GetSteps(CancellationToken cancellationToken)
         {

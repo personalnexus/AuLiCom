@@ -1,6 +1,6 @@
 ﻿using AuLiComLib.Protocols;
 
-namespace AuLiComLib.Fixtures.Kinds
+namespace AuLiComLib.Fixtures.Types
 {
     public class CameoLedBar3Ch2 : FixtureBase, IFixture
     {

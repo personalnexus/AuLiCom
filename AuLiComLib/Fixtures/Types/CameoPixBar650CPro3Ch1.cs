@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuLiComLib.Fixtures.Kinds
+namespace AuLiComLib.Fixtures.Types
 {
     public class CameoPixBar650CPro3Ch1 : FixtureBase, IFixture
     {

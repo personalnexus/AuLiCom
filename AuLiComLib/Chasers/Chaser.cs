@@ -11,7 +11,7 @@ namespace AuLiComLib.Chasers
     public class Chaser : IChaser
     {
         public Chaser(string name,
-                      ChaserKind kind,
+                      ChaserType kind,
                       TimeSpan stepDuration,
                       string[] stepNames)
         {
@@ -22,7 +22,7 @@ namespace AuLiComLib.Chasers
         }
 
         public string Name { get; }
-        public ChaserKind Kind { get; }
+        public ChaserType Kind { get; }
         public string[] StepNames { get; }
         public TimeSpan StepDuration { get; }
 
@@ -35,10 +35,10 @@ namespace AuLiComLib.Chasers
 
             IChaserKindStrategy strategy = Kind switch
             {
-                ChaserKind.Once => new ChaserKindStrategyOnce(steps),
-                ChaserKind.Loop => new ChaserKindStrategyLoop(steps),
-                ChaserKind.BackAndForth => new ChaserKindStrategyBackAndForth(steps),
-                ChaserKind.Random => new ChaserKindStrategyRandom(steps),
+                ChaserType.Once => new ChaserTypeStrategyOnce(steps),
+                ChaserType.Loop => new ChaserTypeStrategyLoop(steps),
+                ChaserType.BackAndForth => new ChaserTypeStrategyBackAndForth(steps),
+                ChaserType.Random => new ChaserTypeStrategyRandom(steps),
                 _ => throw new ArgumentOutOfRangeException(nameof(Kind)),
             };
 

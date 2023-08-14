@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Chasers.ChaserPlayStrategy
 {
-    internal class ChaserKindStrategyLoop : IChaserKindStrategy
+    internal class ChaserTypeStrategyLoop : IChaserKindStrategy
     {
         private readonly IReadOnlyUniverse[] _steps;
 
-        public ChaserKindStrategyLoop(IReadOnlyUniverse[] steps) => _steps = steps;
+        public ChaserTypeStrategyLoop(IReadOnlyUniverse[] steps) => _steps = steps;
 
         public IEnumerable<IReadOnlyUniverse> GetSteps(CancellationToken cancellationToken)
         {
