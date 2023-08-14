@@ -2,9 +2,9 @@
 
 namespace AuLiComLib.Fixtures.Types
 {
-    public class CameoPixBar650CPro3Ch2: FixtureBase, IFixture
+    public class CameoPixBar650CPro_3Ch2: FixtureBase, IFixture
     {
-        public CameoPixBar650CPro3Ch2(IConnection connection) : base(connection)
+        public CameoPixBar650CPro_3Ch2(IConnection connection) : base(connection)
         {
         }
 

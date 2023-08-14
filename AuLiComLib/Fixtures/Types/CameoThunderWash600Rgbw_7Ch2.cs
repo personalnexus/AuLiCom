@@ -2,9 +2,9 @@
 
 namespace AuLiComLib.Fixtures.Types
 {
-    public class CameoThunderWash600Rgbw7Ch2 : FixtureBase, IFixture
+    public class CameoThunderWash600Rgbw_7Ch2 : FixtureBase, IFixture
     {
-        public CameoThunderWash600Rgbw7Ch2(IConnection connection) : base(connection)
+        public CameoThunderWash600Rgbw_7Ch2(IConnection connection) : base(connection)
         {
         }
 

@@ -132,7 +132,7 @@ namespace AuLiComTest
     ""StartChannel"": 1
   },
   {
-    ""$type"": ""CameoLedBar3Ch2"",
+    ""$type"": ""CameoLedBar_3Ch2"",
     ""Name"": ""LED"",
     ""StartChannel"": 2
   }

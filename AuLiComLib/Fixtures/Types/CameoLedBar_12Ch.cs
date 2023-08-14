@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Fixtures.Types
 {
-    public class CameoLedBar12Ch : FixtureBase, IFixture
+    public class CameoLedBar_12Ch : FixtureBase, IFixture
     {
-        public CameoLedBar12Ch(IConnection connection) : base(connection)
+        public CameoLedBar_12Ch(IConnection connection) : base(connection)
         {
         }
 

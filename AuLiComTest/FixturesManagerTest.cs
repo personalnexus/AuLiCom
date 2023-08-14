@@ -101,7 +101,7 @@ namespace AuLiComTest
                 // Arrange
                 FixtureManager fixtures = new FixtureManager(
                     new GenericLamp(null) { Name = "Lamp1", StartChannel = 1, Alias = "All" }, //TODO: use Mock connection
-                    new CameoLedBar12Ch(null) { Name = "LED", StartChannel = 2, Alias = "All Color" });  //TODO: use Mock connection
+                    new CameoLedBar_12Ch(null) { Name = "LED", StartChannel = 2, Alias = "All Color" });  //TODO: use Mock connection
 
                 // Act
                 bool result = fixtures.TryGetChannelsByName("Intensity", out IEnumerable<int> channels);
@@ -125,7 +125,7 @@ namespace AuLiComTest
                 // Arrange
                 var fixtures = new FixtureManager(
                     new GenericLamp(null) { Name = "Lamp1", StartChannel = 1 },   //TODO: use Mock connection
-                    new CameoLedBar3Ch2(null) { Name = "LED", StartChannel = 2 }, //TODO: use Mock connection
+                    new CameoLedBar_3Ch2(null) { Name = "LED", StartChannel = 2 }, //TODO: use Mock connection
                     new GenericLamp(null) { Name = "Lamp2", StartChannel = 5 }    //TODO: use Mock connection
                 );
 
@@ -138,9 +138,9 @@ namespace AuLiComTest
                     infos.Should().BeEquivalentTo(new[]
                     {
                         new FixtureChannelInfo("Lamp1", "GenericLamp", null, "Intensity", 1),
-                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", null, "Red", 2),
-                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", null, "Green", 3),
-                        new FixtureChannelInfo("LED", "CameoLedBar3Ch2", null, "Blue", 4),
+                        new FixtureChannelInfo("LED", "CameoLedBar_3Ch2", null, "Red", 2),
+                        new FixtureChannelInfo("LED", "CameoLedBar_3Ch2", null, "Green", 3),
+                        new FixtureChannelInfo("LED", "CameoLedBar_3Ch2", null, "Blue", 4),
                         new FixtureChannelInfo("Lamp2", "GenericLamp", null, "Intensity", 5),
                     });
                 }
@@ -189,7 +189,7 @@ namespace AuLiComTest
                 FixtureManager fixtures = Arrange();
 
                 // Act
-                Action act = () => fixtures.Get<CameoLedBar3Ch2>(name: Lamp1);
+                Action act = () => fixtures.Get<CameoLedBar_3Ch2>(name: Lamp1);
 
                 // Assert
                 act.Should().Throw<InvalidCastException>();

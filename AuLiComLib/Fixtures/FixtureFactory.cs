@@ -16,12 +16,12 @@ namespace AuLiComLib.Fixtures
     public class FixtureFactory : IFixtureFactory
     {
         public FixtureFactory(IConnection connection) => _converter = new TypedJsonConverter<IConfigurableFixture>(connection)
-            .Register<GenericLamp>()
-            .Register<CameoLedBar3Ch2>()
-            .Register<CameoLedBar12Ch>()
-            .Register<CameoPixBar650CPro3Ch1>()
-            .Register<CameoPixBar650CPro3Ch2>()
-            .Register<CameoThunderWash600Rgbw7Ch2>();
+            .Register<CameoLedBar_3Ch2>()
+            .Register<CameoLedBar_12Ch>()
+            .Register<CameoPixBar650CPro_3Ch1>()
+            .Register<CameoPixBar650CPro_3Ch2>()
+            .Register<CameoThunderWash600Rgbw_7Ch2>()
+            .Register<GenericLamp>();
 
         private readonly TypedJsonConverter<IConfigurableFixture> _converter;
 

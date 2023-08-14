@@ -19,7 +19,7 @@ namespace AuLiComTest
             public void CalledOnClassWithThreeChannelValueProperties_ChannelValuePropertiesAreNumberedSequentially()
             {
                 // Act
-                var ledBar = new CameoLedBar3Ch2(null)  //TODO: use mock connection
+                var ledBar = new CameoLedBar_3Ch2(null)  //TODO: use mock connection
                 {
                     StartChannel = 14
                 };

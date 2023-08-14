@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Fixtures.Types
 {
-    public class CameoPixBar650CPro3Ch1 : FixtureBase, IFixture
+    public class CameoPixBar650CPro_3Ch1 : FixtureBase, IFixture
     {
-        public CameoPixBar650CPro3Ch1(IConnection connection) : base(connection)
+        public CameoPixBar650CPro_3Ch1(IConnection connection) : base(connection)
         {
         }
 
