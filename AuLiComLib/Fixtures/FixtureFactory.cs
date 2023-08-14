@@ -16,6 +16,7 @@ namespace AuLiComLib.Fixtures
     public class FixtureFactory : IFixtureFactory
     {
         public FixtureFactory(IConnection connection) => _converter = new TypedJsonConverter<IConfigurableFixture>(connection)
+            .Register<AriaPc>()
             .Register<CameoLedBar_3Ch2>()
             .Register<CameoLedBar_12Ch>()
             .Register<CameoPixBar650CPro_3Ch1>()
@@ -28,7 +29,8 @@ namespace AuLiComLib.Fixtures
             .Register<OtherPc>()
             .Register<Par64>()
             .Register<Par56Silver>()
-            .Register<Profiler>();
+            .Register<Profiler>()
+            .Register<Quartz>();
 
 
         private readonly TypedJsonConverter<IConfigurableFixture> _converter;
