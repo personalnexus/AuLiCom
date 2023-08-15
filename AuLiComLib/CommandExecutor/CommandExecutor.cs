@@ -22,6 +22,7 @@ namespace AuLiComLib.CommandExecutor
             _commands = new ICommand[]
             {
                 new ClearChannelValuesCommand(connection),
+                new HelpCommand(connection, console, this),
                 new ListChannelValuesCommand(connection, console),
                 new LoadFileCommand(connection, console, fixtures, fileSystem),
                 new SetSceneCommand(connection, sceneManager),
