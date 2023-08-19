@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Protocols
 {
-    public readonly struct ChannelValueProperty
+    public class ChannelValueProperty
     {
         public ChannelValueProperty(IChannelValuePropertyHolder propertyHolder, int channelOffset)
         {

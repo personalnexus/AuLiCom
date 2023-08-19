@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Protocols;
+﻿using AuLiComLib.Colors.Channels;
+using AuLiComLib.Protocols;
 
 namespace AuLiComLib.Fixtures.Types
 {
@@ -12,9 +13,9 @@ namespace AuLiComLib.Fixtures.Types
         public ChannelValueProperty StrobeSpeed { get; set; }
         public ChannelValueProperty FlashDuration { get; set; }
 
-        public ChannelValueProperty Red { get; set; }
-        public ChannelValueProperty Green { get; set; }
-        public ChannelValueProperty Blue { get; set; }
+        public RedChannelValueProperty Red { get; set; }
+        public GreenChannelValueProperty Green { get; set; }
+        public BlueChannelValueProperty Blue { get; set; }
 
         public ChannelValueProperty White { get; set; }
     }

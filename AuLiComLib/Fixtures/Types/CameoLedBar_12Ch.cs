@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Protocols;
+﻿using AuLiComLib.Colors.Channels;
+using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +18,16 @@ namespace AuLiComLib.Fixtures.Types
         public ChannelValueProperty Ignore2 { get; set; }
         public ChannelValueProperty Ignore3 { get; set; }
 
-        public ChannelValueProperty Red1 { get; set; }
-        public ChannelValueProperty Green1 { get; set; }
-        public ChannelValueProperty Blue1 { get; set; }
+        public RedChannelValueProperty Red1 { get; set; }
+        public GreenChannelValueProperty Green1 { get; set; }
+        public BlueChannelValueProperty Blue1 { get; set; }
 
-        public ChannelValueProperty Red2 { get; set; }
-        public ChannelValueProperty Green2 { get; set; }
-        public ChannelValueProperty Blue2 { get; set; }
+        public RedChannelValueProperty Red2 { get; set; }
+        public GreenChannelValueProperty Green2 { get; set; }
+        public BlueChannelValueProperty Blue2 { get; set; }
 
-        public ChannelValueProperty Red3 { get; set; }
-        public ChannelValueProperty Green3 { get; set; }
-        public ChannelValueProperty Blue3 { get; set; }
+        public RedChannelValueProperty Red3 { get; set; }
+        public GreenChannelValueProperty Green3 { get; set; }
+        public BlueChannelValueProperty Blue3 { get; set; }
     }
 }

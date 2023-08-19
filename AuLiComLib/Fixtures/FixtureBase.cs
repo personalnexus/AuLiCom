@@ -1,4 +1,6 @@
-﻿using AuLiComLib.Protocols;
+﻿using AuLiComLib.Colors;
+using AuLiComLib.Colors.Channels;
+using AuLiComLib.Protocols;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,16 +18,54 @@ namespace AuLiComLib.Fixtures
         {
             Connection = connection;
             Name = "";
+            _colors = new List<ColorChannelValueProperties>();
             _channelValuePropertyInfos =
                 GetType()
                 .GetProperties()
-                .Where(x => x.PropertyType == typeof(ChannelValueProperty))
+                .Where(x => x.PropertyType.IsAssignableTo(typeof(ChannelValueProperty)))
                 .ToArray();
+
+            RedChannelValueProperty red = null;
+            GreenChannelValueProperty green = null;
+            BlueChannelValueProperty blue = null;
+
             foreach (PropertyInfo? channelValuePropertyInfo in _channelValuePropertyInfos)
             {
-                channelValuePropertyInfo.SetValue(this, new ChannelValueProperty(this, ChannelCount++));
+                ChannelValueProperty newValue = channelValuePropertyInfo.PropertyType.Name switch
+                {
+                    nameof(RedChannelValueProperty) => AddColor(new RedChannelValueProperty(this, ChannelCount++), ref red, "Red"),
+                    nameof(GreenChannelValueProperty) => AddColor(new GreenChannelValueProperty(this, ChannelCount++), ref green, "Green"),
+                    nameof(BlueChannelValueProperty) => AddColor(new BlueChannelValueProperty(this, ChannelCount++), ref blue, "Blue"),
+                    _ => new ChannelValueProperty(this, ChannelCount++)
+
+                };
+                channelValuePropertyInfo.SetValue(this, newValue);
+
+                T AddColor<T>(T newValue, ref T target, string colorName)
+                {
+                    if (target != null)
+                    {
+                        throw new InvalidColorException($"Cannot add another {colorName} channel at offset {ChannelCount-1} before a color is complete with one Red, one Green and one Blue.");
+                    }
+                    target = newValue;
+                    if (red != null && green != null && blue != null) 
+                    {
+                        _colors.Add(new ColorChannelValueProperties(red, green, blue));
+                        red = null;
+                        green = null;
+                        blue = null;
+                    }
+                    return newValue;
+                }
             }
         }
+
+        // Colors
+
+        private readonly List<ColorChannelValueProperties> _colors;
+
+        public IReadOnlyList<ColorChannelValueProperties> Colors => _colors;
+
 
         // IFixture
 
