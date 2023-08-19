@@ -9,10 +9,21 @@ namespace AuLiComLib.Common
 {
     internal static class StringExtentions
     {
-        public static bool TrySplitIn(this string input, int partCount, char separator, out string[] parts)
+        public static bool TrySplitInTwo(this string input, char separator, out string part1, out string part2)
         {
-            parts = input.Split(separator);
-            return parts.Length == partCount;
+            var parts = input.Split(new[] { separator }, 2);
+            bool result = parts.Length == 2;
+            if (result)
+            {
+                part1 = parts[0];
+                part2 = parts[1];
+            }
+            else
+            {
+                part1 = default;
+                part2 = default;
+            }
+            return result;
         }
     }
 }

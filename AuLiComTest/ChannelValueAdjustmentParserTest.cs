@@ -61,8 +61,8 @@ namespace AuLiComTest
                 ChannelValue.FromPercentage(5, 95));
 
             [TestMethod]
-            public void OneChannelAndNoPercentage_ChannelAt100Percent() => ShouldBeSuccessWithEmptyUniverse(
-                "12@",
+            public void OneChannelAndAnAtSignInsteadOfAPercentage_ChannelAt100Percent() => ShouldBeSuccessWithEmptyUniverse(
+                "12@@",
                 ChannelValue.FromPercentage(12, 100));
 
             [TestMethod]
@@ -99,6 +99,11 @@ namespace AuLiComTest
                 ChannelValue.FromPercentage(4, 89));
 
             // Errors
+
+            [TestMethod]
+            public void OneChannelAndNoPercentage_Error() => ShouldBeError(
+                "12@", 
+                "The adjustment cannot be empty.");
 
             [TestMethod]
             public void PercentageIsNotANumber_Error() => ShouldBeError(
@@ -138,6 +143,11 @@ namespace AuLiComTest
             [TestMethod]
             public void TwoPercentageIndicators_Error() => ShouldBeError(
                "7@@82",
+               "Percentage has to be an integer, not '@82'");
+
+            [TestMethod]
+            public void NoPercentageIndicator_Error() => ShouldBeError(
+               "83",
                "Command has to contain exactly one '@'.");
 
             // Helper methods

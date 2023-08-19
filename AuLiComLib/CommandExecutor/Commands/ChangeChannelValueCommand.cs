@@ -38,7 +38,7 @@ namespace AuLiComLib.CommandExecutor.Commands
                                      "    16+19@70  set channels 16 and 19 to 70%\r\n" +
                                      "    20-25+27-30@80  set channels 20 through 25 and 27 through 30 to 80%\r\n" +
                                      "    Red@90  set channels on fixtures where channel name, fixture name or alias contains 'red' (ignoring case) to 90%\r\n" +
-                                     "    31-33@  set channels 31 through 33 to 100%\r\n" +
+                                     "    31-33@@  set channels 31 through 33 to 100%\r\n" +
                                      "    *  performs the previous adjustment again (same channels, same values)\r\n" +
                                      "    *@+10  performs the adjustment on the right for the channels from the previous command, here adding another 10 percentage points";
 

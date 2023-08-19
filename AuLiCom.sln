@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuLiComCli", "AuLiComCli\Au
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D74D1F77-1FA7-46B4-B782-48DE33819C66}"
 	ProjectSection(SolutionItems) = preProject
+		doc\Manual.md = doc\Manual.md
 		README.md = README.md
 		doc\Excel\TestWithComServer.xlsm = doc\Excel\TestWithComServer.xlsm
 	EndProjectSection
@@ -17,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuLiComTest", "AuLiComTest\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuLiComXL", "AuLiComXL\AuLiComXL.csproj", "{C85A59CB-18B7-48FA-B732-D6BEC3B13F2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuLiComSim", "AuLiComSim\AuLiComSim.csproj", "{476C78DF-0A25-40EC-AB6B-74361801CD59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuLiComSim", "AuLiComSim\AuLiComSim.csproj", "{476C78DF-0A25-40EC-AB6B-74361801CD59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

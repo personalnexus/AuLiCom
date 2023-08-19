@@ -53,12 +53,12 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
                 }
                 else
                 {
-                    if (!command.TrySplitIn(2, PercentageIndicator, out string[] channelsAndPercentage))
+                    if (!command.TrySplitInTwo(PercentageIndicator, out string channelsString, out string adjustmentStrategyString))
                     {
                         throw new ChannelValueAdjustmentParserException($"Command has to contain exactly one '{PercentageIndicator}'.");
                     }
-                    ParseChannels(channelsAndPercentage[0].Trim(), out IEnumerable<int> channelNumbers);
-                    ParseAdjustmentStrategy(channelsAndPercentage[1].Trim(), out IChannelValueAdjustmentStrategy adjustmentStrategy);
+                    ParseChannels(channelsString.Trim(), out IEnumerable<int> channelNumbers);
+                    ParseAdjustmentStrategy(adjustmentStrategyString.Trim(), out IChannelValueAdjustmentStrategy adjustmentStrategy);
 
                     result = true;
                     channelValueAdjustment = new ChannelValueAdjustment(channelNumbers, adjustmentStrategy);
@@ -139,15 +139,17 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
         private static void ParseAdjustmentStrategy(string adjustmentString, out IChannelValueAdjustmentStrategy adjustmentStrategy)
         {
             adjustmentStrategy = adjustmentString == ""
-                ? new ChannelValueAdjustmentStrategySetPercentage(100)
-                : adjustmentString[0] switch
-                    {
-                        AddAdjustmentIndicator => new ChannelValueAdjustmentStrategyAddPercentage(ParsePercentage(adjustmentString[1..])),
-                        SubtractAdjustmentIndicator => new ChannelValueAdjustmentStrategyAddPercentage(-ParsePercentage(adjustmentString[1..])),
-                        MultiplyAdjustmentIndicator => new ChannelValueAdjustmentStrategyMultiply(ParseFactor(adjustmentString[1..])),
-                        DivideAdjustmentIndicator => new ChannelValueAdjustmentStrategyMultiply(1.0 / ParseFactor(adjustmentString[1..])),
-                        _ => new ChannelValueAdjustmentStrategySetPercentage(ParsePercentage(adjustmentString))
-                    };
+                ? throw new ChannelValueAdjustmentParserException("The adjustment cannot be empty.")
+                : adjustmentString == PercentageIndicator.ToString()
+                    ? new ChannelValueAdjustmentStrategySetPercentage(100)
+                    : adjustmentString[0] switch
+                        {
+                            AddAdjustmentIndicator => new ChannelValueAdjustmentStrategyAddPercentage(ParsePercentage(adjustmentString[1..])),
+                            SubtractAdjustmentIndicator => new ChannelValueAdjustmentStrategyAddPercentage(-ParsePercentage(adjustmentString[1..])),
+                            MultiplyAdjustmentIndicator => new ChannelValueAdjustmentStrategyMultiply(ParseFactor(adjustmentString[1..])),
+                            DivideAdjustmentIndicator => new ChannelValueAdjustmentStrategyMultiply(1.0 / ParseFactor(adjustmentString[1..])),
+                            _ => new ChannelValueAdjustmentStrategySetPercentage(ParsePercentage(adjustmentString))
+                        };
         }
 
         private static int ParsePercentage(string percentageString)
