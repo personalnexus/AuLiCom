@@ -1,4 +1,5 @@
 ﻿using AuLiComLib.Chasers;
+using AuLiComLib.Colors;
 using AuLiComLib.CommandExecutor;
 using AuLiComLib.Common;
 using AuLiComLib.Fixtures;
@@ -130,6 +131,7 @@ namespace AuLiComXL
                                                   sceneManager,
                                                   new FileSystem());
             ChaserManager = new ChaserManager(DmxConnection);
+            ColorManager = new ColorManager();
             SceneManager = sceneManager;
         }
 
@@ -149,6 +151,7 @@ namespace AuLiComXL
         public IFixtureManager FixtureManager { get; }
         public ICommandExecutor CommandExecutor { get; }
         public IChaserManager ChaserManager { get; }
+        public IColorManager ColorManager { get; }
 
 
         public IFixtureFactory FixtureFactory { get; }

@@ -21,5 +21,12 @@ namespace AuLiComLib.Colors.Channels
         public RedChannelValueProperty Red { get; }
         public GreenChannelValueProperty Green { get; }
         public BlueChannelValueProperty Blue { get; }
+
+        public void SetColor(IColor color)
+        {
+            Red.Value = color.Red;
+            Green.Value = color.Green;
+            Blue.Value = color.Blue;
+        }
     }
 }

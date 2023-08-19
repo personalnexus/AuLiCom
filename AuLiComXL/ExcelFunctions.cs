@@ -269,5 +269,26 @@ namespace AuLiComXL
             .GetInstance()
             .StopChaser(name);
 
+
+        // Colors
+
+        [ExcelFunction]
+        public static void AuLiComSetColor(string name, int redPercentage, int greenPercentage, int bluePercentage) =>
+            ExcelRuntime
+            .GetInstance()
+            .ColorManager
+            .SetColor(name,
+                      red:   ChannelValue.ByteFromPercentage(redPercentage),
+                      green: ChannelValue.ByteFromPercentage(greenPercentage),
+                      blue:  ChannelValue.ByteFromPercentage(bluePercentage));
+
+        [ExcelFunction]
+        public static object AuLiComGetColorsVersion(object connection) =>
+            ExcelRuntime
+            .GetInstance()
+            .ColorManager
+            .Select(x => x.Version)
+            .Observe<int>();
+
     }
 }
