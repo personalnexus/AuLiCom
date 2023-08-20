@@ -4,6 +4,6 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 {
     public interface IChannelValueAdjustmentStrategy
     {
-        ChannelValue ApplyTo(ChannelValue source);
+        void ApplyTo(ChannelValue source, IMutableUniverse target);
     }
 }

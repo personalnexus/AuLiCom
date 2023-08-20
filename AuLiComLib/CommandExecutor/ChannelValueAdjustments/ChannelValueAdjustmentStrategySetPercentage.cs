@@ -2,7 +2,7 @@
 
 namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 {
-    public class ChannelValueAdjustmentStrategySetPercentage : IChannelValueAdjustmentStrategy
+    public class ChannelValueAdjustmentStrategySetPercentage : SingleChannelValueAdjustmentStrategyBase
     {
         public ChannelValueAdjustmentStrategySetPercentage(int percentage)
         {
@@ -11,6 +11,6 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 
         private readonly int _percentage;
 
-        public ChannelValue ApplyTo(ChannelValue source) => ChannelValue.FromPercentage(source.Channel, _percentage);
+        protected override ChannelValue ApplyTo(ChannelValue source) => ChannelValue.FromPercentage(source.Channel, _percentage);
     }
 }

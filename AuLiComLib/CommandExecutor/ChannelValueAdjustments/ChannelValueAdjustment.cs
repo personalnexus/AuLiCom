@@ -25,8 +25,7 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
             foreach (int channel in Channels)
             {
                 ChannelValue sourceChannel = source.GetValue(channel);
-                ChannelValue targetChannel = _adjustmentStrategy.ApplyTo(sourceChannel);
-                result.SetValue(targetChannel);
+                _adjustmentStrategy.ApplyTo(sourceChannel, result);
             }
             return result;
         }

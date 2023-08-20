@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 {
-    public class ChannelValueAdjustmentStrategyMultiply : IChannelValueAdjustmentStrategy
+    public class ChannelValueAdjustmentStrategyMultiply : SingleChannelValueAdjustmentStrategyBase
     {
         public ChannelValueAdjustmentStrategyMultiply(double factor)
         {
@@ -16,6 +16,6 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
         }
         public double _factor;
 
-        public ChannelValue ApplyTo(ChannelValue source) => ChannelValue.FromPercentageWithRangeLimits(source.Channel, source.ValueAsPercentage * _factor);
+        protected override ChannelValue ApplyTo(ChannelValue source) => ChannelValue.FromPercentageWithRangeLimits(source.Channel, source.ValueAsPercentage * _factor);
     }
 }
