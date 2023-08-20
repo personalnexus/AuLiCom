@@ -112,7 +112,7 @@ namespace AuLiComLib.Fixtures
             }
             else
             {
-                fixture.TryGetColorChannelValueProperties(channel - fixture.StartChannel, out colorProperties);
+                fixture.TryGetColorChannelValueProperties(channel, out colorProperties);
             }
             return colorProperties != null;
         }
