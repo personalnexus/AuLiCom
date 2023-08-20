@@ -10,6 +10,7 @@ using AuLiComSim;
 using AuLiComLib.Fixtures;
 using System.IO.Abstractions;
 using AuLiComLib.Scenes;
+using AuLiComLib.Colors;
 
 Version? consoleVersion = Assembly.GetExecutingAssembly().GetName().Version;
 Version? libraryVersion = typeof(DmxConnection).Assembly.GetName().Version;
@@ -60,7 +61,8 @@ var commandExecutor = new CommandLoopExecutor(connection,
                                               console,
                                               new FixtureManager(),
                                               new NamedSceneManager(connection),
-                                              new FileSystem());
+                                              new FileSystem(),
+                                              new ColorManager());
 commandExecutor.Loop();
 
 console.WriteLine();

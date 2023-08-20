@@ -1,4 +1,5 @@
 ﻿using AuLiComLib.Chasers;
+using AuLiComLib.CommandExecutor;
 using AuLiComLib.Common;
 using AuLiComLib.Protocols;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Colors
 {
-    public class ColorManager: IColorManager
+    public class ColorManager: IColorManager, ICommandColors
     {
         public ColorManager()
         {
@@ -45,6 +46,10 @@ namespace AuLiComLib.Colors
             }
             return newColor;
         }
+
+        // ICommandColors
+
+        public bool TryGetColorByName(string name, out IColor color) => _colorsByName.TryGetValue(name, out color);
 
 
         // IObservable

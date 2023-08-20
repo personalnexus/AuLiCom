@@ -1,4 +1,5 @@
-﻿using AuLiComLib.CommandExecutor;
+﻿using AuLiComLib.Colors;
+using AuLiComLib.CommandExecutor;
 using AuLiComLib.Common;
 using AuLiComLib.Protocols;
 using AuLiComTest.Mocks;
@@ -44,7 +45,8 @@ namespace AuLiComTest
                 // Arrange
                 var connection = new MockConnection(Universe.CreateEmptyReadOnly());
                 var outputStringList = new StringListWriteConsole();
-                var commandExecutor = new CommandExecutor(connection, outputStringList, null, null, null); //TODO: use fixtures, scene manager and file system mock
+                var colors = new ColorManager();
+                var commandExecutor = new CommandExecutor(connection, outputStringList, null, null, null, colors); //TODO: use fixtures, scene manager and file system mock
 
                 // Act
                 string result = commandExecutor.Execute(command);

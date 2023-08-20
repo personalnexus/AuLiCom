@@ -1,4 +1,5 @@
-﻿using AuLiComLib.CommandExecutor.ChannelValueAdjustments;
+﻿using AuLiComLib.Colors;
+using AuLiComLib.CommandExecutor.ChannelValueAdjustments;
 using AuLiComLib.Protocols;
 using AuLiComTest.Mocks;
 using FluentAssertions;
@@ -98,6 +99,27 @@ namespace AuLiComTest
                 ChannelValue.FromPercentage(1, 89),
                 ChannelValue.FromPercentage(4, 89));
 
+            [TestMethod]
+            public void FirstColorChannelAndDefinedColorName_ThreeChannelsAreSet() => ShouldBeSuccessWithEmptyUniverse(
+                $"{ColorChannel}@{ColorName}",
+                ChannelValue.FromByte(240, 255),
+                ChannelValue.FromByte(241, 127),
+                ChannelValue.FromByte(242, 1));
+
+            [TestMethod]
+            public void SecondColorChannelAndDefinedColorName_ThreeChannelsAreSet() => ShouldBeSuccessWithEmptyUniverse(
+                $"{ColorChannel + 1}@{ColorName}",
+                ChannelValue.FromByte(240, 255),
+                ChannelValue.FromByte(241, 127),
+                ChannelValue.FromByte(242, 1));
+
+            [TestMethod]
+            public void NameOfColorFixtureAndDefinedColorName_ThreeChannelsAreSet() => ShouldBeSuccessWithEmptyUniverse(
+                $"{ColorFixture}@{ColorName}",
+                ChannelValue.FromByte(240, 255),
+                ChannelValue.FromByte(241, 127),
+                ChannelValue.FromByte(242, 1));
+
             // Errors
 
             [TestMethod]
@@ -150,7 +172,16 @@ namespace AuLiComTest
                "83",
                "Command has to contain exactly one '@'.");
 
+            [TestMethod]
+            public void UndefinedColor_Error() => ShouldBeError(
+               $"{ColorChannel}@AnotherColor",
+               "Percentage has to be an integer, not 'AnotherColor'");
+
             // Helper methods
+
+            private const string ColorFixture = "RGB";
+            private const int ColorChannel = 240;
+            private const string ColorName = "orange";
 
             private static void ShouldBeSuccessWithEmptyUniverse(string command, params ChannelValue[] expectedValues) =>
                 ShouldBeSuccess(command, Universe.CreateEmptyReadOnly(), expectedValues);
@@ -203,6 +234,8 @@ namespace AuLiComTest
 
             private static ChannelValueAdjustmentParser Arrange()
             {
+                var colors = new ColorManager();
+                colors.SetColor(ColorName, 255, 127, 1);
                 var fixtures = new MockCommandFixtures
                 {
                     { "Red1", 1 },
@@ -211,8 +244,10 @@ namespace AuLiComTest
                     { "Red2", 4 },
                     { "Green2", 5 },
                     { "Blue2", 6 },
+                    { ColorFixture, ColorChannel }
                 };
-                var result = new ChannelValueAdjustmentParser(fixtures, null);  //TODO: use mock 
+                fixtures.SetColorChannelValuePropertiesByChannel(ColorChannel);
+                var result = new ChannelValueAdjustmentParser(colors, fixtures, null);  //TODO: use mock 
                 return result;
             }
 

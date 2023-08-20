@@ -104,6 +104,19 @@ namespace AuLiComLib.Fixtures
             return channelsList.Any();
         }
 
+        public bool TryGetColorChannelValuePropertiesByChannel(int channel, out ICommandColorChannelValueProperties colorProperties)
+        {
+            if (!_fixturesByChannel.TryGetValue(channel, out IFixture fixture))
+            {
+                colorProperties = null;
+            }
+            else
+            {
+                fixture.TryGetColorChannelValueProperties(channel - fixture.StartChannel, out colorProperties);
+            }
+            return colorProperties != null;
+        }
+
         // IObservable
 
         private readonly Observers<IFixtureManager> _observers = new();

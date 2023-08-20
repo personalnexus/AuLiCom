@@ -16,7 +16,8 @@ namespace AuLiComLib.CommandExecutor
                                    ICommandReadWriteConsole console,
                                    ICommandFixtures fixtures,
                                    ICommandNamedSceneManager sceneManager,
-                                   IFileSystem fileSystem) : base(connection, console, fixtures, sceneManager, fileSystem)
+                                   IFileSystem fileSystem,
+                                   ICommandColors colors) : base(connection, console, fixtures, sceneManager, fileSystem, colors)
         {
             _console = console;
         }

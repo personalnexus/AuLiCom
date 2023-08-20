@@ -12,6 +12,7 @@ namespace AuLiComTest.Mocks
     internal class MockCommandFixtures : ICommandFixtures, IEnumerable
     {
         private readonly Dictionary<string, int> _channelsByName = new();
+        private readonly HashSet<MockColorChannelValueProperties> _colorPropertiesByChannel = new();
 
         public void Add(string name, int channel) => _channelsByName.Add(name, channel);
 
@@ -35,5 +36,13 @@ namespace AuLiComTest.Mocks
             channels = channelsList;
             return channelsList.Any();
         }
+
+        public bool TryGetColorChannelValuePropertiesByChannel(int channel, out ICommandColorChannelValueProperties colorProperties)
+        {
+            colorProperties = _colorPropertiesByChannel.FirstOrDefault(x => x.Red.Channel == channel || x.Green.Channel == channel || x.Blue.Channel == channel);
+            return colorProperties != null;
+        }
+
+        public void SetColorChannelValuePropertiesByChannel(int channel) => _colorPropertiesByChannel.Add(new MockColorChannelValueProperties(channel));
     }
 }

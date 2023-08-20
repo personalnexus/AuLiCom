@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Protocols;
+﻿using AuLiComLib.CommandExecutor;
+using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,7 @@ namespace AuLiComLib.Fixtures
 
         IEnumerable<FixtureChannelInfo> GetFixtureChannelInfos();
         FixtureInfo GetFixtureInfo();
+
+        bool TryGetColorChannelValueProperties(int channelOffset, out ICommandColorChannelValueProperties colorProperties);
     }
 }

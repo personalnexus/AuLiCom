@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Protocols;
+﻿using AuLiComLib.CommandExecutor;
+using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.Colors.Channels
 {
-    public class ColorChannelValueProperties
+    public class ColorChannelValueProperties : ICommandColorChannelValueProperties
     {
         public ColorChannelValueProperties(RedChannelValueProperty red,
                                            GreenChannelValueProperty green,
@@ -22,11 +23,18 @@ namespace AuLiComLib.Colors.Channels
         public GreenChannelValueProperty Green { get; }
         public BlueChannelValueProperty Blue { get; }
 
-        public void SetColor(IColor color)
-        {
-            Red.Value = color.Red;
-            Green.Value = color.Green;
-            Blue.Value = color.Blue;
-        }
+        public bool ContainsChannel(int channel) =>
+            Red.Channel == channel
+            || Green.Channel == channel
+            || Blue.Channel == channel;
+
+
+        // ICommandColorChannelValueProperties
+
+        ChannelValue ICommandColorChannelValueProperties.Red => Red.ChannelValue;
+
+        ChannelValue ICommandColorChannelValueProperties.Green => Green.ChannelValue;
+
+        ChannelValue ICommandColorChannelValueProperties.Blue => Blue.ChannelValue;
     }
 }

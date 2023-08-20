@@ -1,5 +1,6 @@
 ﻿using AuLiComLib.CommandExecutor.ChannelValueAdjustments;
 using AuLiComLib.Common;
+using AuLiComLib.Fixtures;
 using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,13 @@ namespace AuLiComLib.CommandExecutor.Commands
     internal class ChangeChannelValueCommand : ICommand, IChannelValueAdjustmentProvider
     {
         public ChangeChannelValueCommand(IConnection connection,
-                                      ICommandWriteConsole console,
-                                      ICommandFixtures fixtures)
+                                         ICommandWriteConsole console,
+                                         ICommandFixtures fixtures,
+                                         ICommandColors colors)
         {
             _connection = connection;
             _console = console;
-            _parser = new ChannelValueAdjustmentParser(fixtures, this);
+            _parser = new ChannelValueAdjustmentParser(colors, fixtures, this);
         }
 
         private readonly IConnection _connection;
@@ -40,7 +42,9 @@ namespace AuLiComLib.CommandExecutor.Commands
                                      "    Red@90  set channels on fixtures where channel name, fixture name or alias contains 'red' (ignoring case) to 90%\r\n" +
                                      "    31-33@@  set channels 31 through 33 to 100%\r\n" +
                                      "    *  performs the previous adjustment again (same channels, same values)\r\n" +
-                                     "    *@+10  performs the adjustment on the right for the channels from the previous command, here adding another 10 percentage points";
+                                     "    *@+10  performs the adjustment on the right for the channels from the previous command, here adding another 10 percentage points\r\n" +
+                                     "    35@orange  if channel 35 belongs to an RGB fixture and you have previously defined the color \"orange\" to have specific RGB values, these values will be applied to all three RGB channels(not just 35).\r\n" +
+                                     "    LED1@orange  if LED1 is part of the name of an RGB fixture and you have previously defined the color \"orange\" to have specific RGB values, these values will be applied to all three RGB channels of the LED1 fixture.";
 
         public bool TryExecute(string command)
         {

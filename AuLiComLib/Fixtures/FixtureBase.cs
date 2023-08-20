@@ -1,5 +1,6 @@
 ﻿using AuLiComLib.Colors;
 using AuLiComLib.Colors.Channels;
+using AuLiComLib.CommandExecutor;
 using AuLiComLib.Protocols;
 using Newtonsoft.Json;
 using System;
@@ -85,12 +86,18 @@ namespace AuLiComLib.Fixtures
                 ChannelName: x.Name,
                 StartChannel: GetChannelValueProperty(x).Channel));
 
+        public bool TryGetColorChannelValueProperties(int channel, out ICommandColorChannelValueProperties colorProperties)
+        {
+            colorProperties = _colors.FirstOrDefault(x => x.ContainsChannel(channel));
+            return colorProperties != null;
+        }
+
+
         // Cached accessors for channel value properties
 
         private PropertyInfo[] _channelValuePropertyInfos;
 
         private ChannelValueProperty GetChannelValueProperty(PropertyInfo x) => (ChannelValueProperty)x.GetValue(this);
-
 
         // JSON configurable properties
 

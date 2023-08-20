@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AuLiComLib.CommandExecutor
 {
-    public interface ICommandFixtures
+    public interface ICommandFixtures : ICommandColorFixtures
     {
         void SetFixtures(IEnumerable<IFixture> fixtures);
         bool TryGetChannelsByName(string channelName, out IEnumerable<int> channels);

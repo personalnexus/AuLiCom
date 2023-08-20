@@ -1,4 +1,5 @@
-﻿using AuLiComLib.Common;
+﻿using AuLiComLib.Colors;
+using AuLiComLib.Common;
 using AuLiComLib.Protocols;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,16 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
 {
     public class ChannelValueAdjustmentParser
     {
-        public ChannelValueAdjustmentParser(ICommandFixtures fixtures,
+        public ChannelValueAdjustmentParser(ICommandColors colors,
+                                            ICommandFixtures fixtures,
                                             IChannelValueAdjustmentProvider previousAdjustmentProvider)
         {
+            _colors = colors;
             _fixtures = fixtures;
             _previousAdjustmentProvider = previousAdjustmentProvider;
         }
 
+        private readonly ICommandColors _colors;
         private readonly ICommandFixtures _fixtures;
         private readonly IChannelValueAdjustmentProvider _previousAdjustmentProvider;
 
@@ -136,7 +140,7 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
             }
         }
 
-        private static void ParseAdjustmentStrategy(string adjustmentString, out IChannelValueAdjustmentStrategy adjustmentStrategy)
+        private void ParseAdjustmentStrategy(string adjustmentString, out IChannelValueAdjustmentStrategy adjustmentStrategy)
         {
             adjustmentStrategy = adjustmentString == ""
                 ? throw new ChannelValueAdjustmentParserException("The adjustment cannot be empty.")
@@ -148,9 +152,14 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
                             SubtractAdjustmentIndicator => new ChannelValueAdjustmentStrategyAddPercentage(-ParsePercentage(adjustmentString[1..])),
                             MultiplyAdjustmentIndicator => new ChannelValueAdjustmentStrategyMultiply(ParseFactor(adjustmentString[1..])),
                             DivideAdjustmentIndicator => new ChannelValueAdjustmentStrategyMultiply(1.0 / ParseFactor(adjustmentString[1..])),
-                            _ => new ChannelValueAdjustmentStrategySetPercentage(ParsePercentage(adjustmentString))
+                            _ => ParsePercentageOrColor(adjustmentString)
                         };
         }
+
+        private IChannelValueAdjustmentStrategy ParsePercentageOrColor(string adjustmentString) =>
+            _colors.TryGetColorByName(adjustmentString, out IColor color)
+                ? new ChannelValueAdjustmentStrategyColor(color, _fixtures)
+                : new ChannelValueAdjustmentStrategySetPercentage(ParsePercentage(adjustmentString));
 
         private static int ParsePercentage(string percentageString)
         {

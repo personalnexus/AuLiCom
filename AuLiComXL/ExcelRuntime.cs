@@ -125,13 +125,15 @@ namespace AuLiComXL
             var sceneManager = new NamedSceneManager(DmxConnection);
             FixtureFactory = new FixtureFactory(DmxConnection);
             FixtureManager = new FixtureManager();
+            var colorManager = new ColorManager();
             CommandExecutor = new CommandExecutor(DmxConnection,
                                                   _commandOutputWriter,
                                                   FixtureManager,
                                                   sceneManager,
-                                                  new FileSystem());
+                                                  new FileSystem(),
+                                                  colorManager);
             ChaserManager = new ChaserManager(DmxConnection);
-            ColorManager = new ColorManager();
+            ColorManager = colorManager;
             SceneManager = sceneManager;
         }
 
