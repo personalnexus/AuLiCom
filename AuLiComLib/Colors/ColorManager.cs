@@ -35,7 +35,7 @@ namespace AuLiComLib.Colors
             }
             else
             {
-                // This was an existing chaser, but with updated values
+                // This was an existing color, but with updated RGB values
                 if (oldColor.Red != red
                     || oldColor.Green != green
                     || oldColor.Blue != blue)

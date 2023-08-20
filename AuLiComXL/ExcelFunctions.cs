@@ -283,6 +283,17 @@ namespace AuLiComXL
                       blue:  ChannelValue.ByteFromPercentage(bluePercentage));
 
         [ExcelFunction]
+        public static object AuLiComGetColors() =>
+            ExcelRuntime
+            .GetInstance()
+            .ColorManager
+            .Select(x => x
+                         .ColorsByName
+                         .Keys
+                         .ToVerticalRange())
+            .Observe<object[,]>();
+
+        [ExcelFunction]
         public static object AuLiComGetColorsVersion(object connection) =>
             ExcelRuntime
             .GetInstance()

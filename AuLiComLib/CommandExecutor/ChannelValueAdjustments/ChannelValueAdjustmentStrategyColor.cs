@@ -27,7 +27,9 @@ namespace AuLiComLib.CommandExecutor.ChannelValueAdjustments
                 target.SetValue(ChannelValue.FromByte(colorProperties.Green.Channel, _color.Green));
                 target.SetValue(ChannelValue.FromByte(colorProperties.Blue.Channel, _color.Blue));
             }
-            // TODO: throw exception when trying to apply a color to a non-color channel?
+            // Ignore attempts trying to apply a color to a non-color channel, because we want to use this command to set the RGB channels
+            // on devices that have additional channels via the "<DeviceName>@<ColorName>" syntax. The device name would resolve to all
+            // channels, so everything but RGB needs to be ignored.
         }
     }
 }
