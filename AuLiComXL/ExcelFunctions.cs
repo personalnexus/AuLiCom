@@ -123,6 +123,12 @@ namespace AuLiComXL
             .SetValue(ChannelValue.FromPercentage(channel, percentage));
 
         [ExcelFunction]
+        public static void AuLiComSetChannelColor(int channel, string colorName) =>
+            ExcelRuntime
+            .GetInstance()
+            .SetChannelColor(channel, colorName);
+
+        [ExcelFunction]
         public static object AuLiComGetChannelsVersion() =>
             ExcelRuntime
             .GetInstance()

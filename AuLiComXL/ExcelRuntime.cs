@@ -194,5 +194,21 @@ namespace AuLiComXL
         internal void StartChaser(string name) => ChaserManager.StartPlaying(name, SceneManager);
 
         internal void StopChaser(string name) => ChaserManager.StopPlaying(name);
+
+        internal void SetChannelColor(int channel, string colorName)
+        {
+            if (FixtureManager.TryGetColorChannelValuePropertiesByChannel(channel, out ICommandColorChannelValueProperties colorProperties)
+                && ColorManager.ColorsByName.TryGetValue(colorName, out IColor color))
+            {
+                DmxConnection
+                .CurrentUniverse
+                .ToMutableUniverse()
+                .SetValue(ChannelValue.FromByte(colorProperties.Red.Channel, color.Red))
+                .SetValue(ChannelValue.FromByte(colorProperties.Green.Channel, color.Green))
+                .SetValue(ChannelValue.FromByte(colorProperties.Blue.Channel, color.Blue))
+                .AsReadOnly()
+                .SendTo(DmxConnection);
+            }
+        }
     }
 }
