@@ -26,15 +26,23 @@ AuLiComSim is a library containing an implementation of `IConnection` that shows
 
 ## AuLiComXL
 
-AuLiComXL is an Excel plugin to manage channel values, fixtures and scenes. The plugin exposes formulas to be used in a spreadsheet as well as a COM server to be used from VBA.
+AuLiComXL is an Excel plugin to manage channel values, colors, fixtures, scenes and chasers. The plugin exposes formulas to be used in a spreadsheet as well as a COM server to be used from VBA.
 
-The following screenshots from [this Excel spreadsheet](/doc/Excel/TestWithComServer.xlsm) show what AuLiComXL can do. As of July 2023, this is the most complete interface to AuLiCom's functionality.
+The following screenshots from [this Excel spreadsheet](/doc/Excel/TestWithComServer.xlsm) show what AuLiComXL can do. As of August 2023, this is the most complete interface to AuLiCom's functionality. It starts with separate pages to define fixtures, colors and scenes.
 
-![AuLiComXL showing channels of an LED bar](/doc/Excel/Excel-Channels.png)
+![Definition of all available fixtures](/doc/Excel/Excel-Fixtures.png)
 
-![AuLiComXL switching between pre-defined scenes](/doc/Excel/Excel-Scenes.png)
+![Definition of colors](/doc/Excel/Excel-Colors.png)
 
-![AuLiComXL definition of fixtures](/doc/Excel/Excel-Fixtures.png)
+![Definition of scenes](/doc/Excel/Excel-Scenes.png)
+
+Scenes can be played individually or used to build chasers.
+
+![Playing chasers built from defined scenes](/doc/Excel/Excel-Chasers.png)
+
+Finally, it is possible to control each channel individually and highly interactively, either with an Excel formula or via the [command syntax](doc/Manual.md) in the cell in top left.
+
+![Command interface and channel controller for various fixtures](/doc/Excel/Excel-Channels.png)
 
 # Further Reading
 
