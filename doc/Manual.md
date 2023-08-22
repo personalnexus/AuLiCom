@@ -1,3 +1,14 @@
+# Objects
+
+**Channels** are the most basic object you can control. Each channel can have a 1-byte value (0..255) e.g. representing the brightness of a light. In most user interface elements, the value is expressed as a percentage (0%..100%).
+
+**Chasers** consist of a name and one or more scene names. There are different types of chasers (random, back and forth...). Scenes are resolved by name only when the chaser is playing. Meaning you can modify a scene that is already part of the chaser without having to modify the chaser explicitly. Since th chaser stored only the scene name, not its contents, it will "see" the new scnene contents when it starts playing.
+
+**Colors** give a name to three channel values representing red, green and blue. When assigning a fixture a color (either when setting a channel value via a command or via a scene), the fixture's red, green and blue channels are given the color's values. This allows for the central definition of colors to be used in multiple scenes.
+
+**Fixtures** represent lighting devices with one channel (a classic stage light) or more *channels* (e.g. LED). Support for each fixture type is built into AuLiCom. While technically it would be enough to have a single generic lamp for all 1-channel applications, there are multiple identical types named after the actual types of fixtures out there (PAR64, Cantata PC...)
+
+**Scenes** consist of a name and one or more saved channel values. You can use the scene player to switch between scenes, optionally with a fade time to seemlessly fade each channel.
 
 
 # Command Syntax
