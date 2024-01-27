@@ -48,7 +48,7 @@ namespace AuLiComLib.Protocols.Dmx
                 // otherwise we resend the old one
                 //
                 if (_sendLoopQueue.TryTake(out IReadOnlyUniverse newUniverseToSend,
-                                           millisecondsTimeout: 1000, // TODO: extract to configuration
+                                           millisecondsTimeout: 100, // TODO: extract to configuration
                                            cancellationToken: _cancellationTokenSource.Token))
                 {
                     universeToSend = newUniverseToSend;
