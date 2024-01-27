@@ -50,6 +50,11 @@ namespace AuLiComSim
                 _stageView.Led1.FillWithRgbFrom(universe, startingAtChannel: 4);
                 _stageView.Led2.FillWithRgbFrom(universe, startingAtChannel: 7);
                 _stageView.Led3.FillWithRgbFrom(universe, startingAtChannel: 10);
+                _stageView.ChannelValues.Text = universe
+                                                .GetValues()
+                                                .Where(x => x.Value > 0)
+                                                .Select(x => x.ToPercentageString())
+                                                .ToDelimitedString(Environment.NewLine);
             });
         }
 

@@ -17,6 +17,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -31,5 +32,7 @@
         <Border  Grid.Column="2" Grid.Row="0"  BorderBrush="White" BorderThickness="5">
             <Rectangle x:Name="Led3" Fill="Black" />
         </Border>
+
+        <TextBox Grid.ColumnSpan="3" Grid.Row="1" x:Name="ChannelValues" HorizontalScrollBarVisibility="Visible" />
     </Grid>
 </Window>
