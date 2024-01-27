@@ -22,5 +22,7 @@ namespace AuLiComLib.Fixtures.Types
         public ChannelValueProperty Cto { get; set; }
 
         public ChannelValueProperty ColorWheel { get; set; }
+        //TODO: insert missing channel
+        //public ChannelValueProperty Control { get; set; }
     }
 }
