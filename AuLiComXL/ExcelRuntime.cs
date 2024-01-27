@@ -65,6 +65,10 @@ namespace AuLiComXL
                 {
                     Initialize(SerialPorts.Empty);
                 }
+                if (SerialPorts.SimulationPortName.Equals(portName, StringComparison.OrdinalIgnoreCase))
+                {
+                    Initialize(SerialPorts.Empty);
+                }
                 else if (GetDmxPorts(forceRefresh: false).TryGetValue(portName, out ISerialPort? port))
                 {
                     Initialize(port);
@@ -80,7 +84,20 @@ namespace AuLiComXL
                 if (_instance?.PortName != port.PortName)
                 {
                     _instance?.Dispose();
-                    _instance = new ExcelRuntime(port);
+                    _instance = new ExcelRuntime(port.PortName, x => new DmxConnection(port, x));
+                }
+                return GetRuntimeStatus();
+            }
+        }
+
+        internal static string InitializeSimulation()
+        {
+            lock (_instanceInitializationLock)
+            {
+                if (_instance?.PortName != SerialPorts.SimulationPortName)
+                {
+                    _instance?.Dispose();
+                    _instance = new ExcelRuntime(SerialPorts.SimulationPortName, _ => new AuLiComSim.SimulatorConnection());
                 }
                 return GetRuntimeStatus();
             }
@@ -115,13 +132,13 @@ namespace AuLiComXL
         private static Dictionary<string, ISerialPort>? AvailablePortsByName;
 
 
-        private ExcelRuntime(ISerialPort port)
+        private ExcelRuntime(string portName, Func<SystemThread, IConnection> connectionFactory)
         {
-            PortName = port.PortName;
+            PortName = portName;
             _dmxConnectionThread = new SystemThread(PortName);
             _commandOutputWriter = new StringListWriteConsole();
 
-            DmxConnection = new DmxConnection(port, _dmxConnectionThread);
+            DmxConnection = connectionFactory(_dmxConnectionThread);
             var sceneManager = new NamedSceneManager(DmxConnection);
             FixtureFactory = new FixtureFactory(DmxConnection);
             FixtureManager = new FixtureManager();

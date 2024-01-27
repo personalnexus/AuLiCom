@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AuLiComLib\AuLiComLib.csproj" />
+    <ProjectReference Include="..\AuLiComSim\AuLiComSim.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,5 +21,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;C:\Users\stefa\OneDrive\Code\C# und .NET\AuLiCom\AuLiComXL\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.IO.Ports.dll&quot; &quot;C:\Users\stefa\OneDrive\Code\C# und .NET\AuLiCom\AuLiComXL\bin\Debug\net6.0-windows\System.IO.Ports.dll&quot; /Y" />
+  </Target>
 
 </Project>

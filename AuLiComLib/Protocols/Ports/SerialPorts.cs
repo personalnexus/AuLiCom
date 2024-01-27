@@ -13,6 +13,7 @@ namespace AuLiComLib.Protocols
         public static readonly ISerialPort Empty = new EmptySerialPort();
 
         public const string EmptyPortName = "Empty";
+        public const string SimulationPortName = "SIMU";
 
         public static bool IsNotEmpty(ISerialPort port) => !ReferenceEquals(port, SerialPorts.Empty);
 
