@@ -23,6 +23,8 @@ namespace AuLiComLib.Protocols
         public int ValueAsPercentage => (int)Math.Round(100 * (Value / 255d), MidpointRounding.AwayFromZero);
         public int ValueAsTenth => Value / 25;
 
+        public ChannelValue WithValue(byte value) => FromByte(Channel, value);
+
         public static ChannelValue FromByte(int channel, byte value) => new(channel, value);
         public static ChannelValue FromPercentage(int channel, int percentage) => new(channel, ByteFromPercentage(percentage));
 
