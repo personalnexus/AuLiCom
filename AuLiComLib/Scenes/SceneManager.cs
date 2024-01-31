@@ -70,7 +70,7 @@ namespace AuLiComLib.Scenes
             //
             if (!targetUniverse.HasSameValuesAs(_connection.CurrentUniverse))
             {
-                _connection.FadeTo(targetUniverse, fadeTime);
+                _connection.FadeTo2(targetUniverse, fadeTime);
             }
         }
 

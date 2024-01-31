@@ -22,6 +22,9 @@ namespace AuLiComLib.Protocols
             await new ChannelValueChanges(connection, targetUniverse, fadeTime)
             .Apply();
 
+        public static async void FadeTo2(this IConnection connection, IReadOnlyUniverse targetUniverse, TimeSpan fadeTime) =>
+            await new ChannelValueChanges2(connection, targetUniverse, fadeTime).Apply();
+
         public static ChannelValue GetValue(this IConnection connection, int channel) =>
             connection
             .CurrentUniverse.
