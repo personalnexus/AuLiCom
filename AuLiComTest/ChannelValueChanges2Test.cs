@@ -53,7 +53,7 @@ namespace AuLiComTest
                 var changes = new ChannelValueChanges2(connection, targetUniverse, TimeSpan.FromMilliseconds(200));
 
                 // Act
-                Action act = () => changes.Apply();
+                Action act = () => changes.Apply().GetAwaiter().GetResult();
 
                 // Assert
                 using (new AssertionScope())
@@ -79,7 +79,7 @@ namespace AuLiComTest
                 var changes = new ChannelValueChanges2(connection, targetUniverse, TimeSpan.FromMilliseconds(200));
 
                 // Act
-                Action act = () => changes.Apply();
+                Action act = () => changes.Apply().GetAwaiter().GetResult();
 
                 // Assert
                 using (new AssertionScope())
